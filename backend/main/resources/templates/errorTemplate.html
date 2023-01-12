@@ -1,0 +1,59 @@
+<html class="flex min-h-screen flex-col items-stretch subpixel-antialiased" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=satisfy:400|source-sans-pro:200,200i,300,300i,400,400i,600,600i|source-serif-pro:300,600" rel="stylesheet" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" th:href="@{/assets/apple-touch-icon.png}">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" th:href="@{/assets/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" th:href="@{/assets/favicon-16x16.png}">
+    <link rel="manifest" href="/assets/site.webmanifest" th:href="@{/assets/favicon-16x16.png}">
+    <link rel="stylesheet" th:href="@{/assets/__REPLACE__}">
+    <title>Tansen - Error</title>
+</head>
+<body class="flex flex-1 flex-col">
+<div id="app" class="flex flex-col flex-1">
+    <div class="flex flex-1 flex-col bg-gray-100 dark:bg-gray-800">
+        <header class="border-b border-gray-100 bg-white shadow dark:border-gray-800 dark:bg-gray-900 dark:shadow-gray-600/40">
+            <div class="flex h-16 justify-between p-2">
+                <div class="flex content-center items-center">
+                    <div class="w-36">
+                        <a href="/" class="text-5xl text-green-500 dark:text-gray-100"
+                           style="font-family: 'Satisfy', cursive">T<span
+                                class="text-outline-stroke stroke-green-500 text-white dark:stroke-white dark:text-transparent">a</span>nsen
+                        </a></div>
+                </div>
+                <div class="flex cursor-pointer content-center px-1 lg:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
+                         class="w-4 fill-current text-black dark:text-gray-100">
+                        <path d="M442 114H6a6 6 0 0 1-6-6V84a6 6 0 0 1 6-6h436a6 6 0 0 1 6 6v24a6 6 0 0 1-6 6zm0 160H6a6 6 0 0 1-6-6v-24a6 6 0 0 1 6-6h436a6 6 0 0 1 6 6v24a6 6 0 0 1-6 6zm0 160H6a6 6 0 0 1-6-6v-24a6 6 0 0 1 6-6h436a6 6 0 0 1 6 6v24a6 6 0 0 1-6 6z"></path>
+                    </svg>
+                </div>
+            </div>
+        </header>
+        <div class="flex h-12 flex-grow flex-row">
+            <div class="flex flex-1 items-center justify-center">
+                <div class="text-center">
+                    <div class="text-4xl text-green-500 dark:text-gray-100" style="font-family: 'Satisfy', cursive">
+                        Error
+                    </div>
+                    <div class="text-8xl font-bold text-green-500 [text-shadow:0_4px_8px_rgba(0,0,0,0.12)]" th:text="${status}"></div>
+                    <div class="dark:text-gray-100" th:text="${error}"></div>
+                    <a href="/" class="relative flex h-full w-full items-center justify-center overflow-hidden rounded border border-transparent bg-green-500 py-2 px-4 text-white transition duration-200 ease-linear hover:shadow-lg dark:border-gray-600 dark:bg-gray-700 dark:hover:shadow-black" type="submit">
+                        <span class="block">Go back home</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="flex h-8 items-center justify-center border-t border-gray-200 bg-gray-100 p-2 text-center shadow-xl dark:border-gray-800 dark:bg-gray-900">
+            <div class="text-green-500 dark:text-gray-100"> © <span style="font-family: 'Satisfy', cursive">T<span
+                    class="text-outline-stroke stroke-green-500 text-white dark:stroke-white dark:text-transparent">a</span>nsen</span>
+                - 2022
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
