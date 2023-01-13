@@ -54,7 +54,7 @@ services:
             SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
     tansen:
         container_name: tansen
-        image: ideasbucket/tansen:0.7.1
+        image: ideasbucket/tansen:latest
         ports:
             - 8080:8080
         depends_on:
