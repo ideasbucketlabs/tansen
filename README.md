@@ -1,6 +1,6 @@
 # Tansen
 
-ergergg
+Easy way to inspect, analyze and visualize Kafka Cluster, Topics and Schema
 
 ---
 ## Configuration
