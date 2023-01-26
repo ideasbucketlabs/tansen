@@ -11,7 +11,7 @@ import ReconnectingEventSource from 'reconnecting-eventsource'
 
 const baseUrl = import.meta.env.VITE_API_ENDPOINT ?? ''
 
-function getProperUrl(url: string): string {
+export function getProperUrl(url: string): string {
     return url.startsWith('/') ? `${baseUrl}/api${url}` : `${baseUrl}/api/${url}`
 }
 

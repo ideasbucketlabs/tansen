@@ -24,7 +24,7 @@
                     </div>
                     <SuccessIcon v-else class="h-16 w-16"></SuccessIcon>
                 </div>
-                <div class="mt-4 select-none sm:mt-0">
+                <div class="mt-4 flex-1 select-none sm:mt-0">
                     <slot></slot>
                 </div>
             </div>

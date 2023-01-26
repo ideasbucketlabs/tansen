@@ -16,6 +16,7 @@ export interface ClusterInformation {
     totalReplicas: number
     inSyncReplicas: number
     outOfSyncReplicas: number
+    clusterSize: number
 }
 
 export interface Node {

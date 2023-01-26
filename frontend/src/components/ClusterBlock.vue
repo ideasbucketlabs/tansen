@@ -7,7 +7,7 @@
         >
             <span class="block flex cursor-pointer items-center space-x-2 text-green-500 dark:text-gray-100">
                 <span class="block truncate">{{ name }}</span>
-                <status-bulb :online="online"></status-bulb>
+                <status-bulb :online="online" :good-health="goodHealth"></status-bulb>
             </span>
             <span class="w-6">
                 <PlusIcon v-if="collapsed" class="fill-current text-green-500 dark:text-gray-200"></PlusIcon>
@@ -121,6 +121,11 @@ defineProps({
     },
     online: {
         type: Boolean as PropType<boolean>,
+    },
+    goodHealth: {
+        type: Boolean as PropType<boolean>,
+        default: true,
+        required: false,
     },
 })
 

@@ -14,6 +14,7 @@
                         :show-pager="false"
                         :embedded="true"
                         identifier="name"
+                        :key="topicConfigurationViewRenderId"
                         :data="topicConfigurationData"
                         :sorters="topicConfigurationSorters"
                         :virtual="true"
@@ -46,13 +47,13 @@
                 class="flex-1 rounded shadow"
             ></data-grid>
         </div>
-        <h2 class="text-lg md:text-xl">Consumer Group(s)</h2>
+        <h2 class="text-lg md:text-xl" v-if="!showConsumerGroupDetail">Consumer Group(s)</h2>
         <button
             v-if="!showConsumerGroupDetail"
             @click="showConsumerGroupDetail = true"
             type="button"
             title="Load consumer(s) group for this topic"
-            class="w-32 rounded border border-green-500 bg-transparent p-2 uppercase text-green-500 transition duration-200 ease-linear hover:bg-green-100 hover:shadow-lg dark:border-gray-100 dark:text-gray-100 dark:hover:shadow-black"
+            class="w-32 rounded border border-green-500 bg-transparent p-2 uppercase text-green-500 transition duration-200 ease-linear hover:bg-green-100 hover:shadow-lg dark:border-gray-100 dark:text-gray-100 dark:hover:bg-gray-700 dark:hover:shadow-black"
         >
             Show
         </button>
@@ -76,11 +77,11 @@ import type { Partition, TopicDetails } from '@/entity/TopicDetails'
 import DataGrid from '@/components/DataGrid/DataGrid.vue'
 import type { Column } from '@/entity/Column'
 import type { PagedData } from '@/entity/PagedData'
-import { computed, defineProps, type PropType, ref } from 'vue'
+import { computed, defineProps, onActivated, type PropType, ref } from 'vue'
 import type { Filter } from '@/entity/Filter'
 import type { Configuration } from '@/entity/TopicDetails'
 import type { Sorter } from '@/entity/Sorter'
-import { getFilterData, getPaginateItems, sortData } from '@/util/Util'
+import { getFilterData, getId, getPaginateItems, sortData } from '@/util/Util'
 
 const props = defineProps({
     topicDetails: {
@@ -93,6 +94,7 @@ const props = defineProps({
     },
 })
 
+const topicConfigurationViewRenderId = ref<string>(getId())
 const topicDetailColumns = ref<Column[]>([
     {
         dataId: 'partition',
@@ -253,4 +255,8 @@ function onPartitionInformationFilterApply(appliedFilters: Filter[]) {
 function onTopicConfigurationsSortClick(sorter: Sorter | null): void {
     topicConfigurationSorters.value = sorter
 }
+
+onActivated(() => {
+    topicConfigurationViewRenderId.value = getId()
+})
 </script>

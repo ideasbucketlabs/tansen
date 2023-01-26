@@ -85,6 +85,7 @@
                                 :label="cluster.label"
                                 :name="cluster.name"
                                 :online="cluster.online"
+                                :good-health="cluster.outOfSyncReplicas === 0"
                             >
                             </cluster-block>
                         </li>

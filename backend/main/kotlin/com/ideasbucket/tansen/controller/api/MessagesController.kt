@@ -55,7 +55,7 @@ class MessagesController(
 
     private val logger = LoggerFactory.getLogger(MessagesController::class.java)
 
-    @GetMapping("{topic}", produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
+    @GetMapping("{topic}", produces = [MediaType.TEXT_EVENT_STREAM_VALUE, MediaType.APPLICATION_NDJSON_VALUE])
     suspend fun getMessagesByTopic(
         @PathVariable clusterId: String,
         @PathVariable topic: String,

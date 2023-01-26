@@ -49,7 +49,7 @@ import org.apache.kafka.common.config.TopicConfig;
         "preallocate",
     }
 )
-public final class NewTopicCreateRequest {
+public final class TopicCreateRequest {
 
     @JsonProperty("cleanup.policy")
     @NotNull(message = "cleanup.policy must be either delete or compact.")
@@ -214,7 +214,7 @@ public final class NewTopicCreateRequest {
     private final Boolean preallocate;
 
     @JsonCreator
-    public NewTopicCreateRequest(
+    public TopicCreateRequest(
         @JsonProperty("cleanup.policy") String cleanupPolicy,
         @JsonProperty("compression.type") String compressionType,
         @JsonProperty("delete.retention.ms") Long deleteRetentionMs,

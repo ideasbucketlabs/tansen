@@ -325,7 +325,7 @@ function startStream() {
         eventSource.addEventListener('message', processMessage)
         isStreamPaused.value = false
     } else {
-        eventSource = getEventSource(`messages/${props.topic}`)
+        eventSource = getEventSource(`${clusterId}/messages/${props.topic}`)
         eventSource.addEventListener('message', processMessage)
         isStreamPaused.value = false
     }

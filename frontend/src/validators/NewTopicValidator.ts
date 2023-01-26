@@ -5,27 +5,11 @@
  * file that was distributed with this source code.
  */
 import type { NewTopic } from '@/entity/NewTopic'
-import { isBigInt, isNumber, isString } from '@/util/Util'
+import { convertToBigInt, isNumber, isString } from '@/util/Util'
 
-const positiveIntegerRegex = /^[1-9][0-9]*$/
-const positiveIntegerWithInfinityRegex = /^(-1|[1-9][0-9]*)$/
-const positiveIntegerWithZeroRegex = /^[0-9]+$/
-
-function convertToBigInt(value: unknown): bigint {
-    if (isBigInt(value)) {
-        return value as bigint
-    }
-
-    if (isString(value)) {
-        return BigInt(value as string)
-    }
-
-    if (isNumber(value)) {
-        return BigInt((value as number).toString(10))
-    }
-
-    throw new Error('Unknown type')
-}
+export const positiveIntegerRegex = /^[1-9][0-9]*$/
+export const positiveIntegerWithInfinityRegex = /^(-1|[1-9][0-9]*)$/
+export const positiveIntegerWithZeroRegex = /^[0-9]+$/
 
 export function validate(topic: NewTopic): Map<string, string> {
     const result = new Map()

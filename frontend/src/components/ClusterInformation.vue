@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-1 flex-col" ref="root">
-        <div class="flex flex-1 flex-col rounded">
+        <div class="flex flex-col rounded">
             <div
                 class="flex items-center justify-between rounded-t bg-green-500 p-2 text-white shadow dark:bg-gray-700 dark:text-gray-100"
                 :class="{ 'rounded-b': collapsed }"
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="flex flex-1 flex-col rounded-b bg-white shadow dark:bg-gray-900" v-show="!collapsed">
-                <div class="grid grid-cols-1 gap-4 p-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
+                <div class="grid grid-cols-1 gap-4 p-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7">
                     <div
                         class="rounded border border-green-100 text-center shadow dark:border-gray-700 dark:shadow-gray-700"
                     >
@@ -38,7 +38,7 @@
                             Total topic(s)
                         </div>
                         <div class="p-2" v-if="cluster.totalNumberOfTopics !== -1">
-                            {{ cluster.totalNumberOfTopics }}
+                            {{ new Intl.NumberFormat().format(cluster.totalNumberOfTopics) }}
                         </div>
                         <div class="p-2" v-else>N/A</div>
                     </div>
@@ -49,7 +49,18 @@
                             Total partition(s)
                         </div>
                         <div class="p-2" v-if="cluster.totalNumberOfPartitions !== -1">
-                            {{ cluster.totalNumberOfPartitions }}
+                            {{ new Intl.NumberFormat().format(cluster.totalNumberOfPartitions) }}
+                        </div>
+                        <div class="p-2" v-else>N/A</div>
+                    </div>
+                    <div
+                        class="rounded border border-green-100 text-center shadow dark:border-gray-700 dark:shadow-gray-700"
+                    >
+                        <div class="rounded-t bg-green-50 py-2 px-2 text-green-500 dark:bg-gray-700 dark:text-gray-100">
+                            Space consumed
+                        </div>
+                        <div class="p-2" v-if="cluster.clusterSize !== -1">
+                            {{ new Intl.NumberFormat().format(cluster.clusterSize) }} MB
                         </div>
                         <div class="p-2" v-else>N/A</div>
                     </div>
@@ -62,7 +73,12 @@
                             Online
                         </div>
                         <div class="flex flex-1 items-center justify-center">
-                            <status-bulb :online="cluster.online"></status-bulb>
+                            <status-bulb
+                                v-if="cluster.outOfSyncReplicas !== -1"
+                                :online="cluster.online"
+                                :good-health="cluster.outOfSyncReplicas === 0"
+                            ></status-bulb>
+                            <status-bulb v-else :online="cluster.online"></status-bulb>
                         </div>
                     </div>
                     <div
@@ -74,7 +90,7 @@
                             Total replica(s)
                         </div>
                         <div class="p-2" v-if="cluster.totalReplicas !== -1">
-                            {{ cluster.totalReplicas }}
+                            {{ new Intl.NumberFormat().format(cluster.totalReplicas) }}
                         </div>
                         <div class="p-2" v-else>N/A</div>
                     </div>
@@ -87,7 +103,7 @@
                             In Sync replica(s)
                         </div>
                         <div class="p-2" v-if="cluster.inSyncReplicas !== -1">
-                            {{ cluster.inSyncReplicas }}
+                            {{ new Intl.NumberFormat().format(cluster.inSyncReplicas) }}
                         </div>
                         <div class="p-2" v-else>N/A</div>
                     </div>
@@ -95,7 +111,7 @@
                         class="rounded border border-green-100 text-center shadow dark:border-gray-700 dark:shadow-gray-700"
                     >
                         <div
-                            class="rounded-t bg-green-50 py-2 px-2 text-green-500 text-green-500 dark:bg-gray-700 dark:text-gray-100"
+                            class="truncate rounded-t bg-green-50 py-2 px-2 text-green-500 text-green-500 dark:bg-gray-700 dark:text-gray-100"
                         >
                             Out of Sync replica(s)
                         </div>
@@ -127,7 +143,7 @@
                     <div class="text-xl">Broker(s)</div>
                     <BrokerInformation
                         v-for="node in cluster.nodes"
-                        :key="'cluster' + cluster.id + '-node-' + node.id"
+                        :key="'cluster-' + cluster.id + '-node-' + node.id"
                         class="flex-1 rounded"
                         :node="node"
                     ></BrokerInformation>

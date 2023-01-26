@@ -12,7 +12,7 @@ import type { Sorter } from '@/entity/Sorter'
 import type { PagedData } from '@/entity/PagedData'
 import type { ConsumerGroup } from '@/entity/ConsumerGroup'
 import eventBus from '@/util/EventBus'
-import { deleteAction, getAction, postAction } from '@/util/HttpService'
+import { deleteAction, getAction, postAction, putAction } from '@/util/HttpService'
 import { ApplicationEventTypes } from '@/entity/ApplicationEventTypes'
 import type { ServerResponse } from '@/entity/ServerResponse'
 import type { NewTopic } from '@/entity/NewTopic'
@@ -125,6 +125,19 @@ export const topicStore = defineStore('topics', {
                 },
                 (errorResponse: ErrorResponse) => {
                     eventBus.emit(ApplicationEventTypes.TOPIC_ADDED, false, errorResponse)
+                }
+            )
+        },
+        async editTopic(clusterId: string, data: { oldRecord: NewTopic; newRecord: NewTopic }) {
+            eventBus.emit(ApplicationEventTypes.BEFORE_TOPIC_EDITED, true)
+            await putAction(
+                `${clusterId}/topics`,
+                data,
+                () => {
+                    eventBus.emit(ApplicationEventTypes.TOPIC_EDITED, true)
+                },
+                (errorResponse: ErrorResponse) => {
+                    eventBus.emit(ApplicationEventTypes.TOPIC_EDITED, false, errorResponse)
                 }
             )
         },

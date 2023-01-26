@@ -8,8 +8,9 @@ package com.ideasbucket.tansen.service.impl
 
 import com.ideasbucket.tansen.entity.ConfigurationWithDefinition
 import com.ideasbucket.tansen.entity.Definition
-import com.ideasbucket.tansen.entity.NewTopicCreateRequest
 import com.ideasbucket.tansen.entity.Topic
+import com.ideasbucket.tansen.entity.TopicCreateRequest
+import com.ideasbucket.tansen.entity.TopicEditRequest
 import com.ideasbucket.tansen.entity.TopicPartition
 import com.ideasbucket.tansen.exception.NotSupportedException
 import com.ideasbucket.tansen.exception.TopicAlreadyExistException
@@ -21,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.apache.kafka.clients.admin.AdminClient
 import org.apache.kafka.clients.admin.AlterConfigOp
+import org.apache.kafka.clients.admin.AlterConfigsResult
 import org.apache.kafka.clients.admin.ConfigEntry
 import org.apache.kafka.clients.admin.CreateTopicsResult
 import org.apache.kafka.clients.admin.ListTopicsOptions
@@ -134,35 +136,35 @@ class TopicServiceImpl(private val clusterService: ClusterService) : TopicServic
         }
     }
 
-    override suspend fun addTopic(clusterId: String, newTopic: NewTopicCreateRequest): CreateTopicsResult {
+    override suspend fun addTopic(clusterId: String, request: TopicCreateRequest): CreateTopicsResult {
         if (!clusterService.isTopicAddAllowed(clusterId)) {
             throw NotSupportedException("This action is disabled in this cluster.")
         }
 
         val adminClient = clusterService.getAdminClient(clusterId)
 
-        if (doesTopicExistAlready(newTopic.name, adminClient)) {
-            throw TopicAlreadyExistException("Topic with name ${newTopic.name} already exists.")
+        if (doesTopicExistAlready(request.name, adminClient)) {
+            throw TopicAlreadyExistException("Topic with name ${request.name} already exists.")
         }
 
         val nodes = withContext(Dispatchers.IO) {
             adminClient.describeCluster().nodes().get()
         }
 
-        if (newTopic.replicationFactor > nodes.size) {
+        if (request.replicationFactor > nodes.size) {
             "Replication factor is more than nodes available".run {
                 throw TopicOperationException(
-                    newTopic.name,
+                    request.name,
                     this,
                     Exception(this)
                 )
             }
         }
 
-        if (newTopic.minInsyncReplicas > nodes.size) {
+        if (request.minInsyncReplicas > nodes.size) {
             "Minimum in sync replica is more than nodes available".run {
                 throw TopicOperationException(
-                    newTopic.name,
+                    request.name,
                     this,
                     Exception(this)
                 )
@@ -174,18 +176,63 @@ class TopicServiceImpl(private val clusterService: ClusterService) : TopicServic
                 adminClient.createTopics(
                     setOf(
                         NewTopic(
-                            newTopic.name,
-                            newTopic.partition,
-                            newTopic.replicationFactor
-                        ).configs(newTopic.topicOptions)
+                            request.name,
+                            request.partition,
+                            request.replicationFactor
+                        ).configs(request.topicOptions)
                     )
                 )
             }
             return createTopicsResult
         } catch (exception: ExecutionException) {
             throw TopicOperationException(
-                newTopic.name,
-                "Unable to create topic #$newTopic. ${exception.cause?.message ?: ""}",
+                request.name,
+                "Unable to create topic #${request.name}. ${exception.cause?.message ?: ""}",
+                exception
+            )
+        }
+    }
+
+    override suspend fun editTopic(clusterId: String, request: TopicEditRequest): AlterConfigsResult? {
+        if (!clusterService.isTopicEditAllowed(clusterId)) {
+            throw NotSupportedException("This action is disabled in this cluster.")
+        }
+
+        val adminClient = clusterService.getAdminClient(clusterId)
+
+        if (!doesTopicExistAlready(request.newRecord.name, adminClient)) {
+            throw TopicAlreadyExistException("Topic with name ${request.newRecord.name} does not exists.")
+        }
+
+        val nodes = withContext(Dispatchers.IO) {
+            adminClient.describeCluster().nodes().get()
+        }
+
+        if (request.newRecord.minInsyncReplicas > nodes.size) {
+            "Minimum in sync replica is more than nodes available".run {
+                throw TopicOperationException(
+                    request.newRecord.name,
+                    this,
+                    Exception(this)
+                )
+            }
+        }
+
+        val changes = request.changes
+
+        if (changes.isEmpty()) {
+            return null
+        }
+
+        try {
+            val editTopicResult = withContext(Dispatchers.IO) {
+                adminClient.incrementalAlterConfigs(changes)
+            }
+            return editTopicResult
+        } catch (exception: ExecutionException) {
+            throw TopicOperationException(
+                request.newRecord.name,
+                "Unable to edit topic #${request.newRecord.name}. ${exception.cause?.message ?: ""}",
                 exception
             )
         }

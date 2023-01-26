@@ -514,3 +514,19 @@ export function filterOutCommonErrorAttributes(data: Record<string, string>): Re
             }
         }, {})
 }
+
+export function convertToBigInt(value: unknown): bigint {
+    if (isBigInt(value)) {
+        return value as bigint
+    }
+
+    if (isString(value)) {
+        return BigInt(value as string)
+    }
+
+    if (isNumber(value)) {
+        return BigInt((value as number).toString(10))
+    }
+
+    throw new Error('Unknown type')
+}

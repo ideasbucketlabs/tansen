@@ -45,7 +45,8 @@ services:
         hostname: schema-registry
         container_name: schema-registry
         depends_on:
-            - broker
+            broker:
+                condition: service_healthy
         ports:
             - "8081:8081"
         environment:
@@ -56,14 +57,16 @@ services:
         container_name: tansen
         image: ideasbucket/tansen:latest
         ports:
-            - 8080:8080
+            - "8080:8080"
         depends_on:
-            - broker
-            - schema-registry
+            broker:
+                condition: service_healthy
+            schema-registry:
+                condition: service_healthy
         environment:
             SPRING_PROFILES_ACTIVE: prod
             TANSEN.KAFKA-CLUSTERS.0.BOOTSTRAP_SERVERS: 'broker:29092'
             TANSEN.KAFKA-CLUSTERS.0.LABEL: local
             TANSEN.KAFKA-CLUSTERS.0.NAME: local
-            TANSEN.KAFKA-CLUSTERS.0.SCHEMA_REGISTRY_URL: http://localhost:8081
+            TANSEN.KAFKA-CLUSTERS.0.SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
 

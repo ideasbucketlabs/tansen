@@ -6,8 +6,10 @@
  */
 package com.ideasbucket.tansen.service
 
-import com.ideasbucket.tansen.entity.NewTopicCreateRequest
 import com.ideasbucket.tansen.entity.Topic
+import com.ideasbucket.tansen.entity.TopicCreateRequest
+import com.ideasbucket.tansen.entity.TopicEditRequest
+import org.apache.kafka.clients.admin.AlterConfigsResult
 import org.apache.kafka.clients.admin.CreateTopicsResult
 
 interface TopicService {
@@ -16,7 +18,9 @@ interface TopicService {
 
     suspend fun getTopic(clusterId: String, topicName: String): Topic?
 
-    suspend fun addTopic(clusterId: String, newTopic: NewTopicCreateRequest): CreateTopicsResult
+    suspend fun addTopic(clusterId: String, request: TopicCreateRequest): CreateTopicsResult
+
+    suspend fun editTopic(clusterId: String, request: TopicEditRequest): AlterConfigsResult?
 
     suspend fun deleteTopic(clusterId: String, topicName: String)
 }

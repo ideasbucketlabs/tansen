@@ -13,6 +13,9 @@ export enum ApplicationEventTypes {
     TOPIC_ADDED = 'topic:topic-added',
     BEFORE_TOPIC_ADDED = 'topic:before-topic-added',
 
+    TOPIC_EDITED = 'topic:topic-edited',
+    BEFORE_TOPIC_EDITED = 'topic:before-topic-edited',
+
     BEFORE_CLUSTER_INFORMATION_DATA_LOADED = 'cluster-information:before-cluster-information-data-loaded',
     CLUSTER_INFORMATION_DATA_LOADED = 'cluster-information:cluster-information-data-loaded',
 
