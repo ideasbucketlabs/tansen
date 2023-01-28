@@ -651,7 +651,7 @@
                         type="button"
                         v-if="createWithDefaults"
                         @click="createWithDefaults = false"
-                        class="block h-10 w-6/12 overflow-hidden rounded border border-green-500 bg-green-50 transition duration-200 ease-linear hover:bg-green-200 hover:text-green-500 hover:shadow-lg dark:border-gray-600 dark:bg-gray-500 dark:hover:bg-gray-400 dark:hover:text-gray-100 lg:w-4/12"
+                        class="block h-10 w-6/12 overflow-hidden rounded border border-green-500 bg-green-50 transition duration-200 ease-linear hover:bg-green-200 hover:text-green-500 hover:shadow-lg dark:border-blue-800 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:text-gray-100 dark:hover:shadow-black lg:w-4/12"
                     >
                         Customize setting(s)
                     </button>

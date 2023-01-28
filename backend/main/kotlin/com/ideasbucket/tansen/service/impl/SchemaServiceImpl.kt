@@ -197,7 +197,7 @@ class SchemaServiceImpl(private val clusterService: ClusterService) : SchemaServ
             HttpMethod.GET -> clusterService.getSchemaRegistryClient(clusterId).get().uri(url)
             HttpMethod.DELETE -> clusterService.getSchemaRegistryClient(clusterId).delete().uri(url)
             else -> {
-                throw UnsupportedOperationException("${method.name} is not supported")
+                throw UnsupportedOperationException("${method.name()} is not supported")
             }
         }
     }
@@ -212,7 +212,7 @@ class SchemaServiceImpl(private val clusterService: ClusterService) : SchemaServ
             HttpMethod.PATCH -> clusterService.getSchemaRegistryClient(clusterId).patch().uri(url)
             HttpMethod.POST -> clusterService.getSchemaRegistryClient(clusterId).post().uri(url)
             else -> {
-                throw UnsupportedOperationException("${method.name} is not supported")
+                throw UnsupportedOperationException("${method.name()} is not supported")
             }
         }
     }

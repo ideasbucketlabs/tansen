@@ -18,7 +18,7 @@ class SchemaExecutor(val schemaService: SchemaService) {
         return when (method) {
             HttpMethod.GET -> schemaService.get(clusterId, url, T::class.java)
             HttpMethod.DELETE -> schemaService.delete(clusterId, url, T::class.java)
-            else -> throw NotSupportedException("${method.name} is not supported")
+            else -> throw NotSupportedException("${method.name()} is not supported")
         }
     }
 
@@ -27,7 +27,7 @@ class SchemaExecutor(val schemaService: SchemaService) {
             HttpMethod.PUT -> schemaService.put(clusterId, url, data, T::class.java)
             HttpMethod.POST -> schemaService.post(clusterId, url, data, T::class.java)
             HttpMethod.PATCH -> schemaService.patch(clusterId, url, data, T::class.java)
-            else -> throw NotSupportedException("${method.name} is not supported")
+            else -> throw NotSupportedException("${method.name()} is not supported")
         }
     }
 }

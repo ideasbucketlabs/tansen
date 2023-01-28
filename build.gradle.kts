@@ -1,13 +1,13 @@
 import com.github.gradle.node.npm.task.NpmTask
 
 plugins {
-    id("org.springframework.boot") version "2.7.5"
-    id("io.spring.dependency-management") version "1.0.15.RELEASE"
-    kotlin("jvm") version "1.6.21"
-    kotlin("plugin.spring") version "1.6.21"
+    id("org.springframework.boot") version "3.0.2"
+    id("io.spring.dependency-management") version "1.1.0"
+    kotlin("jvm") version "1.7.22"
+    kotlin("plugin.spring") version "1.7.22"
     jacoco
-    id("com.github.node-gradle.node") version "3.4.0"
-    id("com.diffplug.spotless") version "6.11.0"
+    id("com.github.node-gradle.node") version "3.5.1"
+    id("com.diffplug.spotless") version "6.14.0"
 }
 
 group = "com.ideasbucket"
@@ -34,6 +34,8 @@ repositories {
     maven { url = uri("https://repository.mulesoft.org/nexus/content/repositories/public/") }
 }
 
+extra["testcontainersVersion"] = "1.17.6"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
@@ -45,18 +47,25 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("org.springframework.kafka:spring-kafka")
-    implementation("io.projectreactor.kafka:reactor-kafka:1.3.13")
-    implementation("io.confluent:kafka-avro-serializer:7.1.1")
-    implementation("io.confluent:kafka-protobuf-serializer:7.2.1")
-    implementation("io.confluent:kafka-json-schema-serializer:7.2.1")
-    implementation("com.google.protobuf:protobuf-java:3.21.9")
+    implementation("io.projectreactor.kafka:reactor-kafka:1.3.15")
+    implementation("io.confluent:kafka-avro-serializer:7.3.1")
+    implementation("io.confluent:kafka-protobuf-serializer:7.3.1")
+    implementation("io.confluent:kafka-json-schema-serializer:7.3.1")
+    implementation("com.google.protobuf:protobuf-java:3.21.12")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("org.springframework.kafka:spring-kafka-test")
+    testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("io.kotest:kotest-runner-junit5-jvm:5.5.4") // for kotest framework
     testImplementation("io.kotest:kotest-assertions-core-jvm:5.5.4") // for kotest core jvm assertions
     testImplementation("io.kotest:kotest-property-jvm:5.5.4") // for kotest property test
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("org.testcontainers:testcontainers-bom:${property("testcontainersVersion")}")
+    }
 }
 
 tasks.compileKotlin {
@@ -84,8 +93,6 @@ tasks.jacocoTestReport {
         html.outputLocation.set(file("$buildDir/coverage"))
     }
 }
-
-// tasks.jar { enabled = false }
 
 val buildFrontEnd: TaskProvider<NpmTask> = tasks.register<NpmTask>("buildFrontEnd") {
     workingDir.set(file("$projectDir/frontend"))
@@ -166,7 +173,6 @@ spotless {
         trimTrailingWhitespace()
     }
     java {
-        // palantirJavaFormat()
         target("backend/*/java/**/*.java")
         removeUnusedImports()
         toggleOffOn("formatter:off", "formatter:on")
@@ -197,7 +203,7 @@ spotless {
 }
 
 tasks.bootBuildImage {
-    imageName = "ideasbucket/${project.name}:${project.version}"
+    imageName.set("ideasbucket/${project.name}:${project.version}")
 }
 
 // DO_NOT_REMOVE

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.ideasbucket.tansen.entity.Response
 import com.ideasbucket.tansen.entity.SaveSchemaRequest
 import com.ideasbucket.tansen.service.SchemaExecutor
+import jakarta.validation.Valid
 import org.springframework.http.HttpMethod
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PathVariable
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import javax.validation.Valid
 
 @RestController
 @RequestMapping("api/{clusterId:[a-zA-Z0-9][a-zA-Z0-9\\_\\-]+}/compatibility")

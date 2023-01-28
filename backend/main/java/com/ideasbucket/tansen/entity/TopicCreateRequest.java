@@ -10,9 +10,9 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import jakarta.validation.constraints.*;
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.*;
 import org.apache.kafka.common.config.TopicConfig;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

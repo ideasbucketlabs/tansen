@@ -13,9 +13,9 @@ import com.ideasbucket.tansen.util.JsonConverter
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.maps.shouldContain
 import io.kotest.matchers.types.shouldBeInstanceOf
+import jakarta.validation.Validation
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
-import javax.validation.Validation
 
 class TopicCreateRequestTest {
 

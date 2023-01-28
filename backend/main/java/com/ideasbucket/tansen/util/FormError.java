@@ -6,11 +6,11 @@
  */
 package com.ideasbucket.tansen.util;
 
+import jakarta.validation.ConstraintViolation;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.validation.ConstraintViolation;
 import org.springframework.validation.FieldError;
 
 public class FormError {

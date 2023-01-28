@@ -7,9 +7,9 @@
 package com.ideasbucket.tansen.entity;
 
 import com.fasterxml.jackson.annotation.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import java.util.*;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import org.apache.kafka.clients.admin.AlterConfigOp;
 import org.apache.kafka.clients.admin.ConfigEntry;
 import org.apache.kafka.common.config.ConfigResource;

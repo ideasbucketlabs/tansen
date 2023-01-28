@@ -20,6 +20,7 @@ import org.apache.kafka.common.errors.UnknownTopicOrPartitionException
 import org.slf4j.LoggerFactory
 import org.springframework.core.codec.DecodingException
 import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -127,7 +128,7 @@ class WebExceptionsHandler {
 
     @ExceptionHandler(ResponseStatusException::class)
     suspend fun handleResponseStatusException(exception: ResponseStatusException): ResponseEntity<Response> {
-        return getHttpResponseWithoutDetail(exception.status, exception.message)
+        return getHttpResponseWithoutDetail(exception.statusCode, exception.message)
     }
 
     @ExceptionHandler(UndeclaredThrowableException::class)
@@ -178,7 +179,7 @@ class WebExceptionsHandler {
         )
     }
 
-    private fun getHttpResponseWithoutDetail(httpStatus: HttpStatus, message: String): ResponseEntity<Response> {
+    private fun getHttpResponseWithoutDetail(httpStatus: HttpStatusCode, message: String): ResponseEntity<Response> {
         return ResponseEntity(
             Response.withError(
                 mapOf(

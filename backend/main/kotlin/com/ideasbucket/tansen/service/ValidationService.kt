@@ -7,9 +7,9 @@
 package com.ideasbucket.tansen.service
 
 import com.ideasbucket.tansen.exception.ValidationException
+import jakarta.validation.ConstraintViolation
+import jakarta.validation.Validator
 import org.springframework.stereotype.Service
-import javax.validation.ConstraintViolation
-import javax.validation.Validator
 
 @Service
 class ValidationService(private val validator: Validator) {

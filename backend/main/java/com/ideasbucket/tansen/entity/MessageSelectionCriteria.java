@@ -7,8 +7,8 @@
 package com.ideasbucket.tansen.entity;
 
 import com.fasterxml.jackson.annotation.*;
+import jakarta.validation.constraints.AssertFalse;
 import java.time.Instant;
-import javax.validation.constraints.AssertFalse;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "offset", "partition", "timestamp" })
