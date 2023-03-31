@@ -7,7 +7,7 @@
 package com.ideasbucket.tansen.entity;
 
 import com.fasterxml.jackson.annotation.*;
-import javax.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.AssertTrue;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "mode" })

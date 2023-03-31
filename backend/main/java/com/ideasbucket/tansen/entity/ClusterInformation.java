@@ -47,6 +47,9 @@ public final class ClusterInformation {
     @JsonProperty("outOfSyncReplicas")
     private final Integer outOfSyncReplicas;
 
+    @JsonProperty("clusterSize")
+    private final Long clusterSize;
+
     @JsonCreator
     public ClusterInformation(
         @JsonProperty("id") String id,
@@ -59,7 +62,8 @@ public final class ClusterInformation {
         @JsonProperty("totalNumberOfPartitions") Integer totalNumberOfPartitions,
         @JsonProperty("totalReplicas") Integer totalReplicas,
         @JsonProperty("inSyncReplicas") Integer inSyncReplicas,
-        @JsonProperty("outOfSyncReplicas") Integer outOfSyncReplicas
+        @JsonProperty("outOfSyncReplicas") Integer outOfSyncReplicas,
+        @JsonProperty("clusterSize") Long clusterSize
     ) {
         this.id = id;
         this.name = name;
@@ -72,6 +76,7 @@ public final class ClusterInformation {
         this.inSyncReplicas = inSyncReplicas;
         this.outOfSyncReplicas = outOfSyncReplicas;
         this.configurations = configurations;
+        this.clusterSize = clusterSize;
     }
 
     public ClusterInformation(
@@ -84,7 +89,8 @@ public final class ClusterInformation {
         @JsonProperty("totalNumberOfTopics") Integer totalNumberOfTopics,
         @JsonProperty("totalNumberOfPartitions") Integer totalNumberOfPartitions,
         @JsonProperty("totalReplicas") Integer totalReplicas,
-        @JsonProperty("inSyncReplicas") Integer inSyncReplicas
+        @JsonProperty("inSyncReplicas") Integer inSyncReplicas,
+        @JsonProperty("clusterSize") Long clusterSize
     ) {
         this.id = id;
         this.name = name;
@@ -97,6 +103,7 @@ public final class ClusterInformation {
         this.inSyncReplicas = inSyncReplicas;
         this.outOfSyncReplicas = totalReplicas - inSyncReplicas;
         this.configurations = configurations;
+        this.clusterSize = clusterSize;
     }
 
     public String getName() {
@@ -141,5 +148,9 @@ public final class ClusterInformation {
 
     public List<ConfigurationWithDefinition> getConfigurations() {
         return configurations;
+    }
+
+    public Long getClusterSize() {
+        return clusterSize;
     }
 }

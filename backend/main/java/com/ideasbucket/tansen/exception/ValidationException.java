@@ -6,8 +6,8 @@
  */
 package com.ideasbucket.tansen.exception;
 
+import jakarta.validation.ConstraintViolation;
 import java.util.Set;
-import javax.validation.ConstraintViolation;
 
 public class ValidationException extends Exception {
 

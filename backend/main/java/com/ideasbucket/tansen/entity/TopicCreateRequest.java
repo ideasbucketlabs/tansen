@@ -10,9 +10,9 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import jakarta.validation.constraints.*;
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.*;
 import org.apache.kafka.common.config.TopicConfig;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -49,7 +49,7 @@ import org.apache.kafka.common.config.TopicConfig;
         "preallocate",
     }
 )
-public final class NewTopicCreateRequest {
+public final class TopicCreateRequest {
 
     @JsonProperty("cleanup.policy")
     @NotNull(message = "cleanup.policy must be either delete or compact.")
@@ -214,7 +214,7 @@ public final class NewTopicCreateRequest {
     private final Boolean preallocate;
 
     @JsonCreator
-    public NewTopicCreateRequest(
+    public TopicCreateRequest(
         @JsonProperty("cleanup.policy") String cleanupPolicy,
         @JsonProperty("compression.type") String compressionType,
         @JsonProperty("delete.retention.ms") Long deleteRetentionMs,
@@ -274,6 +274,37 @@ public final class NewTopicCreateRequest {
         this.preallocate = preallocate;
     }
 
+    public TopicCreateRequest(String name, Integer partition) {
+        this.name = name;
+        this.partition = partition;
+        this.cleanupPolicy = "delete";
+        this.compressionType = "producer";
+        this.deleteRetentionMs = 86400000L;
+        this.fileDeleteDelayMs = 60000L;
+        this.flushMessages = 9223372036854775807L;
+        this.flushMs = 9223372036854775807L;
+        this.followerReplicationThrottledReplicas = "";
+        this.indexIntervalBytes = 4096;
+        this.leaderReplicationThrottledReplicas = "";
+        this.maxCompactionLagMs = 9223372036854775807L;
+        this.maxMessageBytes = 1048588;
+        this.messageDownconversionEnable = true;
+        this.messageTimestampDifferenceMaxMs = 9223372036854775807L;
+        this.messageTimestampType = "CreateTime";
+        this.minCleanableDirtyRatio = 0.5;
+        this.minCompactionLagMs = 0L;
+        this.minInsyncReplicas = 1;
+        this.replicationFactor = 1;
+        this.retentionBytes = -1L;
+        this.retentionMs = 604800000L;
+        this.segmentBytes = 1073741824;
+        this.segmentIndexBytes = 10485760;
+        this.segmentJitterMs = 0L;
+        this.segmentMs = 604800000L;
+        this.uncleanLeaderElectionEnable = false;
+        this.preallocate = false;
+    }
+
     @AssertTrue(message = "Retention bytes cannot be null, must be numeric either exactly -1 or greater than 0.")
     @JsonIgnore
     private boolean hasValidRetentionBytes() {
@@ -282,6 +313,13 @@ public final class NewTopicCreateRequest {
         }
 
         return this.retentionBytes == -1L || this.retentionBytes > 0L;
+    }
+
+    @AssertFalse(message = "Minimum in-sync replica must be equal or less than replication factor.")
+    @JsonIgnore
+    private boolean hasMinInsyncReplicas() {
+
+        return (this.replicationFactor < this.minInsyncReplicas);
     }
 
     @AssertTrue(message = "Retention time cannot be null, must be numeric either exactly -1 or greater than 0.")

@@ -7,24 +7,28 @@
 package com.ideasbucket.tansen.exception;
 
 import com.ideasbucket.tansen.entity.ApiErrorResponse;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 
 public class SchemaServiceAPIException extends Exception {
 
-    private final HttpStatus httpStatus;
+    private final HttpStatusCode httpStatus;
 
     private final String errorResponse;
 
     private final ApiErrorResponse apiErrorResponse;
 
-    public SchemaServiceAPIException(HttpStatus httpStatus, String errorResponse, ApiErrorResponse apiErrorResponse) {
+    public SchemaServiceAPIException(
+        HttpStatusCode httpStatus,
+        String errorResponse,
+        ApiErrorResponse apiErrorResponse
+    ) {
         super(errorResponse);
         this.httpStatus = httpStatus;
         this.errorResponse = errorResponse;
         this.apiErrorResponse = apiErrorResponse;
     }
 
-    public HttpStatus getHttpStatus() {
+    public HttpStatusCode getHttpStatus() {
         return httpStatus;
     }
 

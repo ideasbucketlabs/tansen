@@ -11,7 +11,7 @@ import ReconnectingEventSource from 'reconnecting-eventsource'
 
 const baseUrl = import.meta.env.VITE_API_ENDPOINT ?? ''
 
-function getProperUrl(url: string): string {
+export function getProperUrl(url: string): string {
     return url.startsWith('/') ? `${baseUrl}/api${url}` : `${baseUrl}/api/${url}`
 }
 
@@ -34,7 +34,7 @@ const replacer = (key: string, value: any) => (isBigInt(value) ? value.toString(
 
 async function execute<TBody, TResponse>(
     url: string,
-    method: string,
+    method: 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'GET',
     data: TBody | null,
     successFn: (response: TResponse) => void,
     errorFn: (response: ErrorResponse) => void

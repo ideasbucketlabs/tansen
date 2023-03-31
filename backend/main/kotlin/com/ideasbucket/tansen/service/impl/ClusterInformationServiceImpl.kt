@@ -52,7 +52,18 @@ class ClusterInformationServiceImpl(private val clusterService: ClusterService) 
                 adminClient.describeTopics(topics.map { it.name() }).topicNameValues().values.map { it.get() }
             }
 
+            val logInformation = withContext(Dispatchers.IO) {
+                adminClient.describeLogDirs(nodes.map { it.id() }).allDescriptions().get()
+            }
+
             // formatter:off
+            val clusterSize : Long = logInformation.values.map {
+                logDescriptions -> logDescriptions.values.map {
+                    replicationInfos -> replicationInfos.replicaInfos().values.map { it.size() }
+                }.flatten()
+            }.flatten()
+            .sum()
+
             val nodeConfigurations = withContext(Dispatchers.IO) {
                 adminClient.describeConfigs(nodes.map { ConfigResource(ConfigResource.Type.BROKER, it.id().toString()) })
                     .all()
@@ -98,7 +109,8 @@ class ClusterInformationServiceImpl(private val clusterService: ClusterService) 
                 topics.size,
                 topicInformation.sumOf { it.partitions().size },
                 topicInformation.sumOf { partition -> partition.partitions().map { it.replicas().size }.size },
-                topicInformation.sumOf { partition -> partition.partitions().map { it.isr().size }.size }
+                topicInformation.sumOf { partition -> partition.partitions().map { it.isr().size }.size },
+                (clusterSize / (1024L * 1024L))
             )
         } catch (exception: Exception) {
             return ClusterInformation(

@@ -1,6 +1,11 @@
 <template>
     <span
-        v-if="online"
+        v-if="!goodHealth && online"
+        class="block h-4 w-4 rounded-full border border-yellow-500 bg-gradient-to-b from-yellow-200 to-yellow-500 shadow-sm shadow-yellow-500 dark:border-yellow-500 dark:from-yellow-400 dark:to-yellow-500"
+        title="Cluster is online but some of the replicas are not in sync."
+    ></span>
+    <span
+        v-else-if="online"
         class="block h-4 w-4 rounded-full border border-green-400 bg-gradient-to-b from-green-200 to-green-300 shadow-sm shadow-green-500 dark:border-green-500 dark:from-green-400 dark:to-green-500"
         :title="onlineTitle"
     ></span>
@@ -33,6 +38,11 @@ defineProps({
     offlineTitle: {
         type: String as PropType<string>,
         default: 'Cluster is offline',
+        required: false,
+    },
+    goodHealth: {
+        type: Boolean as PropType<boolean>,
+        default: false,
         required: false,
     },
 })

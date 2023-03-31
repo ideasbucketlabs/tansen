@@ -10,7 +10,7 @@
             v-if="showMessageDialog"
             :title="messageDialogTitle"
             :icon="messageDialogIcon"
-            @close="showMessageDialog = false"
+            @close="onCloseDialog"
             :buttons="Buttons.ok"
         >
             <div v-html="messageDialogMessage"></div>
@@ -62,7 +62,7 @@ import { defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue'
 import AppComponentLoader from '@/components/AppComponentLoader.vue'
 import type { NewTopic } from '@/entity/NewTopic'
 import { topicStore } from '@/stores/TopicStore'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import MessageDialog from '@/components/MessageDialog.vue'
 import { Buttons } from '@/entity/Buttons'
 import eventBus from '@/util/EventBus'
@@ -70,8 +70,11 @@ import { ApplicationEventTypes } from '@/entity/ApplicationEventTypes'
 import type { ApplicationEvent } from '@/entity/ApplicationEvent'
 import type { ErrorResponse } from '@/entity/ErrorResponse'
 import { filterOutCommonErrorAttributes } from '@/util/Util'
+import type { MessageDialogEvent } from '@/entity/MessageDialogEvent'
 
-const clusterId = useRoute().params.clusterId as string
+const route = useRoute()
+const router = useRouter()
+const clusterId = route.params.clusterId as string
 const showAddTopicForm = ref<boolean>(false)
 const store = topicStore()
 const isFormLoading = ref<boolean>(false)
@@ -90,6 +93,15 @@ async function addTopic(newTopic: NewTopic) {
     await store.addTopic(clusterId, newTopic)
 }
 
+async function onCloseDialog(messageDialogEvent: MessageDialogEvent) {
+    showMessageDialog.value = false
+    if (messageDialogEvent.condition === 'ok') {
+        const query = route.query
+        if (query.topic !== undefined && query.topic === 'delete') {
+            await router.replace({ name: 'topics' })
+        }
+    }
+}
 function afterTopicAdded(applicationEvent: ApplicationEvent) {
     if (applicationEvent.success) {
         isFormLoading.value = false
@@ -113,6 +125,12 @@ function afterTopicAdded(applicationEvent: ApplicationEvent) {
 
 onMounted(() => {
     eventBus.on(ApplicationEventTypes.TOPIC_ADDED, afterTopicAdded)
+    if (route.query.topic !== undefined && route.query.topic === 'delete') {
+        messageDialogIcon.value = 'success'
+        messageDialogTitle.value = 'Success'
+        messageDialogMessage.value = 'Topic deleted successfully.'
+        showMessageDialog.value = true
+    }
 })
 
 onUnmounted(() => {

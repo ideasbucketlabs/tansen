@@ -1,7 +1,7 @@
 <template>
     <FlyInPanel
         :loading="loading"
-        title="Add topic"
+        title="Edit topic"
         @close="$emit('close')"
         ref="flyInPanel"
         width-class-configuration="w-full md:w-10/12 lg:w-11/12 xl:w-7/12"
@@ -15,136 +15,37 @@
                 >
                     <div class="flex flex-1 space-x-4">
                         <div class="flex flex-1 flex-col space-y-4">
+                            <div
+                                class="flex items-center space-x-2 rounded border border-green-100 p-2 dark:border-gray-400"
+                            >
+                                <div class="flex w-12 items-center justify-center">
+                                    <alert-icon class="h-10 w-10 text-black"></alert-icon>
+                                </div>
+                                <div>
+                                    Be careful not to get your topic in a bad state. You have full control of every
+                                    topic configuration below that can be edited.
+                                </div>
+                            </div>
                             <fieldset class="flex flex-col space-y-4">
                                 <legend class="font-bold">General</legend>
-                                <BaseInputField v-model="topic.name" label="Topic Name" :has-error="hasError('name')">
-                                    <div class="form-error text-sm text-red-500" v-if="hasError('name')">
-                                        {{ getError('name') }}
-                                    </div>
-                                </BaseInputField>
-                                <BaseInputField
-                                    type="number"
-                                    label="Number of Partition"
-                                    :has-error="hasError('partition')"
-                                    v-model.number="topic.partition"
-                                >
-                                    <div class="form-error text-sm text-red-500" v-if="hasError('partition')">
-                                        {{ getError('partition') }}
-                                    </div>
-                                </BaseInputField>
-                            </fieldset>
-                            <div v-if="!createWithDefaults">
-                                <fieldset class="flex flex-col space-y-4">
-                                    <legend class="font-bold">Availability</legend>
-                                    <BaseRadioField
-                                        v-model="preConfigurationAvailability"
-                                        label="Balanced availability/durability"
-                                        value="balanced"
-                                        name="availability"
-                                        un-selected-class="hover:bg-green-50 dark:hover:bg-gray-800"
-                                        selected-class="bg-green-100 dark:bg-gray-700 dark:shadow-gray-800"
-                                        class="rounded p-4 transition duration-200 ease-linear"
-                                        :info-tooltip="'replication.factor = 3\u000Amin.insync.replicas = 2'"
-                                    >
-                                        <span class="italic text-gray-600 dark:text-gray-300"
-                                            >This option provides a balance between availability and durability. It
-                                            enforces high replication with strict sync requirements.</span
-                                        >
-                                    </BaseRadioField>
-                                    <BaseRadioField
-                                        name="availability"
-                                        :value="'lowAvailability'"
-                                        v-model="preConfigurationAvailability"
-                                        label="Low availability (recommended for development)"
-                                        un-selected-class="hover:bg-green-50 dark:hover:bg-gray-800"
-                                        selected-class="bg-green-100 dark:bg-gray-700 dark:shadow-gray-800"
-                                        class="rounded p-4 transition duration-200 ease-linear"
-                                        :info-tooltip="'replication.factor = 1\u000Amin.insync.replicas = 1'"
-                                    >
-                                        <span class="italic text-gray-600 dark:text-gray-300">
-                                            This option does not provide replication. It is recommended for development.
-                                        </span>
-                                    </BaseRadioField>
-                                    <BaseRadioField
-                                        name="availability"
-                                        v-model="preConfigurationAvailability"
-                                        value="maximumAvailability"
-                                        label="Maximum Availability"
-                                        un-selected-class="hover:bg-green-50 dark:hover:bg-gray-800"
-                                        selected-class="bg-green-100 dark:bg-gray-700 dark:shadow-gray-800"
-                                        class="rounded p-4 transition duration-200 ease-linear"
-                                        :info-tooltip="'replication.factor = 3\u000Amin.insync.replicas = 1'"
-                                    >
-                                        <span class="italic text-gray-600 dark:text-gray-300">
-                                            This option prioritizes topic availability for read and writes. It enforces
-                                            high replication with loose replica sync requirements.
-                                        </span>
-                                    </BaseRadioField>
-                                    <BaseRadioField
-                                        name="availability"
-                                        value="moderateAvailability"
-                                        v-model="preConfigurationAvailability"
-                                        label="Moderate availability"
-                                        un-selected-class="hover:bg-green-50 dark:hover:bg-gray-800"
-                                        selected-class="bg-green-100 dark:bg-gray-700 dark:shadow-gray-800"
-                                        class="rounded p-4 transition duration-200 ease-linear"
-                                        :info-tooltip="'replication.factor = 2\u000Amin.insync.replicas = 1'"
-                                    >
-                                        <span class="italic text-gray-600 dark:text-gray-300">
-                                            This option provides basic redundancy. It enforces replication with minimal
-                                            sync requirements.
-                                        </span>
-                                    </BaseRadioField>
-                                    <BaseRadioField
-                                        name="availability"
-                                        value="customAvailability"
-                                        v-model="preConfigurationAvailability"
-                                        label="Custom availability settings"
-                                        un-selected-class="hover:bg-green-50 dark:hover:bg-gray-800"
-                                        selected-class="bg-green-100 dark:bg-gray-700 dark:shadow-gray-800"
-                                        class="rounded-t p-4 transition duration-200 ease-linear"
-                                    >
-                                        <span class="italic text-gray-600 dark:text-gray-300">
-                                            Manually set replication-factor and min.insync.replicas
-                                        </span>
-                                    </BaseRadioField>
+                                <div>
+                                    <div class="mb-1 block text-left text-black dark:text-gray-100">Topic Name</div>
                                     <div
-                                        class="rounded bg-green-100 md:flex"
-                                        v-if="preConfigurationAvailability === 'customAvailability'"
+                                        class="block cursor-not-allowed rounded border border-gray-400 bg-gray-100 px-2 py-3 text-black dark:bg-gray-600 dark:text-gray-100"
                                     >
-                                        <BaseSelectField
-                                            :options="nodeOptions"
-                                            cast-as="integer"
-                                            v-model="topic['replication.factor']"
-                                            :has-error="hasError('replication.factor')"
-                                            label="Replication factor"
-                                            class="mb-4 -mt-4 flex-1 bg-green-100 pl-4 pr-4 md:pr-1"
-                                        >
-                                            <div
-                                                class="form-error text-sm text-red-500"
-                                                v-if="hasError('replication.factor')"
-                                            >
-                                                {{ getError('replication.factor') }}
-                                            </div>
-                                        </BaseSelectField>
-
-                                        <BaseSelectField
-                                            :options="nodeOptions"
-                                            cast-as="integer"
-                                            v-model="topic['min.insync.replicas']"
-                                            label="Minimum in-sync replica"
-                                            :has-error="hasError('min.insync.replicas')"
-                                            class="mb-4 -mt-4 flex-1 bg-green-100 pr-4 pl-4 md:pl-1"
-                                        >
-                                            <div
-                                                class="form-error text-sm text-red-500"
-                                                v-if="hasError('min.insync.replicas')"
-                                            >
-                                                {{ getError('min.insync.replicas') }}
-                                            </div>
-                                        </BaseSelectField>
+                                        {{ topicDetails.topic }}
                                     </div>
-                                </fieldset>
+                                </div>
+                                <div class="mb-1 block text-left text-black dark:text-gray-100">
+                                    Number of Partition
+                                </div>
+                                <div
+                                    class="block cursor-not-allowed rounded border border-gray-400 bg-gray-100 px-2 py-3 text-black dark:bg-gray-600 dark:text-gray-100"
+                                >
+                                    {{ topicDetails.numberOfPartition }}
+                                </div>
+                            </fieldset>
+                            <div>
                                 <fieldset class="mt-4 space-y-4">
                                     <legend class="font-bold">Storage</legend>
                                     <BaseSelectField
@@ -533,12 +434,12 @@
                                             <input
                                                 type="checkbox"
                                                 class="h-5 w-5 border-gray-300 text-blue-500 hover:border-blue-500 focus:ring-blue-500"
-                                                id="tansen-ui-add-topic-form-advanced-mode-activator"
+                                                id="tansen-ui-edit-topic-form-advanced-mode-activator"
                                                 value="1"
                                                 v-model="manuallyConfigureOtherSettings"
                                             />
                                             <label
-                                                for="tansen-ui-add-topic-form-advanced-mode-activator"
+                                                for="tansen-ui-edit-topic-form-advanced-mode-activator"
                                                 class="cursor-pointer"
                                                 >Manually configure other topic configuration options</label
                                             >
@@ -549,7 +450,22 @@
                                                 :key="'advance-mode-' + configuration"
                                             >
                                                 <BaseSelectField
-                                                    v-if="configuration === 'message.timestamp.type'"
+                                                    :options="nodeOptions"
+                                                    v-if="configuration === 'min.insync.replicas'"
+                                                    cast-as="integer"
+                                                    v-model="topic['min.insync.replicas']"
+                                                    label="Minimum in-sync replica (min.insync.replicas)"
+                                                    :has-error="hasError('min.insync.replicas')"
+                                                >
+                                                    <div
+                                                        class="form-error text-sm text-red-500"
+                                                        v-if="hasError('min.insync.replicas')"
+                                                    >
+                                                        {{ getError('min.insync.replicas') }}
+                                                    </div>
+                                                </BaseSelectField>
+                                                <BaseSelectField
+                                                    v-else-if="configuration === 'message.timestamp.type'"
                                                     v-model="topic[configuration]"
                                                     :label="configuration"
                                                     :info-tooltip="getTopicConfigurationDefinition(configuration)"
@@ -610,14 +526,18 @@
                                 Topic configuration summary
                             </div>
                             <div class="flex flex-col space-y-3 p-2 text-sm lg:text-base">
-                                <div v-for="configurationKey in mandatoryKeys" :key="configurationKey" class="truncate">
-                                    <div>{{ configurationKey }}</div>
+                                <div class="truncate">
+                                    <div>name</div>
                                     <div>
-                                        <code>{{ topic[configurationKey as keyof NewTopic] }}</code>
+                                        <code>{{ topicDetails.topic }}</code>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="flex flex-col space-y-3 p-2 text-sm lg:text-base">
+                                <div class="truncate">
+                                    <div>partition</div>
+                                    <div>
+                                        <code>{{ topicDetails.numberOfPartition }}</code>
+                                    </div>
+                                </div>
                                 <div
                                     v-for="configurationKey in configurationKeys"
                                     :key="configurationKey"
@@ -638,23 +558,9 @@
                     <BaseButton
                         class="block h-10 w-6/12 lg:w-4/12"
                         type="submit"
-                        v-if="createWithDefaults"
-                        label="Create with defaults"
-                    ></BaseButton>
-                    <BaseButton
-                        v-if="!createWithDefaults"
-                        class="block h-10 w-6/12 lg:w-4/12"
-                        type="submit"
                         label="Save"
+                        :disabled="!haveChanges"
                     ></BaseButton>
-                    <button
-                        type="button"
-                        v-if="createWithDefaults"
-                        @click="createWithDefaults = false"
-                        class="block h-10 w-6/12 overflow-hidden rounded border border-green-500 bg-green-50 transition duration-200 ease-linear hover:bg-green-200 hover:text-green-500 hover:shadow-lg dark:border-blue-800 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:text-gray-100 dark:hover:shadow-black lg:w-4/12"
-                    >
-                        Customize setting(s)
-                    </button>
                 </div>
             </form>
         </div>
@@ -673,32 +579,35 @@ import BaseButton from '@/components/BaseButton.vue'
 import BaseInputField from '@/components/BaseInputField.vue'
 import { computed, defineEmits, defineProps, nextTick, onMounted, type PropType, ref, watch } from 'vue'
 import BaseSelectField from '@/components/BaseSelectField.vue'
-import BaseRadioField from '@/components/BaseRadioField.vue'
 import { getId, getTopicConfigurationDefinition } from '@/util/Util'
 import type { NewTopic } from '@/entity/NewTopic'
 import { validate, convertToProperType } from '@/validators/NewTopicValidator'
 import { useRoute } from 'vue-router'
 import { clusterInformationStore } from '@/stores/ClusterInformationStore'
+import type { TopicDetails } from '@/entity/TopicDetails'
+import AlertIcon from '@/icons/AlertIcon.vue'
+import { isEqual } from 'lodash'
 
-defineProps({
+const props = defineProps({
     loading: {
         type: Boolean as PropType<boolean>,
         required: false,
         default: false,
     },
+    topicDetails: {
+        type: Object as PropType<TopicDetails>,
+        required: true,
+    },
 })
 const clusterId = useRoute().params.clusterId as string
 const store = clusterInformationStore()
-
-const preConfigurationAvailability = ref<
-    'balanced' | 'lowAvailability' | 'maximumAvailability' | 'moderateAvailability' | 'customAvailability'
->('balanced')
-const createWithDefaults = ref<boolean>(true)
 const formIsDirty = ref<boolean>(false)
 const errors = ref<Map<string, string>>(new Map<string, string>())
 const id = ref<string>(getId() + '-synthetic-radio-')
 const manuallyConfigureOtherSettings = ref<boolean>(false)
-const topic = ref<NewTopic>({
+const topic = ref<NewTopic>(convertTopicToNewTopic(props.topicDetails))
+const topicBeforeEdit = convertTopicToNewTopic(props.topicDetails)
+const defaultValuedTopic = {
     'cleanup.policy': 'delete',
     'compression.type': 'producer',
     'delete.retention.ms': 86400000n,
@@ -715,8 +624,8 @@ const topic = ref<NewTopic>({
     'message.timestamp.type': 'CreateTime',
     'min.cleanable.dirty.ratio': 0.5,
     'min.compaction.lag.ms': 0n,
-    'min.insync.replicas': 2,
-    'replication.factor': 3,
+    'min.insync.replicas': topic.value['min.insync.replicas'],
+    'replication.factor': props.topicDetails?.replicationFactor ?? 1,
     'retention.bytes': -1n,
     'retention.ms': 604800000n,
     'segment.bytes': 1073741824,
@@ -724,22 +633,15 @@ const topic = ref<NewTopic>({
     'segment.jitter.ms': 0n,
     'segment.ms': 604800000n,
     'unclean.leader.election.enable': false,
-    name: '',
-    partition: 1,
+    name: props.topicDetails?.topic ?? '',
+    partition: props.topicDetails?.numberOfPartition ?? 1,
     preallocate: false,
-})
+}
 
 const mandatoryKeys = ref<string[]>(['name', 'partition'])
 const preConfiguredDisplayedKeys = [
     ...mandatoryKeys.value,
-    ...[
-        'retention.bytes',
-        'max.message.bytes',
-        'retention.ms',
-        'min.insync.replicas',
-        'replication.factor',
-        'cleanup.policy',
-    ],
+    ...['retention.bytes', 'max.message.bytes', 'retention.ms', 'replication.factor', 'cleanup.policy'],
 ]
 
 const configurationKeys = computed<string[]>(() =>
@@ -756,42 +658,84 @@ const advanceModeKeys = computed<string[]>(() =>
         .sort()
 )
 
-const emit = defineEmits<{ (e: 'close'): void; (e: 'submit', newTopic: NewTopic): void }>()
+const prunedTopic = computed<NewTopic>(() => convertToProperType(topic.value))
 
-watch(
-    preConfigurationAvailability,
-    (
-        newPreConfigurationAvailabilityValue:
-            | 'balanced'
-            | 'lowAvailability'
-            | 'maximumAvailability'
-            | 'moderateAvailability'
-            | 'customAvailability'
-    ) => {
-        if (newPreConfigurationAvailabilityValue === 'balanced') {
-            topic.value['replication.factor'] = 3
-            topic.value['min.insync.replicas'] = 2
-        } else if (newPreConfigurationAvailabilityValue === 'lowAvailability') {
-            topic.value['replication.factor'] = 1
-            topic.value['min.insync.replicas'] = 1
-        } else if (newPreConfigurationAvailabilityValue === 'maximumAvailability') {
-            topic.value['replication.factor'] = 3
-            topic.value['min.insync.replicas'] = 1
-        } else if (newPreConfigurationAvailabilityValue === 'moderateAvailability') {
-            topic.value['replication.factor'] = 2
-            topic.value['min.insync.replicas'] = 1
-        } else {
-            topic.value['replication.factor'] = 1
-            topic.value['min.insync.replicas'] = 1
-        }
+const haveChanges = computed<boolean>(() => !isEqual(topicBeforeEdit, prunedTopic.value))
+
+const emit = defineEmits<{
+    (e: 'close'): void
+    (e: 'submit', newTopic: { oldRecord: NewTopic; newRecord: NewTopic }): void
+}>()
+
+function parseToBigInt(input: string | undefined, defaultValue: bigint): bigint {
+    if (input === undefined) {
+        return defaultValue
     }
-)
+
+    // eslint-disable-next-line no-undef
+    return BigInt(input)
+}
+
+function parseInt(input: string | undefined, defaultValue: number): number {
+    if (input === undefined) {
+        return defaultValue
+    }
+
+    return Number.parseInt(input, 10)
+}
+
+function convertTopicToNewTopic(input: TopicDetails): NewTopic {
+    const configurationMap = new Map<string, string>()
+    input.configurations.forEach((it) => configurationMap.set(it.name, it.value))
+
+    return {
+        name: props.topicDetails.topic,
+        partition: props.topicDetails.numberOfPartition,
+        'replication.factor': props.topicDetails.replicationFactor,
+        'cleanup.policy': (configurationMap.get('cleanup.policy') ?? 'delete') as unknown as
+            | 'delete'
+            | 'compact'
+            | 'compact,delete',
+        'compression.type': configurationMap.get('compression.type') ?? 'producer',
+        'delete.retention.ms': parseToBigInt(configurationMap.get('delete.retention.ms'), 86400000n),
+        'file.delete.delay.ms': parseToBigInt(configurationMap.get('file.delete.delay.ms'), 60000n),
+        'flush.messages': parseToBigInt(configurationMap.get('flush.messages'), 9223372036854775807n),
+        'flush.ms': parseToBigInt(configurationMap.get('flush.ms'), 9223372036854775807n),
+        'follower.replication.throttled.replicas':
+            configurationMap.get('follower.replication.throttled.replicas') ?? '',
+        'index.interval.bytes': parseInt(configurationMap.get('index.interval.bytes'), 4096),
+        'leader.replication.throttled.replicas': configurationMap.get('leader.replication.throttled.replicas') ?? '',
+        'max.compaction.lag.ms': parseToBigInt(configurationMap.get('max.compaction.lag.ms'), 9223372036854775807n),
+        'max.message.bytes': parseInt(configurationMap.get('max.message.bytes'), 1048588),
+        'message.downconversion.enable':
+            (configurationMap.get('message.downconversion.enable') ?? 'true').toLowerCase() === 'true',
+        'message.timestamp.difference.max.ms': parseToBigInt(
+            configurationMap.get('message.timestamp.difference.max.ms'),
+            9223372036854775807n
+        ),
+        'message.timestamp.type': (configurationMap.get('message.timestamp.type') ?? 'CreateTime') as unknown as
+            | 'CreateTime'
+            | 'LogAppendTime',
+        'min.cleanable.dirty.ratio': parseFloat(configurationMap.get('min.cleanable.dirty.ratio') ?? '0.5'),
+        'min.compaction.lag.ms': parseToBigInt(configurationMap.get('min.compaction.lag.ms'), 0n),
+        'min.insync.replicas': parseInt(configurationMap.get('min.insync.replicas'), 1),
+        'retention.bytes': parseToBigInt(configurationMap.get('retention.bytes'), -1n),
+        'retention.ms': parseToBigInt(configurationMap.get('retention.ms'), 604800000n),
+        'segment.bytes': parseInt(configurationMap.get('segment.bytes'), 1073741824),
+        'segment.index.bytes': parseInt(configurationMap.get('segment.index.bytes'), 10485760),
+        'segment.jitter.ms': parseToBigInt(configurationMap.get('segment.jitter.ms'), 0n),
+        'segment.ms': parseToBigInt(configurationMap.get('segment.ms'), 604800000n),
+        'unclean.leader.election.enable':
+            (configurationMap.get('unclean.leader.election.enable') ?? 'false').toLowerCase() === 'true',
+        preallocate: (configurationMap.get('preallocate') ?? 'true').toLowerCase() === 'true',
+    }
+}
 
 watch(
     topic,
-    (newTopic: NewTopic) => {
+    (topic: NewTopic) => {
         if (formIsDirty.value) {
-            errors.value = validate(newTopic)
+            errors.value = validate(topic)
         }
     },
     { deep: true }
@@ -809,16 +753,7 @@ function submit() {
             }
         })
     } else {
-        const prunedData = convertToProperType(topic.value)
-        // Check replication rule since recommended replication may not be supported by cluster.
-        if (prunedData['min.insync.replicas'] > store.getClusterNodesNumbersById(clusterId)) {
-            prunedData['min.insync.replicas'] = store.getClusterNodesNumbersById(clusterId)
-        }
-        if (prunedData['replication.factor'] > store.getClusterNodesNumbersById(clusterId)) {
-            prunedData['replication.factor'] = store.getClusterNodesNumbersById(clusterId)
-        }
-
-        emit('submit', prunedData)
+        emit('submit', { oldRecord: topicBeforeEdit, newRecord: prunedTopic.value })
     }
 }
 
@@ -840,5 +775,11 @@ onMounted(() => {
             }
         })
     }
+
+    advanceModeKeys.value.forEach((it) => {
+        if (defaultValuedTopic[it as keyof NewTopic] !== topic.value[it as keyof NewTopic]) {
+            manuallyConfigureOtherSettings.value = true
+        }
+    })
 })
 </script>

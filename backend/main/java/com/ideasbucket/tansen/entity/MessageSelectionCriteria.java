@@ -7,8 +7,9 @@
 package com.ideasbucket.tansen.entity;
 
 import com.fasterxml.jackson.annotation.*;
+import jakarta.validation.constraints.AssertFalse;
+
 import java.time.Instant;
-import javax.validation.constraints.AssertFalse;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "offset", "partition", "timestamp" })
@@ -55,19 +56,16 @@ public final class MessageSelectionCriteria {
     @AssertFalse(message = "Invalid partition.")
     @JsonIgnore
     private boolean hasValidPartition() {
-        return this.partition != null && this.partition < 0;
+        return this.partition != null && this.partition < -1;
     }
 
     @JsonIgnore
     public String getCase() {
-        if ((this.partition != null) && (this.offset != null)) {
-            return "offset";
+
+        if (this.partition == null) {
+            return "";
         }
 
-        if (this.timestamp != null) {
-            return "timestamp";
-        }
-
-        return "";
+        return (this.offset != null) ? "offset" : "timestamp";
     }
 }

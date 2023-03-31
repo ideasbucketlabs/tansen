@@ -55,7 +55,7 @@ class MessagesController(
 
     private val logger = LoggerFactory.getLogger(MessagesController::class.java)
 
-    @GetMapping("{topic}", produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
+    @GetMapping("{topic}", produces = [MediaType.TEXT_EVENT_STREAM_VALUE, MediaType.APPLICATION_NDJSON_VALUE])
     suspend fun getMessagesByTopic(
         @PathVariable clusterId: String,
         @PathVariable topic: String,
@@ -101,7 +101,15 @@ class MessagesController(
         }
 
         val receiverOptions =
-            if ((criteria != null) && (criteria.case == "offset")) {
+            if ((criteria != null) && (criteria.case == "offset") && (criteria.partition == -1)) {
+                ReceiverOptions.create<Any, Any>(properties)
+                    .commitInterval(Duration.ZERO)
+                    .commitBatchSize(0)
+                    .addAssignListener { partitions ->
+                        partitions.forEach { it.seek(criteria.offset) }
+                    }
+                    .subscription(setOf(topic))
+            } else if ((criteria != null) && (criteria.case == "offset")) {
                 ReceiverOptions.create<Any, Any>(properties)
                     .commitInterval(Duration.ZERO)
                     .commitBatchSize(0)
@@ -109,7 +117,7 @@ class MessagesController(
                         partitions.forEach { it.seek(criteria.offset) }
                     }
                     .assignment(setOf(TopicPartition(topic, criteria.partition)))
-            } else if ((criteria != null) && (criteria.case == "timestamp")) {
+            } else if ((criteria != null) && (criteria.case == "timestamp") && (criteria.partition == -1)) {
                 ReceiverOptions.create<Any, Any>(properties)
                     .commitInterval(Duration.ZERO)
                     .commitBatchSize(0)
@@ -117,6 +125,14 @@ class MessagesController(
                         partitions.forEach { it.seekToTimestamp(criteria.timestamp.epochSecond) }
                     }
                     .subscription(setOf(topic))
+            } else if ((criteria != null) && (criteria.case == "timestamp")) {
+                ReceiverOptions.create<Any, Any>(properties)
+                    .commitInterval(Duration.ZERO)
+                    .commitBatchSize(0)
+                    .addAssignListener { partitions ->
+                        partitions.forEach { it.seekToTimestamp(criteria.timestamp.epochSecond) }
+                    }
+                    .assignment(setOf(TopicPartition(topic, criteria.partition)))
             } else {
                 ReceiverOptions.create<Any, Any>(properties)
                     .commitInterval(Duration.ZERO)
@@ -190,6 +206,12 @@ class MessagesController(
             }
             is Map<*, *> -> {
                 node.replace(key, JsonConverter.getMapper().valueToTree(data))
+            }
+            is String -> {
+                node.put(key, data)
+            }
+            null -> {
+                node.put(key, "")
             }
             else -> {
                 node.put(key, data.toString())

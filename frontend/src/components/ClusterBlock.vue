@@ -7,7 +7,7 @@
         >
             <span class="block flex cursor-pointer items-center space-x-2 text-green-500 dark:text-gray-100">
                 <span class="block truncate">{{ name }}</span>
-                <status-bulb :online="online"></status-bulb>
+                <status-bulb :online="online" :good-health="goodHealth"></status-bulb>
             </span>
             <span class="w-6">
                 <PlusIcon v-if="collapsed" class="fill-current text-green-500 dark:text-gray-200"></PlusIcon>
@@ -20,6 +20,7 @@
                     <template v-if="online">
                         <li class="block flex w-full content-center items-center">
                             <router-link
+                                @click="$emit('click')"
                                 class="mb-2 flex w-full content-center items-center rounded p-2 transition duration-200 ease-linear"
                                 :class="
                                     $route.name === 'broker' && $route.params.clusterId === name
@@ -35,6 +36,7 @@
                         </li>
                         <li class="block flex w-full content-center items-center">
                             <router-link
+                                @click="$emit('click')"
                                 class="mb-2 flex w-full content-center items-center rounded p-2 transition duration-200 ease-linear"
                                 :class="[
                                     ($route.name === 'topics' && $route.params.clusterId === name) ||
@@ -55,6 +57,7 @@
                         </li>
                         <li class="block flex w-full content-center items-center">
                             <router-link
+                                @click="$emit('click')"
                                 class="mb-2 flex w-full content-center items-center rounded p-2 transition duration-200 ease-linear"
                                 :class="
                                     $route.name === 'consumersGroup' && $route.params.clusterId === name
@@ -103,7 +106,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { defineProps, ref } from 'vue'
+import { defineEmits, defineProps, ref } from 'vue'
 import type { PropType } from 'vue'
 import ConsumerGroupsIcon from '@/icons/ConsumerGroupsIcon.vue'
 import TopicsIcon from '@/icons/TopicsIcon.vue'
@@ -122,7 +125,13 @@ defineProps({
     online: {
         type: Boolean as PropType<boolean>,
     },
+    goodHealth: {
+        type: Boolean as PropType<boolean>,
+        default: true,
+        required: false,
+    },
 })
+defineEmits<{ (e: 'click'): void }>()
 
 const collapsed = ref<boolean>(false)
 </script>

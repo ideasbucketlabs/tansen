@@ -1,6 +1,13 @@
 <template>
     <div class="relative flex flex-1 flex-col overflow-hidden">
         <Loading v-if="showDeletionProgress">Deletion in progress...please wait</Loading>
+        <edit-topic-form
+            :topic-details="topicDetails"
+            v-if="showEditForm && topicDetails !== undefined"
+            @close="showEditForm = false"
+            :loading="isFormLoading"
+            @submit="editTopic"
+        ></edit-topic-form>
         <MessageDialog
             v-if="showMessageDialog"
             :title="messageDialogTitle"
@@ -10,7 +17,7 @@
         >
             <div v-html="messageDialogMessage"></div>
             <base-input-field
-                v-if="messageDialogTitle !== 'Not allowed' && messageDialogTitle !== 'Error'"
+                v-if="messageDialogTitle === 'Confirm marked for deletion'"
                 v-model="deleteTopicName"
                 label="Please enter topic name"
                 class="my-2"
@@ -20,7 +27,7 @@
         <div class="flex items-center justify-between text-green-500 dark:text-gray-100">
             <h1 class="text-xl md:text-3xl">Detail for topic: {{ $route.params.name }}</h1>
             <div class="flex items-center">
-                <div class="action-menu relative w-40 md:w-auto" tabindex="-1">
+                <div class="action-menu relative lg:w-auto" tabindex="-1">
                     <button
                         type="button"
                         class="relative flex items-center overflow-hidden rounded border border-green-500 py-2 px-4 text-green-500 transition duration-200 ease-linear hover:bg-green-100 hover:shadow dark:border-gray-300 dark:text-gray-100 dark:shadow-black dark:hover:bg-gray-600"
@@ -40,11 +47,13 @@
                                     >Back to Topic(s)</router-link
                                 >
                             </li>
-                            <!--                            <li-->
-                            <!--                                class="rounded-t border-t border-b border-white px-4 py-2 transition duration-200 ease-linear hover:border-green-100 hover:bg-green-50 dark:border-gray-800 dark:hover:border-gray-900 dark:hover:border-gray-700 dark:hover:bg-gray-600"-->
-                            <!--                            >-->
-                            <!--                                Edit Topic-->
-                            <!--                            </li>-->
+                            <li
+                                v-if="topicDetails !== undefined"
+                                class="rounded-t border-t border-b border-white px-4 py-2 transition duration-200 ease-linear hover:border-green-100 hover:bg-green-50 dark:border-gray-800 dark:hover:border-gray-900 dark:hover:border-gray-700 dark:hover:bg-gray-600"
+                                @click="showEditForm = true"
+                            >
+                                Edit Topic
+                            </li>
                             <li
                                 class="rounded-b rounded-t border-b border-t border-white px-4 py-2 text-red-500 transition duration-200 ease-linear hover:border-red-100 hover:bg-red-50 dark:border-gray-800 dark:hover:border-red-900 dark:hover:bg-red-600/30"
                                 title="Be careful with this action."
@@ -96,13 +105,15 @@
         </div>
         <router-view v-slot="{ Component }" v-if="isDetailLoaded">
             <transition name="fade" mode="out-in">
-                <component
-                    :is="Component"
-                    :topic-details="topicDetails"
-                    :topicPartitionInformation="topicPartitionInformation"
-                    :topic="$route.params.name"
-                    :number-of-partition="topicDetails?.numberOfPartition ?? 0"
-                />
+                <KeepAlive include="TopicInformationView" :max="7">
+                    <component
+                        :is="Component"
+                        :topic-details="topicDetails"
+                        :topicPartitionInformation="topicPartitionInformation"
+                        :topic="$route.params.name"
+                        :number-of-partition="topicDetails?.numberOfPartition ?? 0"
+                    />
+                </KeepAlive>
             </transition>
         </router-view>
     </div>
@@ -128,17 +139,19 @@ import ActionIcon from '@/icons/ActionIcon.vue'
 import BaseInputField from '@/components/BaseInputField.vue'
 import type { MessageDialogEvent } from '@/entity/MessageDialogEvent'
 import Loading from '@/components/Loading.vue'
-import { topicStore } from '@/stores/TopicStore'
+import { topicStore as store } from '@/stores/TopicStore'
 import { clusterInformationStore } from '@/stores/ClusterInformationStore'
 import eventBus from '@/util/EventBus'
 import { ApplicationEventTypes } from '@/entity/ApplicationEventTypes'
 import type { ApplicationEvent } from '@/entity/ApplicationEvent'
 import { filterOutCommonErrorAttributes } from '@/util/Util'
+import EditTopicForm from '@/forms/EditTopicForm.vue'
+import type { NewTopic } from '@/entity/NewTopic'
 
 const router = useRouter()
 const route = useRoute()
 const clusterId = ref<string>(useRoute().params.clusterId as string)
-const topic = topicStore()
+const topicStore = store()
 const cluster = clusterInformationStore()
 const isDetailLoaded = ref<boolean>(false)
 const topicDetails = ref<TopicDetails>()
@@ -150,6 +163,8 @@ const messageDialogButtons = ref<Buttons>(Buttons.ok)
 const messageDialogMessage = ref<string>('')
 const showMessageDialog = ref<boolean>(false)
 const showDeletionProgress = ref<boolean>(false)
+const showEditForm = ref<boolean>(false)
+const isFormLoading = ref<boolean>(false)
 
 watch(deleteTopicName, (newDeleteTopicName) => {
     if (newDeleteTopicName === route.params.name) {
@@ -160,7 +175,8 @@ watch(deleteTopicName, (newDeleteTopicName) => {
 })
 function deleteTopicAction() {
     if (!cluster.isDeleteEnabledInCluster(clusterId.value)) {
-        messageDialogMessage.value = `<div>Topic deletion is not allowed in this cluster.</div>`
+        // eslint-disable-next-line vue/max-len
+        messageDialogMessage.value = `<div>Topic deletion is not allowed in this cluster. <pre class="inline-block">delete.topic.enable</pre> value is false in cluster settings.</div>`
         messageDialogTitle.value = 'Not allowed'
         messageDialogIcon.value = 'error'
         messageDialogButtons.value = Buttons.ok
@@ -184,7 +200,7 @@ async function onCloseDialog(messageDialogEvent: MessageDialogEvent) {
 
     if (messageDialogEvent.condition === 'delete') {
         showDeletionProgress.value = true
-        await topic.deleteTopic(clusterId.value, route.params.name as string)
+        await topicStore.deleteTopic(clusterId.value, route.params.name as string)
     }
 }
 
@@ -192,11 +208,11 @@ async function afterTopicDeletion(applicationEvent: ApplicationEvent) {
     showDeletionProgress.value = false
 
     if (applicationEvent.success) {
-        await router.push({ name: 'topics' })
+        await router.replace({ name: 'topics', query: { topic: 'delete' } })
     } else {
         const error = applicationEvent.data as ErrorResponse
         if (error.httpCode === 404) {
-            await router.push({ name: 'topics' })
+            await router.replace({ name: 'topics' })
         } else {
             messageDialogMessage.value = Object.values(
                 filterOutCommonErrorAttributes((error?.errors as Record<string, string>) ?? {})
@@ -209,8 +225,54 @@ async function afterTopicDeletion(applicationEvent: ApplicationEvent) {
     }
 }
 
+async function afterTopicEdit(applicationEvent: ApplicationEvent) {
+    if (applicationEvent.success) {
+        await getAction(
+            clusterId.value + '/topics/' + route.params.name,
+            (response: ServerResponse<TopicDetails>) => {
+                topicDetails.value = response.data
+                topicPartitionInformation.value = response.data.partitions
+                isDetailLoaded.value = true
+                isFormLoading.value = false
+                showEditForm.value = false
+
+                messageDialogIcon.value = 'success'
+                messageDialogTitle.value = 'Success'
+                messageDialogMessage.value = 'Topic edited successfully.'
+                messageDialogButtons.value = Buttons.ok
+                showMessageDialog.value = true
+            },
+            (error: ErrorResponse) => {
+                messageDialogMessage.value =
+                    'Topic was edited but we were unable to load recent changes. ' +
+                    (error?.errors as Record<string, string>)?.response
+                messageDialogTitle.value = error.httpCode + ' - ' + error.httpStatus
+                messageDialogIcon.value = 'error'
+                showMessageDialog.value = true
+                messageDialogButtons.value = Buttons.ok
+                isFormLoading.value = false
+            }
+        )
+    } else {
+        isFormLoading.value = false
+        const error = applicationEvent.data as ErrorResponse
+        messageDialogIcon.value = 'error'
+        messageDialogTitle.value = `Error ${error.httpCode} - ${error.httpStatus}`
+        messageDialogMessage.value = Object.values(
+            filterOutCommonErrorAttributes((error?.errors as Record<string, string>) ?? {})
+        ).join('</br>')
+        showMessageDialog.value = true
+    }
+}
+
+async function editTopic(data: { oldRecord: NewTopic; newRecord: NewTopic }) {
+    isFormLoading.value = true
+    await topicStore.editTopic(clusterId.value, data, route.params.name as string)
+}
+
 onMounted(async () => {
     eventBus.on(ApplicationEventTypes.TOPIC_DELETED, afterTopicDeletion)
+    eventBus.on(ApplicationEventTypes.TOPIC_EDITED, afterTopicEdit)
     await getAction(
         clusterId.value + '/topics/' + route.params.name,
         (response: ServerResponse<TopicDetails>) => {
@@ -242,6 +304,7 @@ onMounted(async () => {
 
 onUnmounted(() => {
     eventBus.off(ApplicationEventTypes.TOPIC_DELETED, afterTopicDeletion)
+    eventBus.off(ApplicationEventTypes.TOPIC_EDITED, afterTopicEdit)
 })
 </script>
 <style scoped>

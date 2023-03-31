@@ -14,7 +14,7 @@
                     <div
                         :class="[
                             embedded
-                                ? 'border-r border-l border-green-200 bg-green-100 dark:border-gray-800 dark:bg-gray-800'
+                                ? 'border-l border-r border-green-200 bg-green-100 dark:border-gray-800 dark:bg-gray-800'
                                 : 'border-green-500 bg-green-500 dark:bg-gray-700',
                         ]"
                         class="header flex h-10 items-center border-b shadow dark:border-gray-900"
@@ -182,7 +182,7 @@
                                         :class="rowClass"
                                         v-for="(row, rowIndex) in items"
                                         :key="'row' + row[identifier]"
-                                        :title="rowTitleRenderer(row)"
+                                        :title="rowTitleRenderer?.(row)"
                                         @click="$emit('rowClick', row, rowIndex)"
                                     >
                                         <div
@@ -229,7 +229,7 @@
                                 :class="rowClass"
                                 v-for="(row, rowIndex) in data.data"
                                 :key="'row' + row[identifier]"
-                                :title="rowTitleRenderer(row)"
+                                :title="rowTitleRenderer?.(row)"
                                 @click="$emit('rowClick', row, rowIndex)"
                             >
                                 <div

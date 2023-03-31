@@ -20,7 +20,7 @@
             @filter="onFilterClick"
             :sorters="sorters"
             :rowTitleRenderer="rowTitleRenderer"
-            class="h-64 flex-grow"
+            class="flex-1"
         ></DataGrid>
     </div>
 </template>
@@ -62,7 +62,7 @@ const columns = ref<Column[]>([
     {
         dataId: 'name',
         type: 'string',
-        title: 'Name',
+        title: 'Consumer Group Name',
         sortable: true,
         align: 'left',
         width: 'auto',

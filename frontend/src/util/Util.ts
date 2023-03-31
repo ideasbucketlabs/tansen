@@ -70,7 +70,7 @@ export function sortData<T>(items: T[], sorters?: Sorter[]): T[] {
     const fieldsToSort = sorters.map((sorter) => sorter.property)
     const directionsToSort = sorters.map((sorter) => sorter.direction)
 
-    return orderBy(items, fieldsToSort, directionsToSort)
+    return orderBy(items, fieldsToSort, directionsToSort) as T[]
 }
 
 export function downloadFile(content: string, fileName: string, type: 'AVRO' | 'JSON' | 'PROTOBUF'): void {
@@ -513,4 +513,20 @@ export function filterOutCommonErrorAttributes(data: Record<string, string>): Re
                 [key]: data[key],
             }
         }, {})
+}
+
+export function convertToBigInt(value: unknown): bigint {
+    if (isBigInt(value)) {
+        return value as bigint
+    }
+
+    if (isString(value)) {
+        return BigInt(value as string)
+    }
+
+    if (isNumber(value)) {
+        return BigInt((value as number).toString(10))
+    }
+
+    throw new Error('Unknown type')
 }

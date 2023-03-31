@@ -221,19 +221,19 @@ describe('Can validate min.insync.replicas', () => {
 describe('Can validate clean up policy', () => {
     it('does not allow null value', () => {
         expect(validate({ ...validData, ...{ 'cleanup.policy': null } }).get('cleanup.policy')).toBe(
-            'cleanup.policy must be either delete or compact.'
+            'cleanup.policy must be either delete or compact or compact,delete.'
         )
     })
 
     it('does not allow blank value #1', () => {
         expect(validate({ ...validData, ...{ 'cleanup.policy': '' } }).get('cleanup.policy')).toBe(
-            'cleanup.policy must be either delete or compact.'
+            'cleanup.policy must be either delete or compact or compact,delete.'
         )
     })
 
     it('does not allow blank value #2', () => {
         expect(validate({ ...validData, ...{ 'cleanup.policy': '   ' } }).get('cleanup.policy')).toBe(
-            'cleanup.policy must be either delete or compact.'
+            'cleanup.policy must be either delete or compact or compact,delete.'
         )
     })
 

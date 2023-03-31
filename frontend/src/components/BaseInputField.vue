@@ -25,7 +25,7 @@
             @focus="$emit('focus')"
             :aria-invalid="hasError"
             @input="handleInput"
-            class="block rounded border bg-white text-black transition duration-200 ease-linear focus:shadow-lg dark:bg-transparent dark:text-gray-100"
+            class="block rounded border bg-white text-black transition-shadow duration-200 ease-linear focus:shadow-lg dark:bg-transparent dark:text-gray-100"
             :class="[
                 { 'px-2 py-1': size === 'small', 'px-2 py-3': size === 'medium', 'py-4 px-2': size === 'large' },
                 [
