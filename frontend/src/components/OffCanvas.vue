@@ -25,6 +25,7 @@
                             <div class="block">
                                 <router-link
                                     :to="{ name: 'dashboard' }"
+                                    @click="hideOffCanvas"
                                     class="block text-5xl text-green-500 dark:text-gray-100"
                                     ><Logo class="w-7/12 fill-current stroke-current text-green-500 dark:text-white" />
                                 </router-link>
@@ -74,6 +75,7 @@
                                             v-for="cluster in clusterInformation"
                                             :key="cluster.id"
                                             :label="cluster.label"
+                                            @click="hideOffCanvas"
                                             :name="cluster.name"
                                             :online="cluster.online"
                                         >

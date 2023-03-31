@@ -4,7 +4,7 @@ services:
     zookeeper:
         image: confluentinc/cp-zookeeper:7.3.1
         hostname: zookeeper
-        container_name: zookeeper
+        # container_name: zookeeper
         ports:
             - "2181:2181"
         environment:
@@ -14,7 +14,7 @@ services:
     broker:
         image: confluentinc/cp-server:7.3.1
         hostname: broker
-        container_name: broker
+        # container_name: broker
         depends_on:
             - zookeeper
         ports:
@@ -43,30 +43,12 @@ services:
     schema-registry:
         image: confluentinc/cp-schema-registry:7.3.1
         hostname: schema-registry
-        container_name: schema-registry
+        # container_name: schema-registry
         depends_on:
-            broker:
-                condition: service_healthy
+            - broker
         ports:
             - "8081:8081"
         environment:
             SCHEMA_REGISTRY_HOST_NAME: schema-registry
             SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:29092'
             SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
-    tansen:
-        container_name: tansen
-        image: ideasbucket/tansen:latest
-        ports:
-            - "8080:8080"
-        depends_on:
-            broker:
-                condition: service_healthy
-            schema-registry:
-                condition: service_healthy
-        environment:
-            SPRING_PROFILES_ACTIVE: prod
-            TANSEN.KAFKA-CLUSTERS.0.BOOTSTRAP_SERVERS: 'broker:29092'
-            TANSEN.KAFKA-CLUSTERS.0.LABEL: local
-            TANSEN.KAFKA-CLUSTERS.0.NAME: local
-            TANSEN.KAFKA-CLUSTERS.0.SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
-

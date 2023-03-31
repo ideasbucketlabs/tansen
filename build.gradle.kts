@@ -1,7 +1,7 @@
 import com.github.gradle.node.npm.task.NpmTask
 
 plugins {
-    id("org.springframework.boot") version "3.0.2"
+    id("org.springframework.boot") version "3.0.5"
     id("io.spring.dependency-management") version "1.1.0"
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
@@ -48,18 +48,21 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("org.springframework.kafka:spring-kafka")
     implementation("io.projectreactor.kafka:reactor-kafka:1.3.15")
-    implementation("io.confluent:kafka-avro-serializer:7.3.1")
-    implementation("io.confluent:kafka-protobuf-serializer:7.3.1")
-    implementation("io.confluent:kafka-json-schema-serializer:7.3.1")
+    implementation("io.confluent:kafka-avro-serializer:7.3.2")
+    implementation("io.confluent:kafka-protobuf-serializer:7.3.2")
+    implementation("io.confluent:kafka-json-schema-serializer:7.3.2")
     implementation("com.google.protobuf:protobuf-java:3.21.12")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("org.springframework.kafka:spring-kafka-test")
     testImplementation("org.testcontainers:junit-jupiter")
-    testImplementation("io.kotest:kotest-runner-junit5-jvm:5.5.4") // for kotest framework
-    testImplementation("io.kotest:kotest-assertions-core-jvm:5.5.4") // for kotest core jvm assertions
-    testImplementation("io.kotest:kotest-property-jvm:5.5.4") // for kotest property test
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:5.5.5") // for kotest framework
+    testImplementation("io.kotest:kotest-assertions-core-jvm:5.5.5") // for kotest core jvm assertions
+    testImplementation("io.kotest:kotest-property-jvm:5.5.5") // for kotest property test
+    testImplementation("org.testcontainers:testcontainers:1.17.6")
+    testImplementation("org.testcontainers:junit-jupiter:1.17.6")
+    testImplementation("org.testcontainers:kafka:1.17.6")
 }
 
 dependencyManagement {

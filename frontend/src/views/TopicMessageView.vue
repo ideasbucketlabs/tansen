@@ -37,7 +37,8 @@
                 <BaseSelectField
                     label="Offset"
                     :hide-label="true"
-                    class="w-36"
+                    class="w-48"
+                    size="custom"
                     input-class="h-10 py-0"
                     v-model="formData.criteria"
                     :options="options"
@@ -49,7 +50,7 @@
                     :hide-label="true"
                     size="small"
                     input-class="h-10"
-                    v-model="formData.offset"
+                    v-model.number="formData.offset"
                     placeholder="Offset"
                     ><div class="pt-1 text-xs">Must be positive integer value.</div></BaseInputField
                 >
@@ -76,7 +77,7 @@
                         input-class="h-10"
                         :hide-label="true"
                         class="w-32"
-                        v-model="formData.partition"
+                        v-model.number="formData.partition"
                         :options="partitions"
                     ></BaseSelectField>
                     <BaseButton
@@ -204,9 +205,13 @@ const position = ref<string>('latest')
 let selectedData: Map<string, TopicMessage> = new Map()
 
 const partitions = computed<{ value: number; label: string }[]>(() => {
-    return Array.from(Array(props.numberOfPartition).keys()).map((it) => {
+    const output = Array.from(Array(props.numberOfPartition).keys()).map((it) => {
         return { value: it, label: 'Partition ' + it }
     })
+
+    output.push({ value: -1, label: 'All partitions' })
+
+    return output
 })
 
 const isFormValid = computed<boolean>(() => {
@@ -218,9 +223,6 @@ const isFormValid = computed<boolean>(() => {
             return false
         }
         if (!/^[0-9]+$/.test(formData.value.offset.toString())) {
-            return false
-        }
-        if (parseInt(formData.value.offset.toString(), 10) > 200000) {
             return false
         }
     }

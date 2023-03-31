@@ -70,7 +70,7 @@ export function sortData<T>(items: T[], sorters?: Sorter[]): T[] {
     const fieldsToSort = sorters.map((sorter) => sorter.property)
     const directionsToSort = sorters.map((sorter) => sorter.direction)
 
-    return orderBy(items, fieldsToSort, directionsToSort)
+    return orderBy(items, fieldsToSort, directionsToSort) as T[]
 }
 
 export function downloadFile(content: string, fileName: string, type: 'AVRO' | 'JSON' | 'PROTOBUF'): void {

@@ -20,7 +20,7 @@
                         v-else-if="isIcon('question')"
                         class="flex h-16 w-16 items-center justify-center rounded-full bg-blue-500 text-5xl text-white"
                     >
-                        <QuestionIcon class="h-16 h-3/4 w-16 w-3/4"></QuestionIcon>
+                        <QuestionIcon class="h-16 w-16"></QuestionIcon>
                     </div>
                     <SuccessIcon v-else class="h-16 w-16"></SuccessIcon>
                 </div>

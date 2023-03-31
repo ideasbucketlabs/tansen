@@ -142,6 +142,7 @@ class WebExceptionsHandler {
 
         return when (val inferredException = exception.undeclaredThrowable) {
             is SchemaServiceAPIException -> handleSchemaServiceAPIExceptionError(inferredException)
+            is UnknownTopicOrPartitionException -> handleTopicNotFoundError(inferredException)
             is InvalidTopicException -> handleInvalidTopicError(inferredException)
             is SchemaRegistryNotConfiguredException -> handleSchemaRegistryNotConfiguredException(inferredException)
             is TopicOperationException -> handleTopicCreationError(inferredException)

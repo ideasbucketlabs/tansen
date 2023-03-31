@@ -34,7 +34,7 @@ const replacer = (key: string, value: any) => (isBigInt(value) ? value.toString(
 
 async function execute<TBody, TResponse>(
     url: string,
-    method: string,
+    method: 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'GET',
     data: TBody | null,
     successFn: (response: TResponse) => void,
     errorFn: (response: ErrorResponse) => void

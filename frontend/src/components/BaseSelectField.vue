@@ -21,15 +21,20 @@
             :name="name"
             @input="handleChange"
             @change="handleChange"
-            class="block rounded border bg-white text-black transition duration-200 ease-linear focus:shadow-lg dark:bg-transparent dark:text-gray-100"
+            class="block rounded border bg-white text-black transition-shadow duration-200 ease-linear focus:shadow-lg dark:bg-transparent dark:text-gray-100"
             :class="[
-                { 'px-2 py-1': size === 'small', 'px-2 py-3': size === 'medium', 'py-4 px-2': size === 'large' },
+                inputClass,
+                {
+                    'px-2 py-1': size === 'small',
+                    'px-2 py-3': size === 'medium',
+                    'py-4 px-2': size === 'large',
+                    '': size === 'custom',
+                },
                 [
                     hasError
                         ? 'border-red-400 hover:border-red-500 focus:border-red-500 focus:ring-red-500'
                         : 'border-gray-400 hover:border-blue-500 focus:outline-none focus:ring-blue-500 ',
                 ],
-                inputClass,
             ]"
         >
             <option
@@ -87,7 +92,7 @@ const props = defineProps({
         default: false,
     },
     size: {
-        type: String as PropType<'small' | 'medium' | 'large'>,
+        type: String as PropType<'small' | 'medium' | 'large' | 'custom'>,
         default: 'medium',
         required: false,
     },

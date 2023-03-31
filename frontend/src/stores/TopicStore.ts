@@ -128,10 +128,10 @@ export const topicStore = defineStore('topics', {
                 }
             )
         },
-        async editTopic(clusterId: string, data: { oldRecord: NewTopic; newRecord: NewTopic }) {
+        async editTopic(clusterId: string, data: { oldRecord: NewTopic; newRecord: NewTopic }, topicName: string) {
             eventBus.emit(ApplicationEventTypes.BEFORE_TOPIC_EDITED, true)
             await putAction(
-                `${clusterId}/topics`,
+                `${clusterId}/topics/${topicName}`,
                 data,
                 () => {
                     eventBus.emit(ApplicationEventTypes.TOPIC_EDITED, true)

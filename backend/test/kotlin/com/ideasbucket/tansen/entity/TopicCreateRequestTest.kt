@@ -65,4 +65,23 @@ class TopicCreateRequestTest {
             "Compression type must be producer or uncompressed or zstd or lz4 or snappy or gzip."
         )
     }
+
+    @Test
+    fun `Can validate minimum in sync replica`() {
+        val json = """
+    {"cleanup.policy":"compact,delete","compression.type":"producer","delete.retention.ms":"86400000","file.delete.delay.ms":"60000","flush.messages":"922337203685477580","flush.ms":"9223372036854775807","follower.replication.throttled.replicas":"","index.interval.bytes":4096,"leader.replication.throttled.replicas":"","max.compaction.lag.ms":"9223372036854775807","max.message.bytes":1048588,"message.downconversion.enable":true,"message.timestamp.difference.max.ms":"9223372036854775807","message.timestamp.type":"CreateTime","min.cleanable.dirty.ratio":0.5,"min.compaction.lag.ms":"0","min.insync.replicas":4,"replication.factor":3,"retention.bytes":"-1","retention.ms":"604800000","segment.bytes":1073741824,"segment.index.bytes":10485760,"segment.jitter.ms":"0","segment.ms":"604800000","unclean.leader.election.enable":false,"name":"Test","partition":1,"preallocate":false}
+        """.trimIndent()
+
+        val data = objectMapper.readValue(json, TopicCreateRequest::class.java)
+        data.shouldBeInstanceOf<TopicCreateRequest>()
+
+        FormError.format(
+            shouldThrowExactly<ValidationException> {
+                validationService.validate(data)
+            }.errors
+        ).shouldContain(
+            "minInsyncReplicas",
+            "Minimum in-sync replica must be equal or less than replication factor."
+        )
+    }
 }

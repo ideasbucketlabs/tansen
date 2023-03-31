@@ -42,8 +42,12 @@ class TopicsController(private val topicService: TopicService, private val valid
         return Response.withSuccess(listOf<Any>())
     }
 
-    @PutMapping
-    suspend fun editTopic(@PathVariable clusterId: String, @RequestBody request: TopicEditRequest): Response {
+    @PutMapping("{topic}")
+    suspend fun editTopic(
+        @PathVariable clusterId: String,
+        @PathVariable topic: String,
+        @RequestBody request: TopicEditRequest
+    ): Response {
         validationService.validate(request)
         topicService.editTopic(clusterId, request)
 

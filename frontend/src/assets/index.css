@@ -11,11 +11,13 @@ input[type='number'] {
     -moz-appearance: textfield;
 }
 
-.fade-enter-active, .fade-leave-active {
-    transition: opacity .5s ease-out;
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s ease-out;
 }
 
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
     opacity: 0;
 }
 
@@ -37,33 +39,38 @@ input[type='number'] {
     opacity: 0;
 }
 
-.slide-right-enter-active, .slide-right-leave-active {
+.slide-right-enter-active,
+.slide-right-leave-active {
     transition: transform 0.4s ease-out;
 }
 
-.slide-right-enter-from, .slide-right-leave-to {
+.slide-right-enter-from,
+.slide-right-leave-to {
     transform: translateX(-100%);
 }
 
-.slide-right-enter-to, .slide-right-leave {
+.slide-right-enter-to,
+.slide-right-leave {
     transform: translateX(0);
 }
 
-.slide-left-enter-active, .slide-left-leave-active {
+.slide-left-enter-active,
+.slide-left-leave-active {
     transition: transform 0.4s ease-out;
 }
 
-.slide-left-enter-from, .slide-left-leave-to {
+.slide-left-enter-from,
+.slide-left-leave-to {
     transform: translateX(100%);
 }
 
-.slide-left-enter-to, .slide-left-leave {
+.slide-left-enter-to,
+.slide-left-leave {
     transform: translateX(0);
 }
 
 @tailwind components;
 @tailwind utilities;
-
 
 .text-outline-stroke {
     -webkit-text-stroke-width: 0.06rem;
@@ -79,9 +86,8 @@ input[type='number'] {
     }
     .dark\:shadow-top-black {
         /*box-shadow: 0 0 16px -7px rgba(107, 114, 128, 0.7);*/
-        box-shadow: -4px -1px 47px 9px rgba(0,0,0,0.74) !important;
+        box-shadow: -4px -1px 47px 9px rgba(0, 0, 0, 0.74) !important;
     }
-
 }
 
 /*html.dark .dark\:stroke-white {*/
@@ -90,13 +96,13 @@ input[type='number'] {
 /*}*/
 
 .ripple {
-    @apply block absolute pointer-events-none;
+    @apply pointer-events-none absolute block;
     transform: scale(0);
     border-radius: 100%;
 }
 
 .ripple-animation {
-    animation: ripple .6s linear;
+    animation: ripple 0.6s linear;
 }
 
 @keyframes ripple {
@@ -108,5 +114,26 @@ input[type='number'] {
 
 .shadow-top-green-500 {
     /*box-shadow: 0 0 16px -7px rgba(107, 114, 128, 0.7);*/
-    box-shadow: -4px -1px 47px 9px rgba(37,105,92,0.31);
+    box-shadow: -4px -1px 47px 9px rgba(37, 105, 92, 0.31);
+}
+
+.curl-shadow:before,
+.curl-shadow:after {
+    content: '';
+    z-index: -1;
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    width: 70%;
+    max-width: 300px;
+    /* avoid rotation causing ugly appearance at large container widths */
+    max-height: 100px;
+    height: 55%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transform: skew(-15deg) rotate(-5deg);
+}
+.curl-shadow:after {
+    left: auto;
+    right: 10px;
+    transform: skew(15deg) rotate(5deg);
 }

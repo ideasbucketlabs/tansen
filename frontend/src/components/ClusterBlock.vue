@@ -20,6 +20,7 @@
                     <template v-if="online">
                         <li class="block flex w-full content-center items-center">
                             <router-link
+                                @click="$emit('click')"
                                 class="mb-2 flex w-full content-center items-center rounded p-2 transition duration-200 ease-linear"
                                 :class="
                                     $route.name === 'broker' && $route.params.clusterId === name
@@ -35,6 +36,7 @@
                         </li>
                         <li class="block flex w-full content-center items-center">
                             <router-link
+                                @click="$emit('click')"
                                 class="mb-2 flex w-full content-center items-center rounded p-2 transition duration-200 ease-linear"
                                 :class="[
                                     ($route.name === 'topics' && $route.params.clusterId === name) ||
@@ -55,6 +57,7 @@
                         </li>
                         <li class="block flex w-full content-center items-center">
                             <router-link
+                                @click="$emit('click')"
                                 class="mb-2 flex w-full content-center items-center rounded p-2 transition duration-200 ease-linear"
                                 :class="
                                     $route.name === 'consumersGroup' && $route.params.clusterId === name
@@ -103,7 +106,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { defineProps, ref } from 'vue'
+import { defineEmits, defineProps, ref } from 'vue'
 import type { PropType } from 'vue'
 import ConsumerGroupsIcon from '@/icons/ConsumerGroupsIcon.vue'
 import TopicsIcon from '@/icons/TopicsIcon.vue'
@@ -128,6 +131,7 @@ defineProps({
         required: false,
     },
 })
+defineEmits<{ (e: 'click'): void }>()
 
 const collapsed = ref<boolean>(false)
 </script>

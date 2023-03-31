@@ -14,7 +14,7 @@ export const positiveIntegerWithZeroRegex = /^[0-9]+$/
 export function validate(topic: NewTopic): Map<string, string> {
     const result = new Map()
     if (topic.name === null || topic.name.trim().length === 0 || !/^([a-zA-Z0-9._-])+$/.test(topic.name)) {
-        result.set('name', 'Topic name cannot be null, blank or empty.')
+        result.set('name', 'Topic name cannot empty.')
     }
 
     if (topic.partition === null) {
@@ -43,7 +43,7 @@ export function validate(topic: NewTopic): Map<string, string> {
 
     if (!result.has('min.insync.replicas')) {
         if (parseInt(topic['min.insync.replicas'].toString(10), 10) > 32767) {
-            result.set('min.insync.replicas', 'min.insync.replicas cannot  greater than 32,767.')
+            result.set('min.insync.replicas', 'min.insync.replicas cannot greater than 32,767.')
         }
     }
 

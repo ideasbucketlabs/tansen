@@ -58,14 +58,14 @@
             </div>
         </div>
         <div
-            class="flex flex-1 flex-col overflow-auto rounded-b rounded-tr bg-white dark:bg-gray-700"
+            class="flex flex-1 flex-col overflow-auto rounded-b rounded-tr bg-white shadow dark:bg-gray-700"
             v-if="currentIndex === 0"
         >
             <template v-if="data.valueSchemaFormat === null">
                 <div
-                    class="flex items-center rounded-b border-b border-green-100 bg-green-50 p-2 dark:border-gray-500 dark:bg-gray-600"
+                    class="flex items-center border-b border-green-100 bg-green-50 p-2 dark:border-gray-500 dark:bg-gray-600"
                 >
-                    <label class="block flex cursor-pointer items-center">
+                    <label class="flex cursor-pointer items-center">
                         <input class="mr-2" type="checkbox" v-model="formatValueAsJson" />
                         <span class="">Format value as JSON</span>
                     </label>
@@ -80,7 +80,7 @@
                 <div
                     class="flex items-center border-b border-green-100 bg-green-50 p-2 dark:border-gray-500 dark:bg-gray-600"
                 >
-                    <label class="block flex cursor-pointer items-center">
+                    <label class="flex cursor-pointer items-center">
                         <input class="mr-2" type="checkbox" v-model="formatKeyAsJson" />
                         <span class="">Format key data as JSON</span>
                     </label>

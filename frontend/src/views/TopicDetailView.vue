@@ -267,7 +267,7 @@ async function afterTopicEdit(applicationEvent: ApplicationEvent) {
 
 async function editTopic(data: { oldRecord: NewTopic; newRecord: NewTopic }) {
     isFormLoading.value = true
-    await topicStore.editTopic(clusterId.value, data)
+    await topicStore.editTopic(clusterId.value, data, route.params.name as string)
 }
 
 onMounted(async () => {

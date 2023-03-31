@@ -132,6 +132,10 @@ class TopicServiceImpl(private val clusterService: ClusterService) : TopicServic
                 throw exception.cause as UnknownTopicOrPartitionException
             }
 
+            if (exception.message?.contains("This server does not host this topic-partition.") == true) {
+                throw UnknownTopicOrPartitionException("This server does not host this topic-partition.")
+            }
+
             throw Exception(exception.message)
         }
     }

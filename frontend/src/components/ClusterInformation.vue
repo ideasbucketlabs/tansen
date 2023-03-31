@@ -30,9 +30,11 @@
                 </div>
             </div>
             <div class="flex flex-1 flex-col rounded-b bg-white shadow dark:bg-gray-900" v-show="!collapsed">
-                <div class="grid grid-cols-1 gap-4 p-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7">
+                <div
+                    class="relative z-10 grid grid-cols-1 gap-4 p-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7"
+                >
                     <div
-                        class="rounded border border-green-100 text-center shadow dark:border-gray-700 dark:shadow-gray-700"
+                        class="curl-shadow relative rounded border border-green-100 bg-white text-center dark:border-gray-700 dark:bg-gray-900"
                     >
                         <div class="rounded-t bg-green-50 py-2 px-2 text-green-500 dark:bg-gray-700 dark:text-gray-100">
                             Total topic(s)
@@ -43,7 +45,7 @@
                         <div class="p-2" v-else>N/A</div>
                     </div>
                     <div
-                        class="rounded border border-green-100 text-center shadow dark:border-gray-700 dark:shadow-gray-700"
+                        class="curl-shadow relative rounded border border-green-100 bg-white text-center dark:border-gray-700 dark:bg-gray-900"
                     >
                         <div class="rounded-t bg-green-50 py-2 px-2 text-green-500 dark:bg-gray-700 dark:text-gray-100">
                             Total partition(s)
@@ -54,7 +56,7 @@
                         <div class="p-2" v-else>N/A</div>
                     </div>
                     <div
-                        class="rounded border border-green-100 text-center shadow dark:border-gray-700 dark:shadow-gray-700"
+                        class="curl-shadow relative rounded border border-green-100 bg-white text-center dark:border-gray-700 dark:bg-gray-900"
                     >
                         <div class="rounded-t bg-green-50 py-2 px-2 text-green-500 dark:bg-gray-700 dark:text-gray-100">
                             Space consumed
@@ -65,7 +67,7 @@
                         <div class="p-2" v-else>N/A</div>
                     </div>
                     <div
-                        class="flex flex-col rounded border border-green-100 text-center shadow dark:border-gray-700 dark:shadow-gray-700"
+                        class="curl-shadow relative flex flex-col rounded border border-green-100 bg-white text-center dark:border-gray-700 dark:bg-gray-900"
                     >
                         <div
                             class="rounded-t bg-green-50 py-2 px-2 text-center text-green-500 text-green-500 dark:bg-gray-700 dark:text-gray-100"
@@ -76,13 +78,14 @@
                             <status-bulb
                                 v-if="cluster.outOfSyncReplicas !== -1"
                                 :online="cluster.online"
+                                class="m-3"
                                 :good-health="cluster.outOfSyncReplicas === 0"
                             ></status-bulb>
-                            <status-bulb v-else :online="cluster.online"></status-bulb>
+                            <status-bulb v-else class="m-3" :online="cluster.online"></status-bulb>
                         </div>
                     </div>
                     <div
-                        class="rounded border border-green-100 text-center shadow dark:border-gray-700 dark:shadow-gray-700"
+                        class="curl-shadow relative rounded border border-green-100 bg-white text-center dark:border-gray-700 dark:bg-gray-900"
                     >
                         <div
                             class="rounded-t bg-green-50 py-2 px-2 text-green-500 text-green-500 dark:bg-gray-700 dark:text-gray-100"
@@ -95,7 +98,7 @@
                         <div class="p-2" v-else>N/A</div>
                     </div>
                     <div
-                        class="rounded border border-green-100 text-center shadow dark:border-gray-700 dark:shadow-gray-700"
+                        class="curl-shadow relative rounded border border-green-100 bg-white text-center dark:border-gray-700 dark:bg-gray-900"
                     >
                         <div
                             class="rounded-t bg-green-50 py-2 px-2 text-green-500 text-green-500 dark:bg-gray-700 dark:text-gray-100"
@@ -108,7 +111,7 @@
                         <div class="p-2" v-else>N/A</div>
                     </div>
                     <div
-                        class="rounded border border-green-100 text-center shadow dark:border-gray-700 dark:shadow-gray-700"
+                        class="curl-shadow relative rounded border border-green-100 bg-white text-center dark:border-gray-700 dark:bg-gray-900"
                     >
                         <div
                             class="truncate rounded-t bg-green-50 py-2 px-2 text-green-500 text-green-500 dark:bg-gray-700 dark:text-gray-100"
@@ -140,7 +143,7 @@
                     </div>
                 </div>
                 <div class="flex flex-col space-y-2 p-2">
-                    <div class="text-xl">Broker(s)</div>
+                    <div class="text-xl">Broker(s) - {{ cluster.nodes.length }}</div>
                     <BrokerInformation
                         v-for="node in cluster.nodes"
                         :key="'cluster-' + cluster.id + '-node-' + node.id"
