@@ -182,7 +182,7 @@
                                         :class="rowClass"
                                         v-for="(row, rowIndex) in items"
                                         :key="'row' + row[identifier]"
-                                        :title="rowTitleRenderer(row)"
+                                        :title="rowTitleRenderer?.(row)"
                                         @click="$emit('rowClick', row, rowIndex)"
                                     >
                                         <div
@@ -229,7 +229,7 @@
                                 :class="rowClass"
                                 v-for="(row, rowIndex) in data.data"
                                 :key="'row' + row[identifier]"
-                                :title="rowTitleRenderer(row)"
+                                :title="rowTitleRenderer?.(row)"
                                 @click="$emit('rowClick', row, rowIndex)"
                             >
                                 <div

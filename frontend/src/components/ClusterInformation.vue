@@ -36,7 +36,7 @@
                     <div
                         class="curl-shadow relative rounded border border-green-100 bg-white text-center dark:border-gray-700 dark:bg-gray-900"
                     >
-                        <div class="rounded-t bg-green-50 py-2 px-2 text-green-500 dark:bg-gray-700 dark:text-gray-100">
+                        <div class="rounded-t bg-green-50 px-2 py-2 text-green-500 dark:bg-gray-700 dark:text-gray-100">
                             Total topic(s)
                         </div>
                         <div class="p-2" v-if="cluster.totalNumberOfTopics !== -1">
@@ -47,7 +47,7 @@
                     <div
                         class="curl-shadow relative rounded border border-green-100 bg-white text-center dark:border-gray-700 dark:bg-gray-900"
                     >
-                        <div class="rounded-t bg-green-50 py-2 px-2 text-green-500 dark:bg-gray-700 dark:text-gray-100">
+                        <div class="rounded-t bg-green-50 px-2 py-2 text-green-500 dark:bg-gray-700 dark:text-gray-100">
                             Total partition(s)
                         </div>
                         <div class="p-2" v-if="cluster.totalNumberOfPartitions !== -1">
@@ -58,7 +58,7 @@
                     <div
                         class="curl-shadow relative rounded border border-green-100 bg-white text-center dark:border-gray-700 dark:bg-gray-900"
                     >
-                        <div class="rounded-t bg-green-50 py-2 px-2 text-green-500 dark:bg-gray-700 dark:text-gray-100">
+                        <div class="rounded-t bg-green-50 px-2 py-2 text-green-500 dark:bg-gray-700 dark:text-gray-100">
                             Space consumed
                         </div>
                         <div class="p-2" v-if="cluster.clusterSize !== -1">
@@ -70,7 +70,7 @@
                         class="curl-shadow relative flex flex-col rounded border border-green-100 bg-white text-center dark:border-gray-700 dark:bg-gray-900"
                     >
                         <div
-                            class="rounded-t bg-green-50 py-2 px-2 text-center text-green-500 text-green-500 dark:bg-gray-700 dark:text-gray-100"
+                            class="rounded-t bg-green-50 px-2 py-2 text-center text-green-500 dark:bg-gray-700 dark:text-gray-100"
                         >
                             Online
                         </div>
@@ -87,9 +87,7 @@
                     <div
                         class="curl-shadow relative rounded border border-green-100 bg-white text-center dark:border-gray-700 dark:bg-gray-900"
                     >
-                        <div
-                            class="rounded-t bg-green-50 py-2 px-2 text-green-500 text-green-500 dark:bg-gray-700 dark:text-gray-100"
-                        >
+                        <div class="rounded-t bg-green-50 px-2 py-2 text-green-500 dark:bg-gray-700 dark:text-gray-100">
                             Total replica(s)
                         </div>
                         <div class="p-2" v-if="cluster.totalReplicas !== -1">
@@ -100,9 +98,7 @@
                     <div
                         class="curl-shadow relative rounded border border-green-100 bg-white text-center dark:border-gray-700 dark:bg-gray-900"
                     >
-                        <div
-                            class="rounded-t bg-green-50 py-2 px-2 text-green-500 text-green-500 dark:bg-gray-700 dark:text-gray-100"
-                        >
+                        <div class="rounded-t bg-green-50 px-2 py-2 text-green-500 dark:bg-gray-700 dark:text-gray-100">
                             In Sync replica(s)
                         </div>
                         <div class="p-2" v-if="cluster.inSyncReplicas !== -1">
@@ -114,7 +110,7 @@
                         class="curl-shadow relative rounded border border-green-100 bg-white text-center dark:border-gray-700 dark:bg-gray-900"
                     >
                         <div
-                            class="truncate rounded-t bg-green-50 py-2 px-2 text-green-500 text-green-500 dark:bg-gray-700 dark:text-gray-100"
+                            class="truncate rounded-t bg-green-50 px-2 py-2 text-green-500 text-green-500 dark:bg-gray-700 dark:text-gray-100"
                         >
                             Out of Sync replica(s)
                         </div>
