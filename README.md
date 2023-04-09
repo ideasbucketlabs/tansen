@@ -32,13 +32,14 @@
 
 ## Getting started ##
 
-To run Tansen for Apache Kafka, you can use either a pre-built Docker image or build it (or a jar file) yourself.
+To run Tansen for Apache Kafka, you can use either a pre-built Docker image or build it (or a jar file) yourself. For more information regarding configuration please visit [configuration page](https://github.com/ideasbucketlabs/tansen/blob/main/documentation/configuration.md).
 
 ---
 
 ## Contributing
 If you're interested in contributing to Tansen, please read our [contributing docs](https://github.com/ideasbucketlabs/tansen/blob/main/documentation/CONTRIBUTING.md) **before submitting a pull request**.
 
+---
 ## Community
 * Follow us on [Github](https://github.com/ideasbucketlabs/tansen), [Twitter](https://twitter.com/myideasbucket)
 
