@@ -12,9 +12,13 @@ Tansen is a light and fast web UI for visualizing Kafka clusters, managing Kafka
 </p>
 
 <p align="center">
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/ideasbucketlabs/tansen/blob/main/LICENSE)
 [![Docker pulls](https://img.shields.io/docker/pulls/ideasbucket/tansen)](https://hub.docker.com/r/ideasbucket/tansen)
+
 </p>
+
+
 
 ---
 ## Features
