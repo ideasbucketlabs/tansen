@@ -1,10 +1,12 @@
-# Tansen
+<p align="center">
+  <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ideasbucketlabs/tansen/main/documentation/images/logo-dark.svg">
+      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/ideasbucketlabs/tansen/main/documentation/images/logo-light.svg">
+      <img alt="Tansen" src="https://raw.githubusercontent.com/ideasbucketlabs/tansen/main/documentation/images/logo-light.svg" width="144" height="58" style="max-width: 100%;">
+  </picture>
+</p>
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+## Frontend setup
 
 ```sh
 npm install
@@ -26,13 +28,6 @@ npm run build
 
 ```sh
 npm run test:unit
-```
-
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
-
-```sh
-npm run build
-npm run test:e2e # or `npm run test:e2e:ci` for headless testing
 ```
 
 ### Lint with [ESLint](https://eslint.org/)

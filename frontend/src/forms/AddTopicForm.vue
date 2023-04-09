@@ -118,7 +118,7 @@
                                             v-model="topic['replication.factor']"
                                             :has-error="hasError('replication.factor')"
                                             label="Replication factor"
-                                            class="mb-4 -mt-4 flex-1 bg-green-100 pl-4 pr-4 md:pr-1"
+                                            class="-mt-4 mb-4 flex-1 bg-green-100 pl-4 pr-4 md:pr-1"
                                         >
                                             <div
                                                 class="form-error text-sm text-red-500"
@@ -134,7 +134,7 @@
                                             v-model="topic['min.insync.replicas']"
                                             label="Minimum in-sync replica"
                                             :has-error="hasError('min.insync.replicas')"
-                                            class="mb-4 -mt-4 flex-1 bg-green-100 pr-4 pl-4 md:pl-1"
+                                            class="-mt-4 mb-4 flex-1 bg-green-100 pl-4 pr-4 md:pl-1"
                                         >
                                             <div
                                                 class="form-error text-sm text-red-500"
@@ -633,7 +633,7 @@
                     </div>
                 </div>
                 <div
-                    class="dark:shadow-top-black shadow-top-green-500 flex justify-center space-x-2 rounded-b bg-green-100 py-2 px-2 shadow-green-500 dark:bg-gray-700"
+                    class="dark:shadow-top-black shadow-top-green-500 flex justify-center space-x-2 rounded-b bg-green-100 px-2 py-2 shadow-green-500 dark:bg-gray-700"
                 >
                     <BaseButton
                         class="block h-10 w-6/12 lg:w-4/12"
