@@ -1,24 +1,20 @@
 <p align="center">
-  <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ideasbucketlabs/tansen/main/documentation/images/logo-dark.svg">
-      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/ideasbucketlabs/tansen/main/documentation/images/logo-light.svg">
-      <img alt="Tansen" src="https://raw.githubusercontent.com/ideasbucketlabs/tansen/main/documentation/images/logo-light.svg" width="144" height="58" style="max-width: 100%;">
-  </picture>
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ideasbucketlabs/tansen/main/documentation/images/logo-dark.svg">
+        <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/ideasbucketlabs/tansen/main/documentation/images/logo-light.svg">
+        <img alt="Tansen" src="https://raw.githubusercontent.com/ideasbucketlabs/tansen/main/documentation/images/logo-light.svg" width="144" height="58" style="max-width: 100%;">
+    </picture>
+</p>
+
+<p align="center">
+  Tansen is a light and fast web UI for visualizing Kafka clusters, managing Kafka topic, viewing Kafka topic messages, manage topic schema, view consumer groups and much more.
 </p>
 
 
 <p align="center">
-Tansen is a light and fast web UI for visualizing Kafka clusters, managing Kafka topic, viewing Kafka topic messages, manage topic schema, view consumer groups and much more.
+    <a href="https://github.com/ideasbucketlabs/tansen/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
+    <a href="https://hub.docker.com/r/ideasbucket/tansen"><img src="https://img.shields.io/docker/pulls/ideasbucket/tansen" alt="Total Docker Pulls"></a>
 </p>
-
-<p align="center">
-
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/ideasbucketlabs/tansen/blob/main/LICENSE)
-[![Docker pulls](https://img.shields.io/docker/pulls/ideasbucket/tansen)](https://hub.docker.com/r/ideasbucket/tansen)
-
-</p>
-
-
 
 ---
 ## Features
