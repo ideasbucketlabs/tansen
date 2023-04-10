@@ -318,7 +318,6 @@ public final class TopicCreateRequest {
     @AssertFalse(message = "Minimum in-sync replica must be equal or less than replication factor.")
     @JsonIgnore
     private boolean hasMinInsyncReplicas() {
-
         return (this.replicationFactor < this.minInsyncReplicas);
     }
 

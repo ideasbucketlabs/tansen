@@ -52,6 +52,7 @@ dependencies {
     implementation("io.confluent:kafka-protobuf-serializer:7.3.2")
     implementation("io.confluent:kafka-json-schema-serializer:7.3.2")
     implementation("com.google.protobuf:protobuf-java:3.21.12")
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")

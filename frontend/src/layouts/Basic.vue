@@ -10,10 +10,8 @@
                             :to="{ name: 'dashboard' }"
                             class="text-5xl text-green-500 dark:text-gray-100"
                             style="font-family: 'Satisfy', cursive"
-                            >T<span
-                                class="text-outline-stroke stroke-green-500 text-white dark:stroke-white dark:text-transparent"
-                                >a</span
-                            >nsen
+                        >
+                            <Logo class="fill-current stroke-current text-green-500 dark:text-white"></Logo>
                         </router-link>
                     </div>
                 </div>
@@ -40,15 +38,13 @@
         <div
             class="flex h-8 items-center justify-center border-t border-gray-200 bg-gray-100 p-2 text-center shadow-xl dark:border-gray-800 dark:bg-gray-900"
         >
-            <div class="text-green-500 dark:text-gray-100">
-                &#169;
-                <span style="font-family: 'Satisfy', cursive"
-                    >T<span
-                        class="text-outline-stroke stroke-green-500 text-white dark:stroke-white dark:text-transparent"
-                        >a</span
-                    >nsen</span
-                >
-                - {{ currentYear }}
+            <div class="flex space-x-2 text-green-500 dark:text-gray-100">
+                <div>&#169;</div>
+                <div class="block w-12">
+                    <Logo class="h-full w-full fill-current stroke-current text-green-500 dark:text-white"></Logo>
+                </div>
+                <div>-</div>
+                <div>{{ currentYear }}</div>
             </div>
         </div>
     </div>
@@ -62,6 +58,7 @@
  */
 import { ref } from 'vue'
 import OffCanvas from '@/components/OffCanvas.vue'
+import Logo from '@/icons/Logo.vue'
 
 const displayOffCanvas = ref(false)
 const currentYear = ref(new Date().getFullYear())

@@ -1,9 +1,9 @@
 <template>
-    <div class="absolute top-0 left-0 z-20 flex h-full w-full flex-row-reverse overflow-hidden" ref="root">
+    <div class="absolute left-0 top-0 z-20 flex h-full w-full flex-row-reverse overflow-hidden" ref="root">
         <slot name="dialog"></slot>
         <transition name="fade" @after-enter="displayContent = true" @after-leave="$emit('close')">
             <div class="absolute left-0 top-0 h-full w-full" v-if="displayOverlay" @click="hide">
-                <div class="absolute left-0 top-0 h-full w-full" :class="overlayColor"></div>
+                <div class="absolute left-0 top-0 h-full w-full" :class="overlayClass"></div>
             </div>
         </transition>
         <transition name="slide-left" @after-leave="displayOverlay = false">
@@ -65,10 +65,10 @@ const props = defineProps({
         required: false,
         default: 'w-full md:w-8/12 lg:w-5/12',
     },
-    overlayColor: {
+    overlayClass: {
         type: String as PropType<string>,
         required: false,
-        default: 'bg-green-100 opacity-50 dark:bg-gray-700',
+        default: 'bg-green-100 opacity-50 dark:bg-gray-700 rounded',
     },
 })
 

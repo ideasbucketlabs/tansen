@@ -95,7 +95,7 @@
             <router-view
                 v-slot="slotProps"
                 v-if="!clusterInformationLoading"
-                class="mx-2 mt-2 mb-2 flex-grow overflow-y-auto bg-gray-100 text-black dark:border-gray-800 dark:bg-gray-800 dark:text-gray-100"
+                class="mx-2 mb-2 mt-2 flex-grow overflow-y-auto bg-gray-100 text-black dark:border-gray-800 dark:bg-gray-800 dark:text-gray-100"
                 :key="clusterId"
             >
                 <transition name="fade" mode="out-in">

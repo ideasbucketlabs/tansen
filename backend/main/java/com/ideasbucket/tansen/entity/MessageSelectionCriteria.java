@@ -8,7 +8,6 @@ package com.ideasbucket.tansen.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.validation.constraints.AssertFalse;
-
 import java.time.Instant;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -61,7 +60,6 @@ public final class MessageSelectionCriteria {
 
     @JsonIgnore
     public String getCase() {
-
         if (this.partition == null) {
             return "";
         }
