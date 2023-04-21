@@ -7,7 +7,6 @@
 import type { ErrorResponse } from '@/entity/ErrorResponse'
 import { EMPTY_FN, isBigInt } from '@/util/Util'
 import type { StatusCode } from '@/entity/StatusCode'
-import ReconnectingEventSource from 'reconnecting-eventsource'
 
 const baseUrl = import.meta.env.VITE_API_ENDPOINT ?? ''
 
@@ -24,10 +23,6 @@ function nonDataOptions(method: string) {
             'Content-Type': 'application/json;charset=UTF-8',
         },
     }
-}
-
-export function getEventSource(url: string): EventSource {
-    return new ReconnectingEventSource(getProperUrl(url), { withCredentials: true })
 }
 
 const replacer = (key: string, value: any) => (isBigInt(value) ? value.toString() : value)
@@ -62,7 +57,7 @@ async function execute<TBody, TResponse>(
                 errors,
             })
         } else {
-            successFn(await rawResponse)
+            successFn(rawResponse)
         }
     } catch (error) {
         errorFn({

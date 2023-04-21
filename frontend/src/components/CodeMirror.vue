@@ -10,7 +10,7 @@
             </div>
             <button
                 v-if="!props.readOnly && schemaType !== 'PROTOBUF'"
-                class="relative float-right block overflow-hidden rounded border border-green-500 py-1 px-3 text-black transition duration-200 ease-linear hover:bg-green-50 hover:shadow-lg dark:border-gray-600 dark:text-white dark:hover:bg-gray-600 dark:hover:shadow-black"
+                class="relative float-right block overflow-hidden rounded border border-green-500 px-3 py-1 text-black transition duration-200 ease-linear hover:bg-green-50 hover:shadow-lg dark:border-gray-600 dark:text-white dark:hover:bg-gray-600 dark:hover:shadow-black"
                 @click="prettifyContent"
                 type="button"
             >
@@ -197,6 +197,10 @@ function prettifyContent() {
     @apply font-normal !important;
 }
 
+.holder :deep(.cm-selectionBackground) {
+    @apply bg-blue-100 !important;
+}
+
 @media (prefers-color-scheme: dark) {
     .holder :deep(.cm-tooltip) {
         @apply bg-gray-900 !important;
@@ -217,7 +221,7 @@ function prettifyContent() {
         @apply bg-gray-900 !important;
     }
     .holder :deep(.cm-selectionBackground) {
-        @apply bg-blue-500 !important;
+        @apply bg-sky-800 !important;
     }
     .holder :deep(.ͼc) {
         @apply text-cyan-300 !important;

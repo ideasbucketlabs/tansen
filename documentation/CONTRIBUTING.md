@@ -20,6 +20,10 @@ For frontend
 ```sh
 cd frontend && npm run lint
 ```
+> **Note**  
+> If you are creating Pull Requests please make that you run both commands `frontend` and `backend`
+
+
 ## Running tests
 
 You can run the test suite using the following commands:
@@ -56,10 +60,10 @@ tansen.kafka-clusters.0.name=local;
 tansen.kafka-clusters.0.schema_registry_url=http://localhost:8081/
 SPRING_PROFILES_ACTIVE=test
 ```
-If you are using `IntelliJ` you can use following screenshot as reference.
+If you are using `IntelliJ` you can use following screenshot as a reference.
 <p>
   <picture>
-      <img alt="Tansen Environment configuration" src="https://raw.githubusercontent.com/ideasbucketlabs/tansen/main/documentation/images/environment-settings.png" width="144" height="58" style="max-width: 100%;">
+      <img alt="Tansen Environment configuration in IntelliJ" src="https://raw.githubusercontent.com/ideasbucketlabs/tansen/main/documentation/images/environment-settings.png" width="900" height="548" style="max-width: 100%;">
   </picture>
 </p>
 

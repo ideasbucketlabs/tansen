@@ -10,7 +10,6 @@ import { ApplicationEventTypes } from '@/entity/ApplicationEventTypes'
 import { getAction } from '@/util/HttpService'
 import type { ServerResponse } from '@/entity/ServerResponse'
 import type { ClusterInformation } from '@/entity/ClusterInformation'
-import * as cluster from 'cluster'
 
 export const clusterInformationStore = defineStore('clusterInformation', {
     state: () => ({

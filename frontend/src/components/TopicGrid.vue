@@ -23,11 +23,10 @@
             class="h-64 flex-grow shadow"
         >
             <template v-slot:actionColumn="{ row }">
-                <div class="flex flex-1 justify-around">
+                <div class="flex flex-1 justify-around" :title="`View detail of Topic: ${row.topic as string}`">
                     <router-link
                         class="h-7 w-7 rounded transition-all duration-100 ease-linear hover:h-8 hover:w-8"
-                        :to="{ name: 'topicOverview', params: { clusterId: clusterId, name: row.topic } }"
-                        :title="'View detail of Topic: ' + row.topic"
+                        :to="{ name: 'topicOverview', params: { clusterId: clusterId, name: row.topic as string } }"
                     >
                         <SearchIcon class="h-full w-full p-1 text-green-500 dark:text-white"></SearchIcon>
                     </router-link>

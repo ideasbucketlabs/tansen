@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div
-                class="items-center space-y-2 py-2 md:flex md:space-y-0 md:space-x-5 md:px-4"
+                class="items-center space-y-2 py-2 md:flex md:space-x-5 md:space-y-0 md:px-4"
                 v-if="!editMode && !insertMode"
             >
                 <div class="w-64 md:pl-1" v-if="!showDiffer">
@@ -61,7 +61,7 @@
                         type="button"
                         v-if="versionsList.length > 1 && showDiffer"
                         @click="showDiffer = false"
-                        class="relative flex items-center overflow-hidden rounded border border-green-500 py-2 px-4 text-green-500 transition duration-200 ease-linear hover:bg-green-100 hover:shadow dark:border-gray-300 dark:text-gray-100 dark:shadow-black dark:hover:bg-gray-600"
+                        class="relative flex items-center overflow-hidden rounded border border-green-500 px-4 py-2 text-green-500 transition duration-200 ease-linear hover:bg-green-100 hover:shadow dark:border-gray-300 dark:text-gray-100 dark:shadow-black dark:hover:bg-gray-600"
                     >
                         <ripple></ripple>
                         <span class="mr-1 block"><UpArrowIcon class="w-4 -rotate-90 fill-current"></UpArrowIcon></span>
@@ -73,7 +73,7 @@
                         v-if="versionsList.length > 0 && !showDiffer"
                     >
                         <button
-                            class="relative flex items-center overflow-hidden rounded border border-green-500 py-2 px-4 text-green-500 transition duration-200 ease-linear hover:bg-green-100 hover:shadow dark:border-gray-300 dark:text-gray-100 dark:shadow-black dark:hover:bg-gray-600"
+                            class="relative flex items-center overflow-hidden rounded border border-green-500 px-4 py-2 text-green-500 transition duration-200 ease-linear hover:bg-green-100 hover:shadow dark:border-gray-300 dark:text-gray-100 dark:shadow-black dark:hover:bg-gray-600"
                         >
                             <ActionIcon class="h-6 w-6 fill-current"></ActionIcon>
                         </button>
@@ -83,7 +83,7 @@
                             >
                                 <li
                                     @click="downloadSelectedSchema"
-                                    class="rounded-t border-t border-b border-white px-4 py-2 transition duration-200 ease-linear hover:border-green-100 hover:bg-green-50 dark:border-gray-800 dark:hover:border-gray-900 dark:hover:border-gray-700 dark:hover:bg-gray-600"
+                                    class="rounded-t border-b border-t border-white px-4 py-2 transition duration-200 ease-linear hover:border-green-100 hover:bg-green-50 dark:border-gray-800 dark:hover:border-gray-700 dark:hover:bg-gray-600"
                                 >
                                     Download
                                 </li>
@@ -95,7 +95,7 @@
                                 </li>
                                 <li
                                     @click="showCompatibilitySettingForm = true"
-                                    class="rounded-b border-t border-b border-white px-4 py-2 transition duration-200 ease-linear hover:border-green-100 hover:bg-green-50 dark:border-gray-800 dark:hover:border-gray-900 dark:hover:bg-gray-600"
+                                    class="rounded-b border-b border-t border-white px-4 py-2 transition duration-200 ease-linear hover:border-green-100 hover:bg-green-50 dark:border-gray-800 dark:hover:border-gray-900 dark:hover:bg-gray-600"
                                 >
                                     Compatibility setting(s)
                                 </li>
@@ -106,7 +106,7 @@
                         type="button"
                         v-if="versionsList.length > 0 && !showDiffer"
                         @click="turnOnEditMode"
-                        class="relative flex items-center overflow-hidden truncate rounded border border-green-500 py-2 px-4 text-green-500 transition duration-200 ease-linear hover:bg-green-100 hover:shadow dark:border-gray-300 dark:text-gray-100 dark:shadow-black dark:hover:bg-gray-600"
+                        class="relative flex items-center overflow-hidden truncate rounded border border-green-500 px-4 py-2 text-green-500 transition duration-200 ease-linear hover:bg-green-100 hover:shadow dark:border-gray-300 dark:text-gray-100 dark:shadow-black dark:hover:bg-gray-600"
                     >
                         <span class="mr-1 block"><EditIcon class="w-4 fill-current"></EditIcon></span>
                         <ripple></ripple>
@@ -116,7 +116,7 @@
                         type="button"
                         @click="showDiffer = true"
                         v-if="versionsList.length > 1 && !showDiffer"
-                        class="relative flex items-center overflow-hidden truncate rounded border border-green-500 py-2 px-4 text-green-500 transition duration-200 ease-linear hover:bg-green-100 hover:shadow dark:border-gray-300 dark:text-gray-100 dark:shadow-black dark:hover:bg-gray-600"
+                        class="relative flex items-center overflow-hidden truncate rounded border border-green-500 px-4 py-2 text-green-500 transition duration-200 ease-linear hover:bg-green-100 hover:shadow dark:border-gray-300 dark:text-gray-100 dark:shadow-black dark:hover:bg-gray-600"
                     >
                         <ripple></ripple>
                         <span class="mr-1 block"><CompareIcon class="w-4 fill-current"></CompareIcon></span>
@@ -177,7 +177,7 @@
                 class="flex w-full justify-between border-t bg-gray-100 px-4 pt-2 dark:border-gray-900 dark:bg-gray-800"
             >
                 <button
-                    class="w-24 rounded bg-red-500 py-2 px-4 text-white transition duration-200 ease-linear hover:bg-red-700"
+                    class="w-24 rounded bg-red-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-red-700"
                     @click="cancel"
                     type="button"
                 >
@@ -192,7 +192,7 @@
                         <span class="w-34 hidden md:block">Valid schema</span>
                     </div>
                     <button
-                        class="relative h-10 w-24 overflow-hidden rounded bg-cyan-500 py-2 px-4 text-white transition duration-200 ease-linear hover:bg-cyan-600"
+                        class="relative h-10 w-24 overflow-hidden rounded bg-cyan-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-cyan-600"
                         type="button"
                         @click="validateSchema"
                     >
@@ -394,6 +394,7 @@ function cancel() {
     editMode.value = false
     insertMode.value = false
     isDataDirty.value = false
+    compatibilityErrorCode.value = -1
     errors.value = new Map<string, string>()
 }
 
@@ -422,6 +423,7 @@ async function saveNewSchema(newSchema: SubjectSchemaDetails) {
 }
 
 async function onDeleteSchemaFormSubmission(schemaVersion: number, hardDelete: boolean) {
+    subjectThatIsInProcess.value = props.subject
     if (schemaVersion > 0) {
         await store.deleteSchemaVersion(clusterId, props.subject, schemaVersion, hardDelete)
         return
@@ -444,15 +446,35 @@ async function checkSchemaCompatibility() {
             } else {
                 compatibilityError.value = 'Schema is not compatible.'
                 compatibilityErrorCode.value = 422
+
+                showMessageDialog.value = true
+                messageDialogButtons.value = Buttons.ok
+                messageDialogIcon.value = 'error'
+                messageDialogTitle.value = 'ERROR 422'
+                messageDialogMessage.value = 'Schema is not compatible.'
             }
         },
         (error) => {
             if (error.httpCode === 422) {
                 compatibilityError.value = (error.errors as SchemaCompatibilityError).detail.message
                 compatibilityErrorCode.value = (error.errors as SchemaCompatibilityError).detail.errorCode
+
+                showMessageDialog.value = true
+                messageDialogButtons.value = Buttons.ok
+                messageDialogIcon.value = 'error'
+                messageDialogTitle.value = `ERROR ${(
+                    error.errors as SchemaCompatibilityError
+                ).detail.errorCode.toString(10)}`
+                messageDialogMessage.value = (error.errors as SchemaCompatibilityError).detail.message
             } else {
                 compatibilityError.value = error.response
                 compatibilityErrorCode.value = error.httpCode
+
+                showMessageDialog.value = true
+                messageDialogButtons.value = Buttons.ok
+                messageDialogIcon.value = 'error'
+                messageDialogTitle.value = `ERROR ${error.httpCode}`
+                messageDialogMessage.value = error.response
             }
         }
     )

@@ -2,7 +2,7 @@
     <div class="relative">
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="absolute h-full w-full fill-current text-red-500"
+            class="absolute h-full w-full fill-current"
             viewBox="0 0 16 16"
             aria-hidden="true"
             focusable="false"
