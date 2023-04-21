@@ -34,7 +34,7 @@
 
 To run Tansen for Apache Kafka, you can use either a pre-built Docker image or build it (or a jar file) yourself. For running with Docker you can use this command.
 ```shell
-docker run -d -p 8080:8080 
+docker run -d -p 8080:8080
               -e 'TANSEN.KAFKA-CLUSTERS.0.BOOTSTRAP_SERVERS=broker:9092' \
               -e 'TANSEN.KAFKA-CLUSTERS.0.NAME=local' \
               ideasbucket/tansen:tag

@@ -9,7 +9,6 @@ package com.ideasbucket.tansen.entity;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-
 import java.time.Instant;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

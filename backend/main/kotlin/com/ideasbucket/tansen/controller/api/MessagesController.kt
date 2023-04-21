@@ -47,7 +47,9 @@ import java.time.Duration
 import java.util.*
 
 @RestController
-@RequestMapping("api/{clusterId:[a-zA-Z0-9][a-zA-Z0-9\\_\\-]+}/messages/{keySerde:auto|string}/{valueSerde:auto|string}")
+@RequestMapping(
+    "api/{clusterId:[a-zA-Z0-9][a-zA-Z0-9\\_\\-]+}/messages/{keySerde:auto|string}/{valueSerde:auto|string}"
+)
 @Validated
 class MessagesController(
     private val clusterService: ClusterService,
@@ -64,7 +66,9 @@ class MessagesController(
         @PathVariable topic: String,
         @PathVariable keySerde: String,
         @PathVariable valueSerde: String,
-        @Valid @RequestParam(name = "parameters", required = false) criteria: MessageSelectionCriteria?
+        @Valid
+        @RequestParam(name = "parameters", required = false)
+        criteria: MessageSelectionCriteria?
     ): Flow<ObjectNode> {
         val topicInformation =
             topicService.getTopic(clusterId, topic)
