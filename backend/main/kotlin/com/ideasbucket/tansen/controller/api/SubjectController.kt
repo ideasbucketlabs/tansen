@@ -7,7 +7,6 @@
 package com.ideasbucket.tansen.controller.api
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.ideasbucket.tansen.entity.MessageSelectionCriteria
 import com.ideasbucket.tansen.entity.Response
 import com.ideasbucket.tansen.entity.SaveSchemaRequest
 import com.ideasbucket.tansen.entity.TopicSchema
