@@ -30,7 +30,7 @@
                 <div class="action-menu relative lg:w-auto" tabindex="-1">
                     <button
                         type="button"
-                        class="relative flex items-center overflow-hidden rounded border border-green-500 py-2 px-4 text-green-500 transition duration-200 ease-linear hover:bg-green-100 hover:shadow dark:border-gray-300 dark:text-gray-100 dark:shadow-black dark:hover:bg-gray-600"
+                        class="relative flex items-center overflow-hidden rounded border border-green-500 px-4 py-2 text-green-500 transition duration-200 ease-linear hover:bg-green-100 hover:shadow dark:border-gray-300 dark:text-gray-100 dark:shadow-black dark:hover:bg-gray-600"
                     >
                         <ActionIcon class="h-6 w-6 fill-current"></ActionIcon>
                     </button>
@@ -39,7 +39,7 @@
                             class="cursor-pointer rounded border border-green-500 bg-white shadow-lg dark:border-gray-300 dark:bg-gray-800"
                         >
                             <li
-                                class="rounded-t border-t border-b border-white transition duration-200 ease-linear hover:border-green-100 hover:bg-green-50 dark:border-gray-800 dark:hover:border-gray-900 dark:hover:border-gray-700 dark:hover:bg-gray-600"
+                                class="rounded-t border-b border-t border-white transition duration-200 ease-linear hover:border-green-100 hover:bg-green-50 dark:border-gray-800 dark:hover:border-gray-700 dark:hover:border-gray-900 dark:hover:bg-gray-600"
                             >
                                 <router-link
                                     class="block w-full px-4 py-2"
@@ -49,7 +49,7 @@
                             </li>
                             <li
                                 v-if="topicDetails !== undefined"
-                                class="rounded-t border-t border-b border-white px-4 py-2 transition duration-200 ease-linear hover:border-green-100 hover:bg-green-50 dark:border-gray-800 dark:hover:border-gray-900 dark:hover:border-gray-700 dark:hover:bg-gray-600"
+                                class="rounded-t border-b border-t border-white px-4 py-2 transition duration-200 ease-linear hover:border-green-100 hover:bg-green-50 dark:border-gray-800 dark:hover:border-gray-700 dark:hover:border-gray-900 dark:hover:bg-gray-600"
                                 @click="showEditForm = true"
                             >
                                 Edit Topic

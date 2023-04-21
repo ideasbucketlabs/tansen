@@ -21,6 +21,7 @@ import com.ideasbucket.tansen.util.JsonConverter
 import io.confluent.kafka.serializers.KafkaAvroDeserializer
 import io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer
 import io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer
+import jakarta.validation.Valid
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.reactive.asFlow
 import org.apache.avro.generic.GenericData
@@ -31,6 +32,7 @@ import org.apache.kafka.common.serialization.StringDeserializer
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -45,7 +47,8 @@ import java.time.Duration
 import java.util.*
 
 @RestController
-@RequestMapping("api/{clusterId:[a-zA-Z0-9][a-zA-Z0-9\\_\\-]+}/messages")
+@RequestMapping("api/{clusterId:[a-zA-Z0-9][a-zA-Z0-9\\_\\-]+}/messages/{keySerde:auto|string}/{valueSerde:auto|string}")
+@Validated
 class MessagesController(
     private val clusterService: ClusterService,
     private val schemaExecutor: SchemaExecutor,
@@ -59,7 +62,9 @@ class MessagesController(
     suspend fun getMessagesByTopic(
         @PathVariable clusterId: String,
         @PathVariable topic: String,
-        @RequestParam(name = "parameters", required = false) criteria: MessageSelectionCriteria?
+        @PathVariable keySerde: String,
+        @PathVariable valueSerde: String,
+        @Valid @RequestParam(name = "parameters", required = false) criteria: MessageSelectionCriteria?
     ): Flow<ObjectNode> {
         val topicInformation =
             topicService.getTopic(clusterId, topic)
@@ -76,8 +81,8 @@ class MessagesController(
             throw UnknownTopicOrPartitionException("This server does not host this topic-partition.")
         }
 
-        val valueSchemaFormat = getSchemaFormat(clusterId, "$topic-value")
-        val keySchemaFormat = getSchemaFormat(clusterId, "$topic-key")
+        val valueSchemaFormat = if (valueSerde == "string") null else getSchemaFormat(clusterId, "$topic-value")
+        val keySchemaFormat = if (keySerde == "string") null else getSchemaFormat(clusterId, "$topic-key")
         val uniqueId = UUID.randomUUID().toString()
 
         val properties = Properties()
@@ -94,22 +99,12 @@ class MessagesController(
             properties["schema.registry.url"] = it
         }
 
-        // properties[ConsumerConfig.MAX_POLL_RECORDS_CONFIG] = 20
-
-        if ((criteria !== null) && (criteria.case == "timestamp")) {
+        if (criteria !== null) {
             properties[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "earliest"
         }
 
         val receiverOptions =
-            if ((criteria != null) && (criteria.case == "offset") && (criteria.partition == -1)) {
-                ReceiverOptions.create<Any, Any>(properties)
-                    .commitInterval(Duration.ZERO)
-                    .commitBatchSize(0)
-                    .addAssignListener { partitions ->
-                        partitions.forEach { it.seek(criteria.offset) }
-                    }
-                    .subscription(setOf(topic))
-            } else if ((criteria != null) && (criteria.case == "offset")) {
+            if ((criteria != null) && (criteria.case == "offset")) {
                 ReceiverOptions.create<Any, Any>(properties)
                     .commitInterval(Duration.ZERO)
                     .commitBatchSize(0)
@@ -117,14 +112,6 @@ class MessagesController(
                         partitions.forEach { it.seek(criteria.offset) }
                     }
                     .assignment(setOf(TopicPartition(topic, criteria.partition)))
-            } else if ((criteria != null) && (criteria.case == "timestamp") && (criteria.partition == -1)) {
-                ReceiverOptions.create<Any, Any>(properties)
-                    .commitInterval(Duration.ZERO)
-                    .commitBatchSize(0)
-                    .addAssignListener { partitions ->
-                        partitions.forEach { it.seekToTimestamp(criteria.timestamp.epochSecond) }
-                    }
-                    .subscription(setOf(topic))
             } else if ((criteria != null) && (criteria.case == "timestamp")) {
                 ReceiverOptions.create<Any, Any>(properties)
                     .commitInterval(Duration.ZERO)

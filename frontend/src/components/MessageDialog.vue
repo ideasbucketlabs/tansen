@@ -15,7 +15,7 @@
                         </div>
                     </div>
                     <AlertIcon v-else-if="isIcon('alert')" class="h-16 w-16"></AlertIcon>
-                    <ErrorIcon v-else-if="isIcon('error')" class="h-16 w-16"></ErrorIcon>
+                    <ErrorIcon v-else-if="isIcon('error')" class="h-16 w-16 text-red-500 dark:text-red-700"></ErrorIcon>
                     <div
                         v-else-if="isIcon('question')"
                         class="flex h-16 w-16 items-center justify-center rounded-full bg-blue-500 text-5xl text-white"
@@ -34,7 +34,7 @@
                 <button
                     v-if="renderOkButton"
                     type="button"
-                    class="relative mx-2 h-9 w-20 rounded bg-green-500 font-bold text-white transition duration-500 hover:bg-green-600 hover:shadow-lg focus:outline-none focus:ring-0 dark:bg-gray-800 dark:hover:bg-gray-900"
+                    class="relative mx-2 h-9 w-20 rounded bg-green-500 font-semibold text-white transition duration-500 hover:bg-green-600 hover:shadow-lg focus:outline-none focus:ring-0 dark:bg-gray-800 dark:hover:bg-gray-900"
                     @click="onClick('ok')"
                 >
                     OK

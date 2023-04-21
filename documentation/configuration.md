@@ -8,6 +8,7 @@ By default, Tansen listens and uses `HTTP` protocol. However, you can use the `H
 
 ```shell
 docker run -d \
+      -p 443:8080
       -v somepath/with-certificates:/etc/tansen/secrets \
       -e 'TANSEN.KAFKA-CLUSTERS.0.NAME=local' \
       -e 'TANSEN.KAFKA-CLUSTERS.0.LABEL=Local' \
@@ -27,7 +28,8 @@ docker run -d \
 #### PLAIN (no SSL and authentication)
 
 ```shell
-docker run -d -e 'TANSEN.KAFKA-CLUSTERS.0.BOOTSTRAP_SERVERS=broker:9092' \
+docker run -d -p 8080:8080
+              -e 'TANSEN.KAFKA-CLUSTERS.0.BOOTSTRAP_SERVERS=broker:9092' \
               -e 'TANSEN.KAFKA-CLUSTERS.0.NAME=local' \
               -e 'SPRING_PROFILES_ACTIVE=prod' \
               ideasbucket/tansen:tag
@@ -37,6 +39,7 @@ docker run -d -e 'TANSEN.KAFKA-CLUSTERS.0.BOOTSTRAP_SERVERS=broker:9092' \
 
 ```shell
 docker run -d \
+      -p 8080:8080
       -v somepath/with-certificates:/etc/kafka/secrets \
       -e 'TANSEN.KAFKA-CLUSTERS.0.NAME=local' \
       -e 'TANSEN.KAFKA-CLUSTERS.0.BOOTSTRAP_SERVERS=broker:9092' \
@@ -55,6 +58,7 @@ docker run -d \
 
 ```shell
 docker run -d \
+      -p 8080:8080
       -e 'TANSEN.KAFKA-CLUSTERS.0.BOOTSTRAP_SERVERS=broker:9092' \
       -e 'TANSEN.KAFKA-CLUSTERS.0.NAME=local' \
       -e 'TANSEN.KAFKA-CLUSTERS.0.SCHEMA_REGISTRY_URL=http://schema-registry:8081' \
@@ -69,6 +73,7 @@ docker run -d \
 
 ```shell
 docker run -d \
+      -p 8080:8080
       -e 'TANSEN.KAFKA-CLUSTERS.0.BOOTSTRAP_SERVERS=broker:9092' \
       -e 'TANSEN.KAFKA-CLUSTERS.0.NAME=local' \
       -e 'TANSEN.KAFKA-CLUSTERS.0.SCHEMA_REGISTRY_URL=http://schema-registry:8081' \
@@ -83,6 +88,7 @@ docker run -d \
 
 ```shell
 docker run -d \
+      -p 8080:8080
       -v somepath/with-certificates:/etc/kafka/secrets \
       -e 'TANSEN.KAFKA-CLUSTERS.0.NAME=local' \
       -e 'TANSEN.KAFKA-CLUSTERS.0.BOOTSTRAP_SERVERS=broker:9092' \
@@ -104,7 +110,8 @@ docker run -d \
 #### PLAIN (no SSL and authentication)
 
 ```shell
-docker run -d -e 'TANSEN.KAFKA-CLUSTERS.0.BOOTSTRAP_SERVERS=broker:9092' \
+docker run -d -p 8080:8080
+              -e 'TANSEN.KAFKA-CLUSTERS.0.BOOTSTRAP_SERVERS=broker:9092' \
               -e 'TANSEN.KAFKA-CLUSTERS.0.NAME=local' \
               -e 'TANSEN.KAFKA-CLUSTERS.0.SCHEMA_REGISTRY=localhost:8081' \
               -e 'SPRING_PROFILES_ACTIVE=prod' \
@@ -114,6 +121,7 @@ docker run -d -e 'TANSEN.KAFKA-CLUSTERS.0.BOOTSTRAP_SERVERS=broker:9092' \
 
 ```shell
 docker run -d \
+      -p 8080:8080
       -v somepath/with-certificates:/etc/kafka/secrets \
       -e 'TANSEN.KAFKA-CLUSTERS.0.BOOTSTRAP_SERVERS=broker:9092' \
       -e 'TANSEN.KAFKA-CLUSTERS.0.NAME=local' \
@@ -130,6 +138,7 @@ docker run -d \
 
 ```shell
 docker run -d \
+      -p 8080:8080
       -v somepath/with-certificates:/etc/kafka/secrets \
       -e 'TANSEN.KAFKA-CLUSTERS.0.BOOTSTRAP_SERVERS=broker:9092' \
       -e 'TANSEN.KAFKA-CLUSTERS.0.NAME=local' \
@@ -144,6 +153,7 @@ docker run -d \
 
 ```shell
 docker run -d \
+      -p 8080:8080
       -v somepath/with-certificates:/etc/kafka/secrets \
       -e 'TANSEN.KAFKA-CLUSTERS.0.BOOTSTRAP_SERVERS=broker:9092' \
       -e 'TANSEN.KAFKA-CLUSTERS.0.NAME=local' \

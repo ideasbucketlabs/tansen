@@ -28,7 +28,6 @@
         "lodash.isequal": "^4.5.0",
         "lodash.orderby": "^4.6.0",
         "pinia": "^2.0.21",
-        "reconnecting-eventsource": "^1.5.0",
         "vue": "^3.2.38",
         "vue-router": "^4.1.5"
     },

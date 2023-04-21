@@ -59,7 +59,7 @@
         </button>
         <topic-consumer-group-grid
             v-if="showConsumerGroupDetail"
-            class="flex-1"
+            class="h-10 flex-1"
             :topic="$route.params.name.toString()"
         ></topic-consumer-group-grid>
     </div>

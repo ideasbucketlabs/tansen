@@ -1,105 +1,207 @@
 <template>
     <div class="relative mt-4 flex flex-1 flex-col overflow-hidden text-gray-800 dark:text-gray-100">
-        <div class="space-y-3 md:flex md:h-20 md:items-start md:space-x-2 md:space-y-1">
-            <div class="flex items-center">
-                <div
-                    class="mt-1 flex items-center rounded border border-green-500 text-green-500 hover:shadow-lg dark:border-gray-500 dark:text-gray-500 dark:hover:shadow-gray-900"
-                >
-                    <button
-                        class="block h-9 w-9 rounded-l border-r border-green-500 transition duration-200 ease-linear dark:border-gray-700"
-                        title="Continue to display messages"
-                        @click="startStream"
-                        type="button"
-                        :class="[
-                            !isStreamPaused
-                                ? 'bg-green-500 text-white shadow-inner shadow-green-900 dark:bg-gray-500 dark:shadow-gray-900'
-                                : 'border-green-500 bg-green-100 hover:bg-green-200 dark:border-gray-500 dark:bg-gray-100 dark:hover:bg-gray-300',
-                        ]"
+        <CodeViewer
+            v-if="showExpandedContent"
+            :value="expandedContent"
+            :partition="expandPartition"
+            :offset="expandOffset"
+            @close="showExpandedContent = false"
+        ></CodeViewer>
+        <div class="flex items-center justify-between pr-4">
+            <div class="space-y-3 lg:flex lg:h-20 lg:items-start lg:space-x-2 lg:space-y-1">
+                <div class="flex items-center">
+                    <div
+                        class="mt-1 flex items-center rounded border border-green-500 text-green-500 hover:shadow-lg dark:border-gray-500 dark:text-gray-500 dark:hover:shadow-gray-900"
                     >
-                        <PlayIcon class="h-full w-full"></PlayIcon>
-                    </button>
-                    <button
-                        @click="pauseStream"
-                        type="button"
-                        class="block h-9 w-9 rounded-r transition duration-200 ease-linear"
-                        :class="[
-                            isStreamPaused
-                                ? 'bg-green-500 text-white shadow-inner shadow-green-900 dark:bg-gray-500 dark:shadow-gray-900'
-                                : 'border-green-500 bg-green-100 hover:bg-green-200 dark:border-gray-500 dark:bg-gray-100 dark:hover:bg-gray-300',
-                        ]"
-                        title="Stop messages"
-                    >
-                        <PauseIcon class="h-full w-full"></PauseIcon>
-                    </button>
+                        <button
+                            class="block h-9 w-9 rounded-l border-r border-green-500 transition duration-200 ease-linear dark:border-gray-700"
+                            title="Continue to display messages"
+                            @click="startStream"
+                            type="button"
+                            :class="[
+                                !isStreamPaused
+                                    ? 'bg-green-500 text-white shadow-inner shadow-green-900 dark:bg-gray-500 dark:shadow-gray-900'
+                                    : 'border-green-500 bg-green-100 hover:bg-green-200 dark:border-gray-500 dark:bg-gray-100 dark:hover:bg-gray-300',
+                            ]"
+                        >
+                            <PlayIcon class="h-full w-full"></PlayIcon>
+                        </button>
+                        <button
+                            @click="doHardPause"
+                            type="button"
+                            class="block h-9 w-9 rounded-r transition duration-200 ease-linear"
+                            :class="[
+                                isStreamPaused
+                                    ? 'bg-green-500 text-white shadow-inner shadow-green-900 dark:bg-gray-500 dark:shadow-gray-900'
+                                    : 'border-green-500 bg-green-100 hover:bg-green-200 dark:border-gray-500 dark:bg-gray-100 dark:hover:bg-gray-300',
+                            ]"
+                            title="Stop messages"
+                        >
+                            <PauseIcon class="h-full w-full"></PauseIcon>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <form @submit.prevent="onFilterSubmission" class="space-y-2 md:flex md:space-y-0 md:space-x-2">
-                <BaseSelectField
-                    label="Offset"
-                    :hide-label="true"
-                    class="w-48"
-                    size="custom"
-                    input-class="h-10 py-0"
-                    v-model="formData.criteria"
-                    :options="options"
-                ></BaseSelectField>
-                <BaseInputField
-                    v-if="formData.criteria === 'offset'"
-                    label="Filter"
-                    class="w-32"
-                    :hide-label="true"
-                    size="small"
-                    input-class="h-10"
-                    v-model.number="formData.offset"
-                    placeholder="Offset"
-                    ><div class="pt-1 text-xs">Must be positive integer value.</div></BaseInputField
-                >
-                <BaseInputField
-                    v-if="formData.criteria === 'time'"
-                    label="Time"
-                    class="w-[19rem]"
-                    :hide-label="true"
-                    size="small"
-                    input-class="h-10"
-                    v-model="rawDatetime"
-                    placeholder="Time must be in (mm/dd/YYYY HH:mm:ss)"
-                    ><div class="pt-1 text-xs">
-                        Must be in (<span class="font-bold italic">mm/dd/YYYY HH:mm:ss</span>) like
-                        <span class="font-bold italic">02/22/2002 16:17:18</span>
-                        format and <span class="font-bold italic">cannot be future date</span>.
-                    </div></BaseInputField
-                >
-                <div class="flex space-x-2">
+                <form @submit.prevent="onFilterSubmission" class="space-y-2 md:flex md:space-x-2 md:space-y-0">
+                    <div class="action-menu w-auto" tabindex="-1">
+                        <button
+                            class="relative h-10 flex-1 truncate rounded border border-green-500 bg-green-50 px-2 dark:border-gray-400 dark:bg-gray-600"
+                            type="button"
+                        >
+                            Deserialization Option
+                        </button>
+                        <div class="absolute z-10 flex w-52">
+                            <div class="mt-2 flex space-y-2 rounded bg-white p-2 shadow-lg dark:bg-gray-600">
+                                <div class="flex flex-1">
+                                    <div>Key Deserialization</div>
+                                    <div class="flex">
+                                        <label
+                                            class="inline-flex w-6/12 cursor-pointer items-center"
+                                            title="This option uses schema registry for deserialization if configured otherwise will fallback to `string`."
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="keyDeserialization"
+                                                class="cursor-pointer"
+                                                v-model="formData.keyDeserialization"
+                                                value="auto"
+                                            />
+                                            <span class="relative ml-2 flex cursor-pointer items-center">
+                                                <span>Auto</span>
+                                                <span
+                                                    class="-mt-2 ml-1 flex rounded-full border border-blue-500 text-blue-500"
+                                                >
+                                                    <InformationIcon class="w-3 fill-current"></InformationIcon></span
+                                            ></span>
+                                        </label>
+                                        <label class="inline-flex w-6/12 cursor-pointer items-center">
+                                            <input
+                                                type="radio"
+                                                v-model="formData.keyDeserialization"
+                                                name="keyDeserialization"
+                                                class="cursor-pointer"
+                                                value="string"
+                                            />
+                                            <span class="ml-2 cursor-pointer">String</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="flex flex-1">
+                                    <div>Value Deserialization</div>
+                                    <div class="flex">
+                                        <label
+                                            class="inline-flex w-6/12 cursor-pointer items-center"
+                                            title="This option uses schema registry for deserialization if configured otherwise will fallback to `string`."
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="valueDeserialization"
+                                                class="cursor-pointer"
+                                                v-model="formData.valueDeserialization"
+                                                value="auto"
+                                            />
+                                            <span class="relative ml-2 flex cursor-pointer items-center">
+                                                <span>Auto</span>
+                                                <span
+                                                    class="-mt-2 ml-1 flex rounded-full border border-blue-500 text-blue-500"
+                                                >
+                                                    <InformationIcon class="w-3 fill-current"></InformationIcon></span
+                                            ></span>
+                                        </label>
+                                        <label class="inline-flex w-6/12 cursor-pointer items-center">
+                                            <input
+                                                type="radio"
+                                                name="valueDeserialization"
+                                                v-model="formData.valueDeserialization"
+                                                value="string"
+                                                class="cursor-pointer"
+                                            />
+                                            <span class="ml-2 cursor-pointer">String</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <BaseSelectField
-                        v-if="formData.criteria !== ''"
                         label="Offset"
+                        :hide-label="true"
+                        class="w-48"
+                        size="custom"
+                        input-class="h-10 py-0"
+                        v-model="formData.criteria"
+                        :options="options"
+                    ></BaseSelectField>
+                    <BaseInputField
+                        v-if="formData.criteria === 'offset'"
+                        label="Filter"
+                        class="w-32"
+                        :hide-label="true"
                         size="small"
                         input-class="h-10"
+                        v-model.number="formData.offset"
+                        placeholder="Offset"
+                        ><div class="pt-1 text-xs">Must be positive integer value.</div></BaseInputField
+                    >
+                    <BaseInputField
+                        v-if="formData.criteria === 'time'"
+                        label="Time"
+                        class="w-[19rem]"
                         :hide-label="true"
-                        class="w-32"
-                        v-model.number="formData.partition"
-                        :options="partitions"
-                    ></BaseSelectField>
-                    <BaseButton
-                        class="h-10 w-24"
-                        label="Apply"
-                        type="submit"
-                        :disabled="!isFormDirty || !isFormValid"
-                    ></BaseButton>
+                        size="small"
+                        input-class="h-10"
+                        v-model="rawDatetime"
+                        placeholder="Time must be in (mm/dd/YYYY HH:mm:ss)"
+                        ><div class="pt-1 text-xs">
+                            Must be in (<span class="font-bold italic">mm/dd/YYYY HH:mm:ss</span>) like
+                            <span class="font-bold italic">02/22/2002 16:17:18</span>
+                            format and <span class="font-bold italic">cannot be future date</span>.
+                        </div></BaseInputField
+                    >
+                    <div class="flex space-x-2">
+                        <BaseSelectField
+                            v-if="formData.criteria !== ''"
+                            label="Offset"
+                            size="small"
+                            input-class="h-10"
+                            :hide-label="true"
+                            class="w-32"
+                            v-model.number="formData.partition"
+                            :options="partitions"
+                        ></BaseSelectField>
+                        <BaseButton
+                            class="h-10 w-24"
+                            label="Apply"
+                            type="submit"
+                            :disabled="!isFormDirty || !isFormValid"
+                        ></BaseButton>
+                    </div>
+                </form>
+                <div class="flex items-center space-x-4 pt-2">
+                    <div>
+                        <label class="inline-flex items-center">
+                            <input class="form-radio" type="radio" name="position" v-model="position" value="latest" />
+                            <span class="ml-1">Latest first</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="inline-flex items-center">
+                            <input
+                                class="form-radio"
+                                type="radio"
+                                name="position"
+                                v-model="position"
+                                value="earliest"
+                            />
+                            <span class="ml-1">Latest last</span>
+                        </label>
+                    </div>
                 </div>
-            </form>
-            <div class="flex items-center space-x-4 pt-2">
-                <div>
-                    <label class="inline-flex items-center">
-                        <input class="form-radio" type="radio" name="position" v-model="position" value="latest" />
-                        <span class="ml-1">Latest first</span>
-                    </label>
-                </div>
-                <div>
-                    <label class="inline-flex items-center">
-                        <input class="form-radio" type="radio" name="position" v-model="position" value="earliest" />
-                        <span class="ml-1">Latest last</span>
-                    </label>
+            </div>
+            <div class="hidden items-center space-x-2 xl:flex" v-if="numberOfMessageReceived !== 0">
+                <div>No. of message received</div>
+                <div class="text-2xl font-bold" style="text-shadow: 0 0 3px rgba(0, 0, 0, 0.45)">
+                    {{ numberOfMessageReceived }}
                 </div>
             </div>
         </div>
@@ -107,6 +209,38 @@
             <div class="mt-6 text-center">
                 <div class="text-3xl">No new message</div>
                 <div>The message browser shows messages that have arrived since this page was opened.</div>
+            </div>
+        </div>
+        <div class="mb-6 flex flex-col shadow-lg" v-if="showMessageKeyDecodingError">
+            <div class="flex rounded-t bg-red-500 dark:bg-red-700">
+                <div class="p-2 text-white">Message key decoding Error</div>
+            </div>
+            <div class="flex items-center space-x-2 rounded-b bg-white p-2 dark:bg-gray-600">
+                <div class="h-10 w-10">
+                    <ErrorIcon class="h-full w-full fill-current text-red-500 dark:text-red-700"></ErrorIcon>
+                </div>
+                <div>
+                    Even though topic use schema registry it seems like some of message `key` do not conform to the
+                    schema defined. Please try again with
+                    <pre class="inline">String</pre>
+                    as deserialization option for key and try again.
+                </div>
+            </div>
+        </div>
+        <div class="mb-6 flex flex-col shadow-lg" v-if="showMessageValueDecodingError">
+            <div class="flex rounded-t bg-red-500 dark:bg-red-700">
+                <div class="p-2 text-white">Message value decoding Error</div>
+            </div>
+            <div class="flex items-center space-x-2 rounded-b bg-white p-2 dark:bg-gray-600">
+                <div class="h-10 w-10">
+                    <ErrorIcon class="h-full w-full fill-current text-red-500 dark:text-red-700"></ErrorIcon>
+                </div>
+                <div>
+                    Even though topic use schema registry it seems like some of message `value` do not conform to the
+                    schema defined. Please try again with
+                    <pre class="inline">String</pre>
+                    as deserialization option for value and try again.
+                </div>
             </div>
         </div>
         <MessageVirtualScroll
@@ -120,8 +254,9 @@
                     v-for="d in sliceData(items.start, items.end)"
                     :key="getKey(d) + position"
                     class="mb-4"
-                    @tabClicked="pauseStream"
-                    @formatClicked="pauseStream"
+                    @tabClicked="doHardPause"
+                    @formatClicked="doHardPause"
+                    @expand-clicked="expandClicked"
                     @onSelect="selectMessage"
                     :selected="isDataSelected(d)"
                     :data="d"
@@ -147,9 +282,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { defineProps, nextTick, onMounted, onUnmounted, type PropType, ref, watch, computed } from 'vue'
+import {
+    computed,
+    defineAsyncComponent,
+    defineProps,
+    nextTick,
+    onMounted,
+    onUnmounted,
+    type PropType,
+    ref,
+    watch,
+} from 'vue'
 import PlayIcon from '@/icons/PlayIcon.vue'
-import { getEventSource } from '@/util/HttpService'
 import eventBus from '@/util/EventBus'
 import { ApplicationEventTypes } from '@/entity/ApplicationEventTypes'
 import BaseInputField from '@/components/BaseInputField.vue'
@@ -161,12 +305,22 @@ import MessageTabs from '@/components/MessageTabs.vue'
 import MessageVirtualScroll from '@/components/MessageVirtualScroll.vue'
 import PauseIcon from '@/icons/PauseIcon.vue'
 import { useRoute } from 'vue-router'
+import StreamProcessor from '@/util/StreamProcessor'
+import type { ErrorResponse } from '@/entity/ErrorResponse'
+import InformationIcon from '@/icons/InformationIcon.vue'
+import ErrorIcon from '@/icons/ErrorIcon.vue'
+import AppComponentLoader from '@/components/AppComponentLoader.vue'
 
 const clusterId = useRoute().params.clusterId as string
-let eventSource: EventSource
+const streamProcessor = new StreamProcessor<TopicMessage>(processTopicMessage, handleError)
 const isStreamPaused = ref(false)
 const isFormDirty = ref<boolean>(false)
 let data: TopicMessage[] = []
+const CodeViewer = defineAsyncComponent({
+    loader: () => import('@/components/CodeViewer.vue'),
+    loadingComponent: AppComponentLoader,
+    delay: 200,
+})
 const props = defineProps({
     topic: {
         type: String as PropType<string>,
@@ -190,34 +344,43 @@ const formData = ref<{
     offset: number | null
     partition: number
     time: Date | null
+    keyDeserialization: 'auto' | 'string'
+    valueDeserialization: 'auto' | 'string'
 }>({
     keyword: '',
     criteria: '',
     offset: null,
     partition: 0,
     time: null,
+    keyDeserialization: 'auto',
+    valueDeserialization: 'auto',
 })
 
 const tailingOffset = ref<number>(0)
 const tailingTimestamp = ref<number>(0)
 const isAnyDataSelected = ref<boolean>(false)
 const position = ref<string>('latest')
+const hardPause = ref<boolean>(false)
 let selectedData: Map<string, TopicMessage> = new Map()
 
 const partitions = computed<{ value: number; label: string }[]>(() => {
-    const output = Array.from(Array(props.numberOfPartition).keys()).map((it) => {
+    return Array.from(Array(props.numberOfPartition).keys()).map((it) => {
         return { value: it, label: 'Partition ' + it }
     })
-
-    output.push({ value: -1, label: 'All partitions' })
-
-    return output
 })
+const showMessageValueDecodingError = ref<boolean>(false)
+const showMessageKeyDecodingError = ref<boolean>(false)
+const numberOfMessageReceived = ref<number>(0)
+const expandedContent = ref<string>('')
+const showExpandedContent = ref<boolean>(false)
+const expandPartition = ref<number>(0)
+const expandOffset = ref<number>(0)
 
 const isFormValid = computed<boolean>(() => {
     if (formData.value.criteria === '') {
-        return false
+        return true
     }
+
     if (formData.value.criteria === 'offset') {
         if (formData.value.offset === null) {
             return false
@@ -252,7 +415,7 @@ watch(
     formData,
     async () => {
         isFormDirty.value = true
-        pauseStream()
+        await pauseStream()
     },
     { deep: true, immediate: false }
 )
@@ -272,24 +435,34 @@ function isDataSelected(message: TopicMessage): boolean {
     return selectedData.has(getKey(message))
 }
 
-function downloadSelectedMessages() {
-    downloadFile(JSON.stringify(Array.from(selectedData.values())), 'value.json', 'JSON')
+function doHardPause() {
+    hardPause.value = true
+    pauseStream()
 }
 
-function processMessage(event: MessageEvent) {
-    const parsedData = JSON.parse(event.data) as TopicMessage
-    if (position.value === 'latest') {
-        data.unshift(parsedData)
-    } else {
-        data.push(parsedData)
-    }
+function downloadSelectedMessages() {
+    downloadFile(JSON.stringify(Array.from(selectedData.values())), 'value', 'JSON')
+}
 
-    if (parsedData.partition === -1 && parsedData.offset === -1) {
+function processTopicMessage(topicMessage: TopicMessage) {
+    if (position.value === 'latest') {
+        data.unshift(topicMessage)
+    } else {
+        data.push(topicMessage)
+    }
+    numberOfMessageReceived.value += 1
+    if (topicMessage.partition === -1 && topicMessage.offset === -1) {
         // Error returned from server during message tailing.
         pauseStream()
+        if (topicMessage.valueData === 'Unknown magic byte!') {
+            showMessageValueDecodingError.value = true
+        }
+        if (topicMessage.keyData === 'Unknown magic byte!') {
+            showMessageKeyDecodingError.value = true
+        }
     } else {
-        tailingOffset.value = parsedData.offset
-        tailingTimestamp.value = parsedData.timestamp
+        tailingOffset.value = topicMessage.offset
+        tailingTimestamp.value = topicMessage.timestamp
     }
     // Only keep 400 message in memory. TODO make this limit dynamic based on message size.
     if (dataLength.value === 400) {
@@ -299,10 +472,24 @@ function processMessage(event: MessageEvent) {
     }
 }
 
-function startStream() {
+async function handleError(errorResponse: ErrorResponse, retryCount = 1) {
+    if (errorResponse.httpCode === 0) {
+        try {
+            await startStream()
+        } catch (error) {
+            if ((error as Error).name !== 'StreamLogicError') {
+                //
+            }
+        }
+    }
+}
+
+async function startStream() {
     if (!isStreamPlayable.value) {
         return
     }
+    hardPause.value = false
+
     if (isSpecificOffsetBeingPeeked.value) {
         const urlSearchParams = new URLSearchParams()
         urlSearchParams.set(
@@ -310,11 +497,11 @@ function startStream() {
             JSON.stringify({ offset: tailingOffset.value + 1, partition: formData.value.partition })
         )
 
-        const url = `${clusterId}/messages/${props.topic}?${urlSearchParams.toString()}`
-        eventSource = getEventSource(url)
-        eventSource.addEventListener('message', processMessage)
-        eventSource.addEventListener('error', processError)
+        const url = `${clusterId}/messages/${formData.value.keyDeserialization}/${
+            formData.value.valueDeserialization
+        }/${props.topic}?${urlSearchParams.toString()}`
         isStreamPaused.value = false
+        await streamProcessor.start(url)
     } else if (isSpecificTimestampBeingPeeked.value) {
         const urlSearchParams = new URLSearchParams()
         urlSearchParams.set(
@@ -322,32 +509,25 @@ function startStream() {
             JSON.stringify({ timestamp: new Date(tailingTimestamp.value + 1).toISOString() })
         )
 
-        const url = `${clusterId}/messages/${props.topic}?${urlSearchParams.toString()}`
-        eventSource = getEventSource(url)
-        eventSource.addEventListener('message', processMessage)
+        const url = `${clusterId}/messages/${formData.value.keyDeserialization}/${
+            formData.value.valueDeserialization
+        }/${props.topic}?${urlSearchParams.toString()}`
         isStreamPaused.value = false
+        await streamProcessor.start(url)
     } else {
-        eventSource = getEventSource(`${clusterId}/messages/${props.topic}`)
-        eventSource.addEventListener('message', processMessage)
         isStreamPaused.value = false
+        await streamProcessor.start(
+            // eslint-disable-next-line vue/max-len
+            `${clusterId}/messages/${formData.value.keyDeserialization}/${formData.value.valueDeserialization}/${props.topic}`
+        )
     }
 }
 
-function processError(event: Event) {
-    try {
-        pauseStream()
-    } catch (e) {
-        // Show error message
-    }
-}
-
-function pauseStream() {
+async function pauseStream() {
     if (isStreamPaused.value) {
         return
     }
-    eventSource.removeEventListener('message', processMessage)
-    eventSource.removeEventListener('error', processError)
-    eventSource.close()
+    await streamProcessor.stop()
     isStreamPaused.value = true
 }
 
@@ -372,6 +552,8 @@ function getKey(message: TopicMessage): string {
 }
 
 function onFilterSubmission() {
+    showMessageValueDecodingError.value = false
+    showMessageKeyDecodingError.value = false
     pauseStream()
     let parameter = ''
 
@@ -393,29 +575,81 @@ function onFilterSubmission() {
 
     data = []
     dataLength.value = 0
-    const url =
-        parameter === '' ? `${clusterId}/messages/${props.topic}` : `${clusterId}/messages/${props.topic}?${parameter}`
-    eventSource = getEventSource(url)
-    eventSource.addEventListener('message', processMessage)
+    const url = parameter === '' ? `${props.topic}` : `${props.topic}?${parameter}`
+    numberOfMessageReceived.value = 0
+    hardPause.value = false
+    streamProcessor.start(
+        `${clusterId}/messages/${formData.value.keyDeserialization}/${formData.value.valueDeserialization}/${url}`
+    )
     selectedData = new Map()
     isAnyDataSelected.value = false
     isStreamPaused.value = false
     isFormDirty.value = false
 }
 
+function pauseStreamIfNotSeeked() {
+    if (isStreamPlayable.value && (isSpecificOffsetBeingPeeked.value || isSpecificTimestampBeingPeeked.value)) {
+        pauseStream()
+    }
+}
+
+function startStreamIfNotPaused() {
+    if (isStreamPlayable.value && !hardPause.value && isStreamPaused.value) {
+        startStream()
+    }
+}
+
+function expandClicked(content: string, partition: number, offset: number) {
+    pauseStream()
+    hardPause.value = true
+    console.log(partition)
+    console.log(offset)
+    expandedContent.value = content
+    expandPartition.value = partition
+    expandOffset.value = offset
+    showExpandedContent.value = true
+}
+
 onMounted(() => {
-    eventSource = getEventSource(`${clusterId}/messages/${props.topic}`)
-    eventSource.addEventListener('message', processMessage)
-    eventSource.addEventListener('error', processError)
-    nextTick(() => {
-        eventBus.on(ApplicationEventTypes.APPLICATION_ACTIVATED, startStream)
-        eventBus.on(ApplicationEventTypes.APPLICATION_DEACTIVATED, pauseStream)
+    nextTick().then(() => {
+        streamProcessor.start(
+            // eslint-disable-next-line vue/max-len
+            `${clusterId}/messages/${formData.value.keyDeserialization}/${formData.value.valueDeserialization}/${props.topic}`
+        )
+        eventBus.on(ApplicationEventTypes.APPLICATION_ACTIVATED, startStreamIfNotPaused)
+        eventBus.on(ApplicationEventTypes.APPLICATION_DEACTIVATED, pauseStreamIfNotSeeked)
     })
 })
 
 onUnmounted(() => {
     pauseStream()
-    eventBus.off(ApplicationEventTypes.APPLICATION_ACTIVATED, startStream)
-    eventBus.off(ApplicationEventTypes.APPLICATION_DEACTIVATED, pauseStream)
+    eventBus.off(ApplicationEventTypes.APPLICATION_ACTIVATED, startStreamIfNotPaused)
+    eventBus.off(ApplicationEventTypes.APPLICATION_DEACTIVATED, pauseStreamIfNotSeeked)
+    data = []
+    dataLength.value = 0
 })
 </script>
+<style scoped>
+.action-menu div {
+    display: none;
+}
+
+.action-menu:hover div,
+.action-menu button:focus + div {
+    display: block;
+}
+
+.action-menu:hover button {
+    @apply bg-green-100 shadow-inner dark:border-gray-400 dark:bg-gray-700 dark:text-gray-100 dark:shadow-none dark:shadow-black;
+}
+
+.list-enter-active,
+.list-leave-active {
+    transition: opacity 200ms ease-out;
+}
+
+.list-enter-from,
+.list-leave-to {
+    opacity: 0;
+}
+</style>

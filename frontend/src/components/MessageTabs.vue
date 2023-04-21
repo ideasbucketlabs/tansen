@@ -51,7 +51,7 @@
                 </li>
             </ul>
             <div class="flex items-center">
-                <label class="block flex cursor-pointer items-center">
+                <label class="flex cursor-pointer items-center">
                     <input class="mr-2" type="checkbox" :checked="selected" @click="emitSelection" />
                     <span class="mr-2 hidden md:block">Select</span>
                 </label>
@@ -61,31 +61,35 @@
             class="flex flex-1 flex-col overflow-auto rounded-b rounded-tr bg-white shadow dark:bg-gray-700"
             v-if="currentIndex === 0"
         >
-            <template v-if="data.valueSchemaFormat === null">
-                <div
-                    class="flex items-center border-b border-green-100 bg-green-50 p-2 dark:border-gray-500 dark:bg-gray-600"
+            <div
+                class="flex items-center border-b border-green-100 bg-green-50 p-2 dark:border-gray-500 dark:bg-gray-600"
+            >
+                <button
+                    type="button"
+                    @click="handleExpand(computedValueData as String | Object, data.partition, data.offset)"
+                    class="relative overflow-hidden rounded border border-green-500 bg-green-100 px-2 text-sm text-green-500 transition duration-200 ease-linear hover:shadow-lg dark:border-gray-900 dark:bg-gray-700 dark:text-gray-100"
                 >
-                    <label class="flex cursor-pointer items-center">
-                        <input class="mr-2" type="checkbox" v-model="formatValueAsJson" />
-                        <span class="">Format value as JSON</span>
-                    </label>
-                </div>
-            </template>
+                    <ripple></ripple>
+                    Expand
+                </button>
+            </div>
             <div class="relative flex flex-1 flex-nowrap overflow-auto whitespace-nowrap">
                 <pre class="absolute flex-1 px-4 py-2">{{ computedValueData }}</pre>
             </div>
         </div>
         <div class="flex-1 overflow-auto rounded-b bg-white dark:bg-gray-700" v-else-if="currentIndex === 1">
-            <template v-if="data.keySchemaFormat === null">
-                <div
-                    class="flex items-center border-b border-green-100 bg-green-50 p-2 dark:border-gray-500 dark:bg-gray-600"
+            <div
+                class="flex items-center border-b border-green-100 bg-green-50 p-2 dark:border-gray-500 dark:bg-gray-600"
+            >
+                <button
+                    type="button"
+                    @click="handleExpand(computedKeyData as String | Object, data.partition, data.offset)"
+                    class="relative overflow-hidden rounded border border-green-500 bg-green-100 px-2 text-sm text-green-500 transition duration-200 ease-linear hover:shadow-lg dark:border-gray-900 dark:bg-gray-700 dark:text-gray-100"
                 >
-                    <label class="flex cursor-pointer items-center">
-                        <input class="mr-2" type="checkbox" v-model="formatKeyAsJson" />
-                        <span class="">Format key data as JSON</span>
-                    </label>
-                </div>
-            </template>
+                    <ripple></ripple>
+                    Expand
+                </button>
+            </div>
             <pre class="flex-1 overflow-auto px-4 py-2">{{ computedKeyData }}</pre>
         </div>
         <div class="flex-1 overflow-auto rounded-b bg-white px-4 py-2 dark:bg-gray-700" v-else-if="currentIndex === 2">
@@ -120,6 +124,7 @@ import type { TopicMessage } from '@/entity/TopicMessage'
 import eventBus from '@/util/EventBus'
 import { ApplicationEventTypes } from '@/entity/ApplicationEventTypes'
 import type { ApplicationEvent } from '@/entity/ApplicationEvent'
+import Ripple from '@/components/Ripple.vue'
 
 const props = defineProps({
     selected: {
@@ -134,28 +139,22 @@ const props = defineProps({
 
 const emit = defineEmits<{
     (e: 'tabClicked', value: number): void
-    (e: 'formatClicked'): void
+    (e: 'expandClicked', content: string, partition: number, offset: number): void
     (e: 'onSelect', selected: boolean, value: TopicMessage): void
 }>()
 
 const currentIndex = ref<number>(0)
-const formatValueAsJson = ref<boolean>(false)
-const formatKeyAsJson = ref<boolean>(false)
 const isDataSelected = ref<boolean>(props.selected || false)
 const computedValueData = computed(() => {
-    return formatValueAsJson.value ? prettifyContent(props.data.valueData as string) : props.data.valueData
+    return (props.data?.valueSchemaFormat ?? null) === null
+        ? prettifyContent(props.data.valueData as string)
+        : props.data.valueData
 })
 
 const computedKeyData = computed(() => {
-    return formatKeyAsJson.value ? prettifyContent(props.data.keyData as string) : props.data.keyData
-})
-
-watch(formatValueAsJson, () => {
-    emit('formatClicked')
-})
-
-watch(formatKeyAsJson, () => {
-    emit('formatClicked')
+    return (props.data?.keySchemaFormat ?? null) === null
+        ? prettifyContent(props.data.keyData as string)
+        : props.data.keyData
 })
 
 function emitSelection() {
@@ -204,6 +203,14 @@ function messageSelected(applicationEvent: ApplicationEvent) {
 function messageUnselected(applicationEvent: ApplicationEvent) {
     if (getKey(props.data) === getKey(applicationEvent.data as TopicMessage)) {
         isDataSelected.value = false
+    }
+}
+
+function handleExpand(input: string | object, partition: number, offset: number) {
+    if (typeof input === 'object') {
+        emit('expandClicked', JSON.stringify(input, null, 4) as string, partition, offset)
+    } else {
+        emit('expandClicked', input as string, partition, offset)
     }
 }
 

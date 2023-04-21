@@ -297,7 +297,7 @@ export const schemaStore = defineStore('schemas', {
         async deleteSubject(clusterId: string, subject: string, hardDelete = false) {
             eventBus.emit(ApplicationEventTypes.BEFORE_SUBJECT_DELETE, true)
             await deleteAction(
-                hardDelete ? `${clusterId}/subjects/${subject}/?permanent=true` : `${clusterId}/subjects/${subject}`,
+                hardDelete ? `${clusterId}/subjects/${subject}?permanent=true` : `${clusterId}/subjects/${subject}`,
                 () => {
                     const type = this.getSchemaBySubjectAndVersion(clusterId, subject, 'latest')?.schemaType ?? 'AVRO'
 
