@@ -31,6 +31,7 @@ jobs:
         needs: [check-changes-in-frontend]
         steps:
             - uses: actions/setup-node@v3
+            - name: Setup packages
               working-directory: ./frontend
               with:
                   node-version: 18
