@@ -21,7 +21,7 @@ jobs:
                   files: frontend/**
 
             -   name: Setup packages
-                if: steps.was-any-frontend-files-changed.outputs.any_changed == 'true'
+                if: steps.was-any-frontend-files-changed.outputs.any_changed != 'true'
                 uses: actions/setup-node@v3
                 with:
                      node-version: 18
@@ -29,21 +29,21 @@ jobs:
                      cache-dependency-path: frontend/package-lock.json
 
             -   name: Install packages
-                if: steps.was-any-frontend-files-changed.outputs.any_changed == 'true'
+                if: steps.was-any-frontend-files-changed.outputs.any_changed != 'true'
                 working-directory: ./frontend
                 run: npm ci
 
             -   name: Run lint
-                if: steps.was-any-frontend-files-changed.outputs.any_changed == 'true'
+                if: steps.was-any-frontend-files-changed.outputs.any_changed != 'true'
                 working-directory: ./frontend
                 run: npm run lint
 
             -   name: Run unit tests
-                if: steps.was-any-frontend-files-changed.outputs.any_changed == 'true'
+                if: steps.was-any-frontend-files-changed.outputs.any_changed != 'true'
                 working-directory: ./frontend
                 run: npm run test:unit:ci
 
             -   name: Run build
-                if: steps.was-any-frontend-files-changed.outputs.any_changed == 'true'
+                if: steps.was-any-frontend-files-changed.outputs.any_changed != 'true'
                 working-directory: ./frontend
                 run: npm run build
