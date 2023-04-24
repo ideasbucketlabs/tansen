@@ -31,17 +31,23 @@ jobs:
         runs-on: ubuntu-latest
         needs: [check-changes-in-frontend]
         steps:
+            -   name: Go to frontend directory
+                run: cd frontend
+
             -   name: Setup packages
                 uses: actions/setup-node@v3
                 with:
                      node-version: 18
                      cache: 'npm'
-                     working-directory: ./frontend
+
             -   name: Install packages
                 run: npm ci
+
             -   name: Run lint
                 run: npm run lint
+
             -   name: Run unit tests
                 run: npm run test:unit:ci
+
             -   name: Run build
                 run: npm run build
