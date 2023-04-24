@@ -33,23 +33,31 @@ jobs:
         steps:
             -   uses: actions/checkout@v3
                 with:
-                    fetch-depth: 0
+                    persist-credentials: false
 
             -   name: Setup packages
-                working-directory: frontend
                 uses: actions/setup-node@v3
                 with:
                      node-version: 18
-                     cache: 'npm'
+
+            -   name: Cache node_modules
+                uses: actions/cache@v3
+                with:
+                    path: node_modules
+                    key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
 
             -   name: Install packages
+                working-directory: ./frontend
                 run: npm ci
 
             -   name: Run lint
+                working-directory: ./frontend
                 run: npm run lint
 
             -   name: Run unit tests
+                working-directory: ./frontend
                 run: npm run test:unit:ci
 
             -   name: Run build
+                working-directory: ./frontend
                 run: npm run build
