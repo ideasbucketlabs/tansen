@@ -32,7 +32,8 @@ jobs:
         needs: [check-changes-in-frontend]
         steps:
             -   name: Go to frontend directory
-                run: cd frontend
+                run: |
+                    cd ./frontend/
 
             -   name: Setup packages
                 uses: actions/setup-node@v3
