@@ -138,7 +138,7 @@
                                 </template>
                                 <TextDataFilter
                                     v-if="column.type === 'string' && isFilterVisible(column.dataId)"
-                                    class="absolute"
+                                    class="absolute w-64"
                                     :trigger="uniqueId + '-column-' + index"
                                     @hide="showHideFilter(column.dataId)"
                                     :field="column.dataId"

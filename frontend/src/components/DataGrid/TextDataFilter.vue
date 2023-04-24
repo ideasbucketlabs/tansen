@@ -1,6 +1,6 @@
 <template>
     <div
-        class="z-10 flex flex-col rounded-b border-b border-r border-l border-green-300 bg-green-100 p-2 shadow-lg dark:border-gray-800 dark:bg-gray-700"
+        class="z-10 flex flex-col rounded-b border-b border-l border-r border-green-300 bg-green-100 p-2 shadow-lg dark:border-gray-800 dark:bg-gray-700"
         v-click-outside="clickedOutsideComponent"
         ref="root"
     >

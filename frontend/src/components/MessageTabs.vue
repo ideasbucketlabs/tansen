@@ -58,7 +58,7 @@
             </div>
         </div>
         <div
-            class="flex flex-1 flex-col overflow-auto rounded-b rounded-tr bg-white shadow dark:bg-gray-700"
+            class="flex flex-1 flex-col overflow-auto rounded-b bg-white shadow dark:bg-gray-700"
             v-if="currentIndex === 0"
         >
             <div

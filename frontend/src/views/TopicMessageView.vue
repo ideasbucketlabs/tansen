@@ -177,26 +177,6 @@
                         ></BaseButton>
                     </div>
                 </form>
-                <div class="flex items-center space-x-4 pt-2">
-                    <div>
-                        <label class="inline-flex items-center">
-                            <input class="form-radio" type="radio" name="position" v-model="position" value="latest" />
-                            <span class="ml-1">Latest first</span>
-                        </label>
-                    </div>
-                    <div>
-                        <label class="inline-flex items-center">
-                            <input
-                                class="form-radio"
-                                type="radio"
-                                name="position"
-                                v-model="position"
-                                value="earliest"
-                            />
-                            <span class="ml-1">Latest last</span>
-                        </label>
-                    </div>
-                </div>
             </div>
             <div class="hidden items-center space-x-2 xl:flex" v-if="numberOfMessageReceived !== 0">
                 <div>No. of message received</div>
@@ -252,7 +232,7 @@
             <template v-slot:detail="{ items }">
                 <message-tabs
                     v-for="d in sliceData(items.start, items.end)"
-                    :key="getKey(d) + position"
+                    :key="getKey(d)"
                     class="mb-4"
                     @tabClicked="doHardPause"
                     @formatClicked="doHardPause"
@@ -359,7 +339,6 @@ const formData = ref<{
 const tailingOffset = ref<number>(0)
 const tailingTimestamp = ref<number>(0)
 const isAnyDataSelected = ref<boolean>(false)
-const position = ref<string>('latest')
 const hardPause = ref<boolean>(false)
 let selectedData: Map<string, TopicMessage> = new Map()
 
@@ -427,10 +406,6 @@ watch(rawDatetime, async (newRawDatetime: string | null) => {
     }
 })
 
-watch(position, () => {
-    data = data.reverse()
-})
-
 function isDataSelected(message: TopicMessage): boolean {
     return selectedData.has(getKey(message))
 }
@@ -445,11 +420,7 @@ function downloadSelectedMessages() {
 }
 
 function processTopicMessage(topicMessage: TopicMessage) {
-    if (position.value === 'latest') {
-        data.unshift(topicMessage)
-    } else {
-        data.push(topicMessage)
-    }
+    data.unshift(topicMessage)
     numberOfMessageReceived.value += 1
     if (topicMessage.partition === -1 && topicMessage.offset === -1) {
         // Error returned from server during message tailing.
