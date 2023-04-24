@@ -23,7 +23,8 @@ jobs:
               run: echo frontend is affected
 
             - name: Prevent from running
-              if: steps.changed-files-specific.outputs.any_changed != 'true'
+#              if: steps.changed-files-specific.outputs.any_changed != 'true'
+              if: steps.changed-files-specific.outputs.any_changed == 'true'
               run: exit 1
     run-test:
         name: Run tests and build frontend
