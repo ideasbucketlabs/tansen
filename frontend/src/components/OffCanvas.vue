@@ -51,7 +51,7 @@
                                             :class="
                                                 $route.name === 'dashboard'
                                                     ? 'bg-green-500 text-white shadow-inner dark:bg-gray-700'
-                                                    : 'text-green-500 hover:cursor-pointer hover:bg-green-50 dark:text-white dark:text-gray-100 dark:hover:bg-gray-600 dark:hover:bg-gray-600'
+                                                    : 'text-green-500 hover:cursor-pointer hover:bg-green-50 dark:text-gray-100 dark:text-white dark:hover:bg-gray-600 dark:hover:bg-gray-600'
                                             "
                                             class="mb-2 block flex w-full content-center items-center rounded p-2 transition duration-200 ease-linear"
                                             :to="{ name: 'dashboard' }"

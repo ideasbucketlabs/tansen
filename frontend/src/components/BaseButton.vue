@@ -11,14 +11,14 @@
         </div>
         <div
             v-else-if="!loading && disabled"
-            class="flex h-full w-full cursor-not-allowed select-none items-center justify-center rounded border border-transparent bg-gray-400 py-2 px-4 text-center text-white dark:border-gray-600 dark:bg-gray-600"
+            class="flex h-full w-full cursor-not-allowed select-none items-center justify-center rounded border border-transparent bg-gray-400 px-4 py-2 text-center text-white dark:border-gray-600 dark:bg-gray-600"
         >
             <div class="block text-center dark:text-gray-500">{{ label }}</div>
         </div>
         <button
             v-else
             @mousedown="$emit('click')"
-            class="relative flex h-full w-full items-center justify-center overflow-hidden rounded border border-green-600 bg-green-500 py-2 px-4 text-white transition duration-200 ease-linear hover:bg-green-600 hover:shadow-lg dark:hover:shadow-black"
+            class="relative flex h-full w-full items-center justify-center overflow-hidden rounded border border-green-600 bg-green-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-green-600 hover:shadow-lg dark:hover:shadow-black"
             @click="$emit('click')"
             :type="type"
         >

@@ -20,23 +20,23 @@
         <div v-show="!collapsed" class="flex flex-1 flex-col rounded-b p-2 shadow dark:shadow-gray-700">
             <div class="flex flex-wrap space-x-2">
                 <div
-                    class="rounded border border-green-100 bg-green-50 py-1 px-3 uppercase shadow dark:border-gray-700 dark:bg-gray-700 dark:shadow-gray-700"
+                    class="rounded border border-green-100 bg-green-50 px-3 py-1 uppercase shadow dark:border-gray-700 dark:bg-gray-700 dark:shadow-gray-700"
                 >
                     Id <span class="text-green-400">{{ node?.id }}</span>
                 </div>
                 <div
-                    class="rounded border border-green-100 bg-green-50 py-1 px-3 uppercase shadow dark:border-gray-700 dark:bg-gray-700 dark:shadow-gray-700"
+                    class="rounded border border-green-100 bg-green-50 px-3 py-1 uppercase shadow dark:border-gray-700 dark:bg-gray-700 dark:shadow-gray-700"
                 >
                     Port <span class="text-green-400">{{ node?.port }}</span>
                 </div>
                 <div
-                    class="rounded border border-green-100 bg-green-50 py-1 px-3 uppercase shadow dark:border-gray-700 dark:bg-gray-700 dark:shadow-gray-700"
+                    class="rounded border border-green-100 bg-green-50 px-3 py-1 uppercase shadow dark:border-gray-700 dark:bg-gray-700 dark:shadow-gray-700"
                 >
                     Host <span class="text-green-400">{{ node?.host }}</span>
                 </div>
                 <div
                     v-if="node.rack !== null"
-                    class="rounded border border-green-100 bg-green-50 py-1 px-3 uppercase shadow dark:border-gray-700 dark:bg-gray-700 dark:shadow-gray-700"
+                    class="rounded border border-green-100 bg-green-50 px-3 py-1 uppercase shadow dark:border-gray-700 dark:bg-gray-700 dark:shadow-gray-700"
                 >
                     Rack: <span class="text-green-400">{{ node?.rack }}</span>
                 </div>

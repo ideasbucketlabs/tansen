@@ -27,7 +27,7 @@
                 {
                     'px-2 py-1': size === 'small',
                     'px-2 py-3': size === 'medium',
-                    'py-4 px-2': size === 'large',
+                    'px-2 py-4': size === 'large',
                     '': size === 'custom',
                 },
                 [

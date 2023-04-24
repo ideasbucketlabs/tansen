@@ -443,7 +443,7 @@ function processTopicMessage(topicMessage: TopicMessage) {
     }
 }
 
-async function handleError(errorResponse: ErrorResponse, retryCount = 1) {
+async function handleError(errorResponse: ErrorResponse) {
     if (errorResponse.httpCode === 0) {
         try {
             await startStream()

@@ -27,7 +27,7 @@
             @input="handleInput"
             class="block rounded border bg-white text-black transition-shadow duration-200 ease-linear focus:shadow-lg dark:bg-transparent dark:text-gray-100"
             :class="[
-                { 'px-2 py-1': size === 'small', 'px-2 py-3': size === 'medium', 'py-4 px-2': size === 'large' },
+                { 'px-2 py-1': size === 'small', 'px-2 py-3': size === 'medium', 'px-2 py-4': size === 'large' },
                 [
                     hasError
                         ? 'border-red-400 hover:border-red-500 focus:border-red-500 focus:shadow-red-100 focus:ring-red-500 dark:focus:shadow-red-900'
