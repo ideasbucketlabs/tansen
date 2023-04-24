@@ -35,24 +35,25 @@ jobs:
                 with:
                     fetch-depth: 0
 
-            -   name: Go to frontend directory
-                run: |
-                    cd ./frontend/
-
             -   name: Setup packages
                 uses: actions/setup-node@v3
                 with:
                      node-version: 18
                      cache: 'npm'
+                     working-directory: frontend
 
             -   name: Install packages
                 run: npm ci
+                working-directory: frontend
 
             -   name: Run lint
                 run: npm run lint
+                working-directory: frontend
 
             -   name: Run unit tests
                 run: npm run test:unit:ci
+                working-directory: frontend
 
             -   name: Run build
                 run: npm run build
+                working-directory: frontend
