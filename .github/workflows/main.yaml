@@ -40,12 +40,8 @@ jobs:
                 uses: actions/setup-node@v3
                 with:
                      node-version: 18
-
-            -   name: Cache node_modules
-                uses: actions/cache@v3
-                with:
-                    path: node_modules
-                    key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+                     cache: 'npm'
+                     cache-dependency-path: frontend/package-lock.json
 
             -   name: Install packages
                 working-directory: ./frontend
