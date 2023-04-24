@@ -37,10 +37,10 @@ jobs:
 
             -   name: Setup packages
                 uses: actions/setup-node@v3
+                working-directory: frontend
                 with:
                      node-version: 18
                      cache: 'npm'
-                     working-directory: frontend
 
             -   name: Install packages
                 run: npm ci
