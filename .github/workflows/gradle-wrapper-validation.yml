@@ -1,12 +1,12 @@
-name: "Validate Gradle Wrapper"
+name: Validate Gradle Wrapper
 on:
     push:
         branches:
-            - "workflow"
+            - workflow
 
 jobs:
     validation:
-        name: "Validation"
+        name: Validation
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
