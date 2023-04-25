@@ -12,7 +12,7 @@
                                     label="Backward"
                                     un-selected-class="hover:bg-green-50 dark:hover:bg-gray-800"
                                     selected-class="bg-green-100 dark:bg-gray-700 dark:shadow-gray-800 rounded"
-                                    class="mx-4 mt-4 mb-2 p-4"
+                                    class="mx-4 mb-2 mt-4 p-4"
                                 >
                                     <span class="italic text-gray-600 dark:text-gray-300"
                                         >Consumers using the new schema can read data written by producers using the
@@ -27,7 +27,7 @@
                                     label="Transitive Backward"
                                     un-selected-class="hover:bg-green-50 dark:hover:bg-gray-800"
                                     selected-class="bg-green-100 dark:bg-gray-700 dark:shadow-gray-800 rounded"
-                                    class="mx-4 mt-4 mb-2 p-4"
+                                    class="mx-4 mb-2 mt-4 p-4"
                                 >
                                     <span class="italic text-gray-600 dark:text-gray-300"
                                         >Consumers using the new schema can read data written by producers using the
@@ -42,7 +42,7 @@
                                     label="Forward"
                                     un-selected-class="hover:bg-green-50 dark:hover:bg-gray-800"
                                     selected-class="bg-green-100 dark:bg-gray-700 dark:shadow-gray-800 rounded"
-                                    class="mx-4 mt-4 mb-2 p-4"
+                                    class="mx-4 mb-2 mt-4 p-4"
                                 >
                                     <span class="italic text-gray-600 dark:text-gray-300"
                                         >Consumers using the latest registered schema can read data written by producers
@@ -57,7 +57,7 @@
                                     label="Transitive Forward"
                                     un-selected-class="hover:bg-green-50 dark:hover:bg-gray-800"
                                     selected-class="bg-green-100 dark:bg-gray-700 dark:shadow-gray-800 rounded"
-                                    class="mx-4 mt-4 mb-2 p-4"
+                                    class="mx-4 mb-2 mt-4 p-4"
                                 >
                                     <span class="italic text-gray-600 dark:text-gray-300">
                                         Consumers using all the previously registered schemas can read data written by
@@ -72,7 +72,7 @@
                                     label="Full"
                                     un-selected-class="hover:bg-green-50 dark:hover:bg-gray-800"
                                     selected-class="bg-green-100 dark:bg-gray-700 dark:shadow-gray-800 rounded"
-                                    class="mx-4 mt-4 mb-2 p-4"
+                                    class="mx-4 mb-2 mt-4 p-4"
                                 >
                                     <span class="italic text-gray-600 dark:text-gray-300">
                                         The new schema is forward and backward compatible with the latest registered
@@ -87,7 +87,7 @@
                                     label="Transitive Full"
                                     un-selected-class="hover:bg-green-50 dark:hover:bg-gray-800"
                                     selected-class="bg-green-100 dark:bg-gray-700 dark:shadow-gray-800 rounded"
-                                    class="mx-4 mt-4 mb-2 p-4"
+                                    class="mx-4 mb-2 mt-4 p-4"
                                 >
                                     <span class="italic text-gray-600 dark:text-gray-300">
                                         The new schema is forward and backward compatible with all previously registered
@@ -102,7 +102,7 @@
                                     label="None"
                                     un-selected-class="hover:bg-green-50 dark:hover:bg-gray-800"
                                     selected-class="bg-green-100 dark:bg-gray-700 dark:shadow-gray-800 rounded"
-                                    class="mx-4 mt-4 mb-2 p-4"
+                                    class="mx-4 mb-2 mt-4 p-4"
                                 >
                                     <span class="italic text-gray-600 dark:text-gray-300">
                                         Schema compatibility checks are disabled.

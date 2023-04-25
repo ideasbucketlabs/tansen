@@ -43,10 +43,10 @@
  * file that was distributed with this source code.
  */
 import { getId } from '@/util/Util'
-import { defineEmits, defineProps, type PropType, ref } from 'vue'
+import { defineEmits, defineProps, type PropType } from 'vue'
 import InformationIcon from '@/icons/InformationIcon.vue'
 
-const props = defineProps({
+defineProps({
     name: {
         type: String,
         default: () => getId(),

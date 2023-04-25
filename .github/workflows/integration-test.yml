@@ -1,0 +1,60 @@
+name: Integration Tests
+on:
+    push:
+        branches: [main, main-okta]
+    pull_request:
+        branches: [main, main-okta]
+
+jobs:
+    run-test:
+        name: Run tests and build frontend
+        timeout-minutes: 60
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v3
+                with:
+                    persist-credentials: false
+                    fetch-depth: 0
+
+            - name: Get changed files in the frontend folder
+              id: was-any-frontend-files-changed
+              uses: tj-actions/changed-files@v34
+              with:
+                  files: frontend/**
+
+            -   name: Setup packages
+                if: steps.was-any-frontend-files-changed.outputs.any_changed == 'true'
+                uses: actions/setup-node@v3
+                with:
+                     node-version: 18
+                     cache: 'npm'
+                     cache-dependency-path: frontend/package-lock.json
+
+            -   name: Install packages
+                if: steps.was-any-frontend-files-changed.outputs.any_changed == 'true'
+                working-directory: ./frontend
+                run: npm ci
+
+            -   name: Run lint
+                if: steps.was-any-frontend-files-changed.outputs.any_changed == 'true'
+                working-directory: ./frontend
+                run: npm run lint
+
+            -   name: Run unit tests
+                if: steps.was-any-frontend-files-changed.outputs.any_changed == 'true'
+                working-directory: ./frontend
+                run: npm run test:unit:ci
+
+            -   name: Run build
+                if: steps.was-any-frontend-files-changed.outputs.any_changed == 'true'
+                working-directory: ./frontend
+                run: npm run build
+
+            -   name: Set up JDK 17
+                uses: actions/setup-java@v3
+                with:
+                    java-version: '17'
+                    distribution: 'temurin'
+                    cache: 'gradle'
+
+            -   run: ./gradlew build --no-daemon

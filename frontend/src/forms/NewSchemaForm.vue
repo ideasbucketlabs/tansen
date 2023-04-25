@@ -43,7 +43,7 @@
                 class="flex w-full justify-between border-t bg-gray-100 px-4 pt-2 dark:border-gray-900 dark:bg-gray-800"
             >
                 <button
-                    class="w-24 rounded bg-red-500 py-2 px-4 text-white transition duration-200 ease-linear hover:bg-red-700"
+                    class="w-24 rounded bg-red-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-red-700"
                     @click="emit('cancel')"
                     type="button"
                 >
@@ -58,7 +58,7 @@
                         <span class="w-34 hidden md:block">Valid schema</span>
                     </div>
                     <button
-                        class="relative h-10 w-24 overflow-hidden rounded bg-cyan-500 py-2 px-4 text-white transition duration-200 ease-linear hover:bg-cyan-600"
+                        class="relative h-10 w-24 overflow-hidden rounded bg-cyan-500 px-4 py-2 text-white transition duration-200 ease-linear hover:bg-cyan-600"
                         type="button"
                         @click="validateSchema"
                     >

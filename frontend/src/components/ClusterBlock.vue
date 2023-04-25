@@ -2,7 +2,7 @@
     <ul>
         <li
             @click="collapsed = !collapsed"
-            class="mt-2 mb-2 flex cursor-pointer items-center justify-between uppercase dark:border-dotted dark:border-gray-400"
+            class="mb-2 mt-2 flex cursor-pointer items-center justify-between uppercase dark:border-dotted dark:border-gray-400"
             :title="collapsed ? 'Click to expand the panel.' : 'Click to collapse the panel.'"
         >
             <span class="block flex cursor-pointer items-center space-x-2 text-green-500 dark:text-gray-100">

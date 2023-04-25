@@ -12,10 +12,10 @@
             <div
                 v-for="(reference, index) in references"
                 :key="'reference-schema-' + index"
-                class="overflow-y-auto md:mt-2 md:flex md:flex-col md:space-y-2 md:space-y-0 md:space-x-2"
+                class="overflow-y-auto md:mt-2 md:flex md:flex-col md:space-x-2 md:space-y-0 md:space-y-2"
             >
                 <div class="font-bold">Reference {{ index + 1 }}</div>
-                <div class="space-y-2 overflow-y-auto md:mt-2 md:flex md:items-center md:space-y-0 md:space-x-2">
+                <div class="space-y-2 overflow-y-auto md:mt-2 md:flex md:items-center md:space-x-2 md:space-y-0">
                     <div class="md:flex md:flex-1 md:flex-col md:p-1">
                         <div class="flex items-center">
                             <div>Reference name *</div>
@@ -97,7 +97,7 @@
                 </div>
             </div>
             <button
-                class="relative mt-4 mb-14 flex items-center justify-center overflow-hidden rounded border border-green-500 border-green-500 px-4 py-2 text-green-500 transition duration-200 ease-linear hover:bg-green-100 hover:shadow dark:hover:bg-gray-700 dark:hover:shadow-black"
+                class="relative mb-14 mt-4 flex items-center justify-center overflow-hidden rounded border border-green-500 border-green-500 px-4 py-2 text-green-500 transition duration-200 ease-linear hover:bg-green-100 hover:shadow dark:hover:bg-gray-700 dark:hover:shadow-black"
                 @click="addReference"
             >
                 <ripple ripple-class="bg-green-200 dark:bg-green-200 opacity-25"></ripple>

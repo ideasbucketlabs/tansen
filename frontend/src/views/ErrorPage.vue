@@ -44,7 +44,6 @@ import { ref, computed } from 'vue'
 import Ripple from '@/components/Ripple.vue'
 
 const error = ref<LocationQueryValue | LocationQueryValue[] | undefined>(useRoute().query.code)
-const meta = useRoute().meta
 
 if (error.value === undefined) {
     error.value = '404'

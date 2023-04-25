@@ -58,7 +58,7 @@
             </div>
         </div>
         <div
-            class="flex flex-1 flex-col overflow-auto rounded-b rounded-tr bg-white shadow dark:bg-gray-700"
+            class="flex flex-1 flex-col overflow-auto rounded-b bg-white shadow dark:bg-gray-700"
             v-if="currentIndex === 0"
         >
             <div
@@ -119,7 +119,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { computed, defineEmits, defineProps, onMounted, onUnmounted, type PropType, ref, watch } from 'vue'
+import { computed, defineEmits, defineProps, onMounted, onUnmounted, type PropType, ref } from 'vue'
 import type { TopicMessage } from '@/entity/TopicMessage'
 import eventBus from '@/util/EventBus'
 import { ApplicationEventTypes } from '@/entity/ApplicationEventTypes'
