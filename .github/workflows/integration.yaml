@@ -1,4 +1,4 @@
-name: 'Frontend Tests'
+name: 'Integration Tests'
 on:
     push:
         branches:
@@ -47,3 +47,9 @@ jobs:
                 if: steps.was-any-frontend-files-changed.outputs.any_changed == 'true'
                 working-directory: ./frontend
                 run: npm run build
+
+            -   name: Setup Gradle
+                uses: gradle/gradle-build-action@v2
+
+            -   name: Run build with Gradle Wrapper
+                run: ./gradlew build
