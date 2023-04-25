@@ -1,8 +1,9 @@
 name: Validate Gradle Wrapper
 on:
     push:
-        branches:
-            - workflow
+        branches: [main, main-okta]
+    pull_request:
+        branches: [main, main-okta]
 
 jobs:
     validation:
