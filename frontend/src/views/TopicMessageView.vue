@@ -456,7 +456,7 @@ async function handleError(errorResponse: ErrorResponse) {
 }
 
 async function startStream() {
-    if (!isStreamPlayable.value) {
+    if (!isStreamPlayable.value || !isStreamPaused.value || !hardPause.value) {
         return
     }
     hardPause.value = false
@@ -573,8 +573,6 @@ function startStreamIfNotPaused() {
 function expandClicked(content: string, partition: number, offset: number) {
     pauseStream()
     hardPause.value = true
-    console.log(partition)
-    console.log(offset)
     expandedContent.value = content
     expandPartition.value = partition
     expandOffset.value = offset
@@ -612,15 +610,5 @@ onUnmounted(() => {
 
 .action-menu:hover button {
     @apply bg-green-100 shadow-inner dark:border-gray-400 dark:bg-gray-700 dark:text-gray-100 dark:shadow-none dark:shadow-black;
-}
-
-.list-enter-active,
-.list-leave-active {
-    transition: opacity 200ms ease-out;
-}
-
-.list-enter-from,
-.list-leave-to {
-    opacity: 0;
 }
 </style>

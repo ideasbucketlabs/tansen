@@ -1,0 +1,11 @@
+tansen:
+    kafka-clusters:
+        -
+            schema-registry-url: http://localhost:8081
+            topic-delete-allowed: 'true'
+            topic-add-allowed: 'true'
+            bootstrap_servers: localhost:9096
+            label: local
+            topic-edit-allowed: 'true'
+            name: local
+    allowed-source: ${ALLOWED_SOURCE:*}
