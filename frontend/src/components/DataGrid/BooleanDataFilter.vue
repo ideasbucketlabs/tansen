@@ -44,7 +44,7 @@
  */
 import vClickOutside from '@/directives/ClickOutside'
 import BaseButton from '@/components/BaseButton.vue'
-import { defineEmits, defineProps, onMounted, onUnmounted, type PropType, ref } from 'vue'
+import { onMounted, onUnmounted, type PropType, ref } from 'vue'
 import type { Filter } from '@/entity/Filter'
 
 const props = defineProps({

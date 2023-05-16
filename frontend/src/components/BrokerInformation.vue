@@ -72,7 +72,7 @@
  * file that was distributed with this source code.
  */
 import PlusIcon from '@/icons/PlusIcon.vue'
-import { computed, defineProps, ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { PropType } from 'vue'
 import type { Configuration, Node as NodeInformation } from '@/entity/ClusterInformation'
 import type { Column } from '@/entity/Column'

@@ -577,7 +577,7 @@
 import FlyInPanel from '@/components/FlyInPanel.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseInputField from '@/components/BaseInputField.vue'
-import { computed, defineEmits, defineProps, nextTick, onMounted, type PropType, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, type PropType, ref, watch } from 'vue'
 import BaseSelectField from '@/components/BaseSelectField.vue'
 import { getId, getTopicConfigurationDefinition } from '@/util/Util'
 import type { NewTopic } from '@/entity/NewTopic'

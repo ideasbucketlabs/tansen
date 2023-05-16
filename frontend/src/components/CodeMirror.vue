@@ -37,7 +37,7 @@ import { json, jsonParseLinter } from '@codemirror/lang-json'
 import { lintGutter, linter } from '@codemirror/lint'
 import { indentUnit } from '@codemirror/language'
 import { getId } from '@/util/Util'
-import { defineEmits, defineProps, onMounted, onUnmounted, type PropType, ref, watch } from 'vue'
+import { onMounted, onUnmounted, type PropType, ref, watch } from 'vue'
 import { getError, hasError } from '@/validators/SchemaValidator'
 import Ripple from '@/components/Ripple.vue'
 

@@ -262,17 +262,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import {
-    computed,
-    defineAsyncComponent,
-    defineProps,
-    nextTick,
-    onMounted,
-    onUnmounted,
-    type PropType,
-    ref,
-    watch,
-} from 'vue'
+import { computed, defineAsyncComponent, nextTick, onMounted, onUnmounted, type PropType, ref, watch } from 'vue'
 import PlayIcon from '@/icons/PlayIcon.vue'
 import eventBus from '@/util/EventBus'
 import { ApplicationEventTypes } from '@/entity/ApplicationEventTypes'

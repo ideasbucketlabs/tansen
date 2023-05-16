@@ -15,7 +15,7 @@
  * file that was distributed with this source code.
  */
 import Debounce from 'lodash.debounce'
-import { defineProps, nextTick, onBeforeUnmount, onMounted, type PropType, ref, computed } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, type PropType, ref, computed } from 'vue'
 
 const props = defineProps({
     tag: {

@@ -108,7 +108,7 @@
  * file that was distributed with this source code.
  */
 import { consumerGroupStore } from '@/stores/ConsumerGroupStore'
-import { computed, defineProps, onMounted, onUnmounted, type PropType, ref } from 'vue'
+import { computed, onMounted, onUnmounted, type PropType, ref } from 'vue'
 import DataGrid from '@/components/DataGrid/DataGrid.vue'
 import SearchIcon from '@/icons/SearchIcon.vue'
 import type { Column } from '@/entity/Column'

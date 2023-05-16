@@ -42,7 +42,7 @@ import vClickOutside from '@/directives/ClickOutside'
 import BaseSelectField from '@/components/BaseSelectField.vue'
 import BaseInputField from '@/components/BaseInputField.vue'
 import BaseButton from '@/components/BaseButton.vue'
-import { defineEmits, defineProps, onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import type { Filter } from '@/entity/Filter'
 
 interface OptionsInterface {

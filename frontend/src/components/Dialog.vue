@@ -35,7 +35,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { defineEmits, defineProps, nextTick, defineExpose, onMounted, ref, withDefaults } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import eventBus from '@/util/EventBus'
 import { ApplicationEventTypes } from '@/entity/ApplicationEventTypes'
 

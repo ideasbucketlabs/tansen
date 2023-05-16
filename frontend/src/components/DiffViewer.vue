@@ -37,7 +37,7 @@
  * file that was distributed with this source code.
  */
 import { DIFF_DELETE, DIFF_EQUAL, DIFF_INSERT, diff_match_patch as DiffMatchPatch } from 'diff-match-patch'
-import { defineProps, type PropType, ref, watch } from 'vue'
+import { type PropType, ref, watch } from 'vue'
 import type { DiffLine } from '@/entity/DiffLine'
 
 const differ = new DiffMatchPatch()
@@ -65,7 +65,7 @@ const props = defineProps({
     },
 })
 
-const codeLines = ref<Array<DiffLine>>(generateDiff(props.leftVersion, props.rightVersion))
+const codeLines = ref<Array<DiffLine>>(generateDiff(props.leftVersion as string, props.rightVersion as string))
 
 watch(
     () => props.leftVersion,

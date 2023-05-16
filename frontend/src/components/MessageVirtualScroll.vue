@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { defineProps, nextTick, onBeforeUnmount, onMounted, type PropType, ref, computed } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, type PropType, ref, computed } from 'vue'
 
 const props = defineProps({
     tag: {

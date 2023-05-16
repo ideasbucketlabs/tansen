@@ -119,7 +119,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { computed, defineEmits, defineProps, onMounted, onUnmounted, type PropType, ref } from 'vue'
+import { computed, onMounted, onUnmounted, type PropType, ref } from 'vue'
 import type { TopicMessage } from '@/entity/TopicMessage'
 import eventBus from '@/util/EventBus'
 import { ApplicationEventTypes } from '@/entity/ApplicationEventTypes'

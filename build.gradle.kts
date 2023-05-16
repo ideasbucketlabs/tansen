@@ -47,7 +47,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("org.springframework.kafka:spring-kafka")
-    implementation("io.projectreactor.kafka:reactor-kafka:1.3.15")
+    implementation("io.projectreactor.kafka:reactor-kafka:1.3.18")
     implementation("io.confluent:kafka-avro-serializer:7.3.2")
     implementation("io.confluent:kafka-protobuf-serializer:7.3.2")
     implementation("io.confluent:kafka-json-schema-serializer:7.3.2")
