@@ -133,7 +133,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { defineEmits, defineProps, onMounted, onUnmounted, type PropType, ref } from 'vue'
+import { onMounted, onUnmounted, type PropType, ref } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import FlyInPanel from '@/components/FlyInPanel.vue'
 import { CompatibilityType } from '@/entity/CompatibilityType'

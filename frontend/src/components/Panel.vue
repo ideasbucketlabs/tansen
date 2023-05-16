@@ -25,7 +25,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { computed, defineProps, type PropType } from 'vue'
+import { computed, type PropType } from 'vue'
 import CloseIcon from '@/icons/CloseIcon.vue'
 
 const props = defineProps({

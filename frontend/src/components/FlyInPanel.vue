@@ -42,7 +42,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { defineEmits, defineExpose, defineProps, nextTick, onMounted, type PropType, ref, watch } from 'vue'
+import { nextTick, onMounted, type PropType, ref, watch } from 'vue'
 import Loading from '@/components/Loading.vue'
 import CloseIcon from '@/icons/CloseIcon.vue'
 

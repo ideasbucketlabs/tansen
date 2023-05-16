@@ -44,7 +44,7 @@
  * file that was distributed with this source code.
  */
 import { useRoute } from 'vue-router'
-import { computed, defineProps, onMounted, onUnmounted, type PropType, ref } from 'vue'
+import { computed, onMounted, onUnmounted, type PropType, ref } from 'vue'
 import { topicStore } from '@/stores/TopicStore'
 import DataGrid from '@/components/DataGrid/DataGrid.vue'
 import MessageDialog from '@/components/MessageDialog.vue'

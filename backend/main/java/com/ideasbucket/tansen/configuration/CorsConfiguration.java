@@ -8,17 +8,16 @@ package com.ideasbucket.tansen.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 @Configuration
-public class SecurityConfiguration implements WebFluxConfigurer {
+public class CorsConfiguration implements WebFluxConfigurer {
 
     private final ApplicationProperties applicationProperties;
 
     @Autowired
-    public SecurityConfiguration(ApplicationProperties applicationProperties) {
+    public CorsConfiguration(ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
     }
 
@@ -31,7 +30,7 @@ public class SecurityConfiguration implements WebFluxConfigurer {
                 .addMapping("/**")
                 .allowedOriginPatterns(allowedSources.split(","))
                 .allowCredentials(true)
-                .allowedMethods(CorsConfiguration.ALL);
+                .allowedMethods(org.springframework.web.cors.CorsConfiguration.ALL);
         }
     }
 }

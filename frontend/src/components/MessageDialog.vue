@@ -93,7 +93,7 @@
 import Dialog from '@/components/Dialog.vue'
 import { Buttons } from '@/entity/Buttons'
 import eventBus from '@/util/EventBus'
-import { computed, defineEmits, defineProps, type PropType, ref } from 'vue'
+import { computed, type PropType, ref } from 'vue'
 import type { MessageDialogEvent } from '@/entity/MessageDialogEvent'
 import { ApplicationEventTypes } from '@/entity/ApplicationEventTypes'
 import QuestionIcon from '@/icons/QuestionIcon.vue'

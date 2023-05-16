@@ -84,7 +84,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { computed, defineEmits, defineProps, type PropType, ref, watch } from 'vue'
+import { computed, type PropType, ref, watch } from 'vue'
 import CheckAll from '@/icons/CheckAll.vue'
 import { schemaStore } from '@/stores/SchemaStore'
 import BaseButton from '@/components/BaseButton.vue'

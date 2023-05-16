@@ -107,7 +107,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { defineEmits, defineProps, computed } from 'vue'
+import { computed } from 'vue'
 import RefreshIcon from '@/icons/RefreshIcon.vue'
 
 const props = defineProps({

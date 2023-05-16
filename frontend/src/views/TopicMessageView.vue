@@ -262,17 +262,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import {
-    computed,
-    defineAsyncComponent,
-    defineProps,
-    nextTick,
-    onMounted,
-    onUnmounted,
-    type PropType,
-    ref,
-    watch,
-} from 'vue'
+import { computed, defineAsyncComponent, nextTick, onMounted, onUnmounted, type PropType, ref, watch } from 'vue'
 import PlayIcon from '@/icons/PlayIcon.vue'
 import eventBus from '@/util/EventBus'
 import { ApplicationEventTypes } from '@/entity/ApplicationEventTypes'
@@ -456,7 +446,7 @@ async function handleError(errorResponse: ErrorResponse) {
 }
 
 async function startStream() {
-    if (!isStreamPlayable.value) {
+    if (!isStreamPlayable.value || !isStreamPaused.value || !hardPause.value) {
         return
     }
     hardPause.value = false
@@ -573,8 +563,6 @@ function startStreamIfNotPaused() {
 function expandClicked(content: string, partition: number, offset: number) {
     pauseStream()
     hardPause.value = true
-    console.log(partition)
-    console.log(offset)
     expandedContent.value = content
     expandPartition.value = partition
     expandOffset.value = offset
@@ -612,15 +600,5 @@ onUnmounted(() => {
 
 .action-menu:hover button {
     @apply bg-green-100 shadow-inner dark:border-gray-400 dark:bg-gray-700 dark:text-gray-100 dark:shadow-none dark:shadow-black;
-}
-
-.list-enter-active,
-.list-leave-active {
-    transition: opacity 200ms ease-out;
-}
-
-.list-enter-from,
-.list-leave-to {
-    opacity: 0;
 }
 </style>

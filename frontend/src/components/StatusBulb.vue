@@ -23,7 +23,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { defineProps } from 'vue'
 import type { PropType } from 'vue'
 
 defineProps({

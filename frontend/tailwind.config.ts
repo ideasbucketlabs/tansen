@@ -1,7 +1,7 @@
+import type { Config } from 'tailwindcss'
 const defaultTheme = require('tailwindcss/defaultTheme')
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
     content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
     theme: {
         extend: {
@@ -36,4 +36,4 @@ module.exports = {
         require('@tailwindcss/forms'),
         // ...
     ],
-}
+} satisfies Config

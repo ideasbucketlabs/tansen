@@ -217,7 +217,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { computed, defineAsyncComponent, defineProps, onMounted, onUnmounted, type PropType, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, onMounted, onUnmounted, type PropType, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { schemaStore } from '@/stores/SchemaStore'
 import type { SchemaReference as SchemaReferenceEntity } from '@/entity/SchemaReference'

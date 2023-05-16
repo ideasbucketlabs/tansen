@@ -1,0 +1,48 @@
+tansen:
+    kafka-clusters:
+        -
+            schema-registry-url: ${SCHEMA_REGISTRY_URL:}
+            bootstrap-servers: ${BOOTSTRAP_SERVERS:}
+management:
+    endpoints:
+        web:
+            exposure:
+                include: info,health,metrics
+            base-path: /insight
+        enabled-by-default: 'false'
+    endpoint:
+        health:
+            enabled: 'true'
+            probes:
+                enabled: 'true'
+        metrics:
+            enabled: 'true'
+        info:
+            enabled: 'true'
+server:
+    compression:
+        enabled: 'true'
+        mime-types: text/javascript,application/json,text/html,text/plain,text/css,text/event-stream,application/x-ndjson
+    error:
+        whitelabel:
+            enabled: 'false'
+springdoc:
+    api-docs:
+        groups:
+            enabled: 'true'
+    swagger-ui:
+        enabled: 'true'
+        path: /api-documentation.html
+        tagsSorter: alpha
+spring:
+    kafka:
+        properties:
+            use:
+                latest:
+                    version: 'true'
+            schema:
+                registry:
+                    url: ${SCHEMA_REGISTRY_URL:}
+            auto:
+                register:
+                    schemas: 'false'

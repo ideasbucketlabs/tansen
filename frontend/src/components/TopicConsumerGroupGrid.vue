@@ -32,7 +32,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { computed, defineProps, onMounted, onUnmounted, type PropType, ref } from 'vue'
+import { computed, onMounted, onUnmounted, type PropType, ref } from 'vue'
 import DataGrid from '@/components/DataGrid/DataGrid.vue'
 import type { Column } from '@/entity/Column'
 import type { Filter } from '@/entity/Filter'

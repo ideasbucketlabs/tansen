@@ -46,7 +46,7 @@ import vClickOutside from '@/directives/ClickOutside'
 import BaseSelectField from '@/components/BaseSelectField.vue'
 import BaseInputField from '@/components/BaseInputField.vue'
 import BaseButton from '@/components/BaseButton.vue'
-import { computed, defineEmits, defineProps, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import type { Filter } from '@/entity/Filter'
 import { isInteger } from '@/util/Util'
 

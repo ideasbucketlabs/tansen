@@ -248,8 +248,8 @@ export function validate(topic: NewTopic): Map<string, string> {
                 result.set(it, `${it} cannot be more than 2,147,483,647`)
             } else {
                 try {
-                    const convertedValue = isNumber(topic[it as keyof NewTopic])
-                        ? topic[it as keyof NewTopic]
+                    const convertedValue: number = isNumber(topic[it as keyof NewTopic])
+                        ? (topic[it as keyof NewTopic] as number)
                         : parseInt(topic[it as keyof NewTopic].toString(10), 10)
                     if (convertedValue > 2147483647) {
                         result.set(it, `${it} cannot be more than 2,147,483,647`)

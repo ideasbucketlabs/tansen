@@ -1,0 +1,9 @@
+logging:
+    pattern:
+        console: '%d{yyyy-MM-dd HH:mm:ss} - %msg%n'
+    level:
+        org:
+            springframework:
+                web: INFO
+                kafka: INFO
+        root: INFO

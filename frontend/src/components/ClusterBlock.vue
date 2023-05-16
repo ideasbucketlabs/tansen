@@ -106,7 +106,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { defineEmits, defineProps, ref } from 'vue'
+import { ref } from 'vue'
 import type { PropType } from 'vue'
 import ConsumerGroupsIcon from '@/icons/ConsumerGroupsIcon.vue'
 import TopicsIcon from '@/icons/TopicsIcon.vue'

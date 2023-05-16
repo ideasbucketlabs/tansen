@@ -103,7 +103,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-import { defineProps, defineEmits, withDefaults, ref, watch, toRefs, onUnmounted, computed } from 'vue'
+import { ref, watch, toRefs, onUnmounted, computed } from 'vue'
 import DashboardIcon from '@/icons/DashboardIcon.vue'
 import { clusterInformationStore } from '@/stores/ClusterInformationStore'
 import type { ClusterInformation } from '@/entity/ClusterInformation'

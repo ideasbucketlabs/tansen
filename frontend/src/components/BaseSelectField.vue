@@ -63,7 +63,7 @@
  * file that was distributed with this source code.
  */
 import { getId } from '@/util/Util'
-import { defineEmits, defineProps, type PropType } from 'vue'
+import { type PropType } from 'vue'
 import InformationIcon from '@/icons/InformationIcon.vue'
 
 const props = defineProps({
