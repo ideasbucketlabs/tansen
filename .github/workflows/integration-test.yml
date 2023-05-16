@@ -57,4 +57,4 @@ jobs:
                     distribution: 'temurin'
                     cache: 'gradle'
 
-            -   run: ./gradlew build --no-daemon
+            -   run: ./gradlew clean build --no-daemon
