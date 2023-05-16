@@ -9,8 +9,9 @@ package com.ideasbucket.tansen.configuration;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
+
+import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
@@ -23,7 +24,7 @@ import org.springframework.validation.annotation.Validated;
 public class RbacProperties {
 
     @JsonProperty("roles")
-    @NotEmpty
+    @NotNull(message = "Roles cannot be null.")
     private final List<@Valid Role> roles;
 
     @JsonCreator
