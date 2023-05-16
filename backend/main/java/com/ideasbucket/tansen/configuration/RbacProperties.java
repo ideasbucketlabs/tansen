@@ -9,9 +9,8 @@ package com.ideasbucket.tansen.configuration;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
-import java.util.List;
-
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;

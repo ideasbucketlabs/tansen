@@ -6,8 +6,6 @@
  */
 package com.ideasbucket.tansen.configuration;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Objects;
 import java.util.Properties;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
@@ -27,8 +25,8 @@ public class YamlPropertySourceFactory implements PropertySourceFactory {
 
         assert properties != null;
         return new PropertiesPropertySource(
-                Objects.requireNonNull(encodedResource.getResource().getFilename()),
-                properties
+            Objects.requireNonNull(encodedResource.getResource().getFilename()),
+            properties
         );
     }
 }
