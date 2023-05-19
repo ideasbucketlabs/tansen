@@ -1,13 +1,13 @@
 import com.github.gradle.node.npm.task.NpmTask
 
 plugins {
-    id("org.springframework.boot") version "3.0.6"
+    id("org.springframework.boot") version "3.1.0"
     id("io.spring.dependency-management") version "1.1.0"
-    kotlin("jvm") version "1.7.22"
-    kotlin("plugin.spring") version "1.7.22"
+    kotlin("jvm") version "1.8.21"
+    kotlin("plugin.spring") version "1.8.21"
     jacoco
-    id("com.github.node-gradle.node") version "3.5.1"
-    id("com.diffplug.spotless") version "6.14.0"
+    id("com.github.node-gradle.node") version "5.0.0"
+    id("com.diffplug.spotless") version "6.18.0"
 }
 
 group = "com.ideasbucket"
