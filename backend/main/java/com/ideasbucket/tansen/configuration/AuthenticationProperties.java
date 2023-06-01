@@ -6,14 +6,14 @@
  */
 package com.ideasbucket.tansen.configuration;
 
+import static jakarta.validation.constraints.Pattern.Flag.CASE_INSENSITIVE;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
-
-import static jakarta.validation.constraints.Pattern.Flag.CASE_INSENSITIVE;
 
 @ConfigurationProperties(prefix = "auth")
 @Validated
