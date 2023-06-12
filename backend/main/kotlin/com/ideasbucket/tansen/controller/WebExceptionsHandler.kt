@@ -15,6 +15,7 @@ import com.ideasbucket.tansen.exception.TopicAlreadyExistException
 import com.ideasbucket.tansen.exception.TopicOperationException
 import com.ideasbucket.tansen.exception.ValidationException
 import com.ideasbucket.tansen.util.FormError
+import jakarta.validation.ConstraintViolationException
 import org.apache.kafka.common.errors.InvalidTopicException
 import org.apache.kafka.common.errors.UnknownTopicOrPartitionException
 import org.slf4j.LoggerFactory
@@ -121,6 +122,14 @@ class WebExceptionsHandler {
         )
     }
 
+    @ExceptionHandler(ConstraintViolationException::class)
+    suspend fun handleConstrainViolationError(exception: ConstraintViolationException): ResponseEntity<Response> {
+        return ResponseEntity(
+            Response.withError(FormError.format(exception.constraintViolations)),
+            HttpStatus.UNPROCESSABLE_ENTITY
+        )
+    }
+
     @ExceptionHandler(SchemaRegistryNotConfiguredException::class, NotSupportedException::class)
     suspend fun handleSchemaRegistryNotConfiguredException(exception: Exception): ResponseEntity<Response> {
         return getHttpResponseWithoutDetail(HttpStatus.NOT_IMPLEMENTED, exception.message!!)
@@ -148,6 +157,7 @@ class WebExceptionsHandler {
             is TopicOperationException -> handleTopicCreationError(inferredException)
             is TopicAlreadyExistException -> handleTopicAlreadyExistError(inferredException)
             is ValidationException -> handleValidationError(inferredException)
+            is ConstraintViolationException -> handleConstrainViolationError(inferredException)
             else -> handleAllError(exception, exchange)
         }
     }

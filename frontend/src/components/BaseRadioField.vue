@@ -95,9 +95,9 @@ defineProps({
     },
 })
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: string | number): void; (e: 'focus'): void }>()
+const emit = defineEmits<{ (e: 'update:model-value', value: string | number): void; (e: 'focus'): void }>()
 
 function handleInput(e: Event) {
-    emit('update:modelValue', (e.target as HTMLInputElement).value)
+    emit('update:model-value', (e.target as HTMLInputElement).value)
 }
 </script>

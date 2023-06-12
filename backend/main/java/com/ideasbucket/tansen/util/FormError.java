@@ -52,6 +52,14 @@ public class FormError {
             return "partition";
         }
 
+        if (key.equalsIgnoreCase("getMessagesByTopic.criteria.partition")) {
+            return "partition";
+        }
+
+        if (key.equalsIgnoreCase("getMessagesByTopic.criteria.offset")) {
+            return "offset";
+        }
+
         return key;
     }
 }

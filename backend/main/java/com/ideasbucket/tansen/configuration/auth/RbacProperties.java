@@ -4,10 +4,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-package com.ideasbucket.tansen.configuration;
+package com.ideasbucket.tansen.configuration.auth;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ideasbucket.tansen.entity.Role;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;

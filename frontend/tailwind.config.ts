@@ -11,6 +11,9 @@ export default {
             fontSize: {
                 '10xl': '8rem',
             },
+            width: {
+                '1/7': '14.2857143%',
+            },
             colors: {
                 green: {
                     DEFAULT: '#25695C',

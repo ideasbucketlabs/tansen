@@ -7,6 +7,7 @@
 package com.ideasbucket.tansen.entity;
 
 import com.fasterxml.jackson.annotation.*;
+import jakarta.validation.constraints.AssertFalse;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
@@ -16,7 +17,6 @@ import java.time.Instant;
 public final class MessageSelectionCriteria {
 
     @JsonProperty("offset")
-    @NotNull(message = "Offset cannot be null")
     @Min(value = 0, message = "Offset cannot be less than 0.")
     private final Long offset;
 
@@ -53,10 +53,12 @@ public final class MessageSelectionCriteria {
 
     @JsonIgnore
     public String getCase() {
-        if (this.partition == null) {
-            return "";
-        }
-
         return (this.offset != null) ? "offset" : "timestamp";
+    }
+
+    @AssertFalse(message = "Invalid parameters must have either timestamp or offset.")
+    @JsonIgnore
+    private boolean hasValidParameters() {
+        return this.timestamp == null && this.offset == null;
     }
 }

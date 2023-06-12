@@ -121,7 +121,7 @@ class MessagesController(
                     .commitInterval(Duration.ZERO)
                     .commitBatchSize(0)
                     .addAssignListener { partitions ->
-                        partitions.forEach { it.seekToTimestamp(criteria.timestamp.epochSecond) }
+                        partitions.forEach { it.seekToTimestamp(criteria.timestamp.toEpochMilli()); }
                     }
                     .assignment(setOf(TopicPartition(topic, criteria.partition)))
             } else {
@@ -133,7 +133,7 @@ class MessagesController(
 
         return KafkaReceiver.create(receiverOptions)
             .receive()
-            .delayElements(Duration.ofMillis(500))
+            .delayElements(Duration.ofMillis(200))
             .map {
                 JsonNodeFactory.instance.objectNode().run {
                     populateData(it, this, "valueData")
