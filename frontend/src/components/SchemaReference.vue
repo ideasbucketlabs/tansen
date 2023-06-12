@@ -165,7 +165,7 @@ const referenceTitle = ref<string>(
 )
 const haveExistingReference = ref<boolean>(references.value.length !== 0)
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: SchemaReference[]): void }>()
+const emit = defineEmits<{ (e: 'update:model-value', value: SchemaReference[]): void }>()
 
 const subjects = computed<{ label: string; value: number | string }[]>(() => {
     const result = (store.getSubjectsByType(clusterId, props.schemaType) ?? [])
@@ -233,7 +233,7 @@ watch(
     references,
     (newReferences: SchemaReference[]) => {
         // Not sure why cloning is again necessary here. But without this parent is not picking up changes all the time.
-        emit('update:modelValue', clone(newReferences))
+        emit('update:model-value', clone(newReferences))
     },
     { deep: true }
 )

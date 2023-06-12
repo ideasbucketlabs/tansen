@@ -128,25 +128,25 @@ const props = defineProps({
     },
 })
 
-const emit = defineEmits<{ (e: 'update:modelValue', value: string | number | boolean | bigint): void }>()
+const emit = defineEmits<{ (e: 'update:model-value', value: string | number | boolean | bigint): void }>()
 
 function handleChange(e: Event) {
     if (props.castAs === 'boolean') {
-        emit('update:modelValue', ((e.target as HTMLInputElement).value as string) === 'true')
+        emit('update:model-value', ((e.target as HTMLInputElement).value as string) === 'true')
         return
     }
 
     if (props.castAs === 'integer') {
-        emit('update:modelValue', parseInt((e.target as HTMLInputElement).value as string, 10))
+        emit('update:model-value', parseInt((e.target as HTMLInputElement).value as string, 10))
         return
     }
 
     if (props.castAs === 'bigint') {
         // eslint-disable-next-line no-undef
-        emit('update:modelValue', BigInt((e.target as HTMLInputElement).value as string))
+        emit('update:model-value', BigInt((e.target as HTMLInputElement).value as string))
         return
     }
 
-    emit('update:modelValue', (e.target as HTMLInputElement).value)
+    emit('update:model-value', (e.target as HTMLInputElement).value)
 }
 </script>

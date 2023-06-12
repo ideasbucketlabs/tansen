@@ -72,7 +72,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits<{
-    (e: 'update:modelValue', value: Filter | null): void
+    (e: 'update:model-value', value: Filter | null): void
     (e: 'mounted', value: Element | null): void
     (e: 'destroyed'): void
     (e: 'hide'): void
@@ -84,7 +84,7 @@ const input = ref<boolean>(
 const root = ref<Element | null>(null)
 
 function submitFilter() {
-    emit('update:modelValue', {
+    emit('update:model-value', {
         type: 'boolean',
         operator: 'eq',
         value: input.value,
@@ -96,7 +96,7 @@ function submitFilter() {
 
 function resetFilter() {
     input.value = true
-    emit('update:modelValue', null)
+    emit('update:model-value', null)
     emit('hide')
 }
 

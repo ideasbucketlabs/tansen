@@ -143,21 +143,15 @@
                         placeholder="Offset"
                         ><div class="pt-1 text-xs">Must be positive integer value.</div></BaseInputField
                     >
-                    <BaseInputField
+                    <DateTimeInputField
                         v-if="formData.criteria === 'time'"
                         label="Time"
-                        class="w-[19rem]"
+                        class="w-44"
                         :hide-label="true"
                         size="small"
                         input-class="h-10"
                         v-model="rawDatetime"
-                        placeholder="Time must be in (mm/dd/YYYY HH:mm:ss)"
-                        ><div class="pt-1 text-xs">
-                            Must be in (<span class="font-bold italic">mm/dd/YYYY HH:mm:ss</span>) like
-                            <span class="font-bold italic">02/22/2002 16:17:18</span>
-                            format and <span class="font-bold italic">cannot be future date</span>.
-                        </div></BaseInputField
-                    >
+                    ></DateTimeInputField>
                     <div class="flex space-x-2">
                         <BaseSelectField
                             v-if="formData.criteria !== ''"
@@ -269,7 +263,7 @@ import { ApplicationEventTypes } from '@/entity/ApplicationEventTypes'
 import BaseInputField from '@/components/BaseInputField.vue'
 import BaseSelectField from '@/components/BaseSelectField.vue'
 import BaseButton from '@/components/BaseButton.vue'
-import { downloadFile, parseDate } from '@/util/Util'
+import { downloadFile } from '@/util/Util'
 import type { TopicMessage } from '@/entity/TopicMessage'
 import MessageTabs from '@/components/MessageTabs.vue'
 import MessageVirtualScroll from '@/components/MessageVirtualScroll.vue'
@@ -280,6 +274,7 @@ import type { ErrorResponse } from '@/entity/ErrorResponse'
 import InformationIcon from '@/icons/InformationIcon.vue'
 import ErrorIcon from '@/icons/ErrorIcon.vue'
 import AppComponentLoader from '@/components/AppComponentLoader.vue'
+import DateTimeInputField from '@/components/DateTimeInputField.vue'
 
 const clusterId = useRoute().params.clusterId as string
 const streamProcessor = new StreamProcessor<TopicMessage>(processTopicMessage, handleError)
@@ -307,7 +302,7 @@ const options = ref<{ value: 'offset' | '' | 'time'; label: string }[]>([
     { value: 'offset', label: 'Jump to offset' },
     { value: 'time', label: 'Jump to time' },
 ])
-const rawDatetime = ref<string>('')
+const rawDatetime = ref<Date | null>(null)
 const formData = ref<{
     keyword: string
     criteria: '' | 'offset' | 'time'
@@ -363,6 +358,9 @@ const isFormValid = computed<boolean>(() => {
         if (formData.value.time === null) {
             return false
         }
+        if (formData.value.partition === null) {
+            return false
+        }
     }
 
     return true
@@ -389,11 +387,11 @@ watch(
     { deep: true, immediate: false }
 )
 
-watch(rawDatetime, async (newRawDatetime: string | null) => {
-    formData.value.time = newRawDatetime === null ? null : parseDate(newRawDatetime)
-    if (formData.value.time !== null && formData.value.time.getTime() > new Date().getTime()) {
-        formData.value.time = null
-    }
+watch(rawDatetime, async (newRawDatetime: Date | null) => {
+    formData.value.time = newRawDatetime === null ? null : newRawDatetime
+    // if (formData.value.time !== null && formData.value.time.getTime() > new Date().getTime()) {
+    //     formData.value.time = null
+    // }
 })
 
 function isDataSelected(message: TopicMessage): boolean {
@@ -425,8 +423,8 @@ function processTopicMessage(topicMessage: TopicMessage) {
         tailingOffset.value = topicMessage.offset
         tailingTimestamp.value = topicMessage.timestamp
     }
-    // Only keep 400 message in memory. TODO make this limit dynamic based on message size.
-    if (dataLength.value === 400) {
+    // Only keep 1000 message in memory. TODO make this limit dynamic based on message size.
+    if (dataLength.value === 1000) {
         data.pop()
     } else {
         dataLength.value += 1
@@ -467,7 +465,10 @@ async function startStream() {
         const urlSearchParams = new URLSearchParams()
         urlSearchParams.set(
             'parameters',
-            JSON.stringify({ timestamp: new Date(tailingTimestamp.value + 1).toISOString() })
+            JSON.stringify({
+                timestamp: new Date(tailingTimestamp.value + 1).toISOString(),
+                partition: formData.value.partition,
+            })
         )
 
         const url = `${clusterId}/messages/${formData.value.keyDeserialization}/${
@@ -529,7 +530,10 @@ function onFilterSubmission() {
         parameter = urlSearchParams.toString()
     } else if (formData.value.criteria === 'time') {
         const urlSearchParams = new URLSearchParams()
-        urlSearchParams.set('parameters', JSON.stringify({ timestamp: formData?.value?.time?.toISOString() }))
+        urlSearchParams.set(
+            'parameters',
+            JSON.stringify({ timestamp: formData?.value?.time?.toISOString(), partition: formData.value.partition })
+        )
         tailingTimestamp.value = formData?.value?.time?.valueOf() ?? 0
         parameter = urlSearchParams.toString()
     }

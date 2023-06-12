@@ -52,7 +52,7 @@ interface OptionsInterface {
 
 const props = defineProps<{ trigger: string; modelValue: Filter | null | undefined; field: string }>()
 const emit = defineEmits<{
-    (e: 'update:modelValue', value: Filter | null): void
+    (e: 'update:model-value', value: Filter | null): void
     (e: 'mounted', value: Element | null): void
     (e: 'destroyed'): void
     (e: 'hide'): void
@@ -77,7 +77,7 @@ function submitFilter() {
     if (input.value === null || input.value.trim().length === 0) {
         resetFilter()
     } else {
-        emit('update:modelValue', {
+        emit('update:model-value', {
             type: 'string',
             operator: filterType.value,
             value: input.value,
@@ -91,7 +91,7 @@ function submitFilter() {
 function resetFilter() {
     filterType.value = 'eq'
     input.value = null
-    emit('update:modelValue', null)
+    emit('update:model-value', null)
     emit('hide')
 }
 

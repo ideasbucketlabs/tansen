@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
 
 @ConfigurationProperties("tansen")
@@ -26,8 +27,10 @@ public class ApplicationProperties {
 
     @NotNull
     @NotEmpty
+    @NestedConfigurationProperty
     private final Set<@Valid Cluster> kafkaClusters;
 
+    @NestedConfigurationProperty
     private final Map<String, Cluster> keyedCluster;
 
     public ApplicationProperties(String allowedSource, Set<Cluster> kafkaClusters) throws ExceptionInInitializerError {

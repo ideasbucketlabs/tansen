@@ -375,7 +375,7 @@ const visibleFilter = ref<Map<string, boolean>>(new Map())
 const appliedFilter = ref<Record<string, Filter | null>>({})
 const filterTriggersDom = ref<Map<number, Element>>(new Map()) // This is HTML component that triggers filter show/hide
 const filtersDom = ref<Map<number, HTMLElement>>(new Map()) // This is HTML component that holds the filter component
-const sorters = ref<Map<string, Sorter>>(new Map())
+const sortersData = ref<Map<string, Sorter>>(new Map())
 const emit = defineEmits<{
     (e: 'filter', value: Filter[]): void
     (e: 'sort', value: Sorter | null): void
@@ -455,11 +455,11 @@ function isFilterVisible(fieldId: string) {
 }
 
 function isSorted(fieldId: string): boolean {
-    return sorters.value.has(fieldId)
+    return sortersData.value.has(fieldId)
 }
 
 function sortedDirection(fieldId: string): string {
-    return sorters.value.get(fieldId)?.direction ?? 'asc'
+    return sortersData.value.get(fieldId)?.direction ?? 'asc'
 }
 
 function sortBy(column: Column) {
@@ -467,15 +467,15 @@ function sortBy(column: Column) {
         return
     }
 
-    if (!sorters.value.has(column.dataId)) {
-        sorters.value.clear() // Currently, only supporting single column sorter.
-        sorters.value.set(column.dataId, { property: column.dataId, direction: 'asc' })
+    if (!sortersData.value.has(column.dataId)) {
+        sortersData.value.clear() // Currently, only supporting single column sorter.
+        sortersData.value.set(column.dataId, { property: column.dataId, direction: 'asc' })
         emit('sort', { property: column.dataId, direction: 'asc' })
-    } else if (sorters.value.has(column.dataId) && sorters.value.get(column.dataId)?.direction === 'desc') {
-        sorters.value.clear() // Currently, only supporting single column sorter.
+    } else if (sortersData.value.has(column.dataId) && sortersData.value.get(column.dataId)?.direction === 'desc') {
+        sortersData.value.clear() // Currently, only supporting single column sorter.
         emit('sort', null)
     } else {
-        sorters.value.set(column.dataId, { property: column.dataId, direction: 'desc' })
+        sortersData.value.set(column.dataId, { property: column.dataId, direction: 'desc' })
         emit('sort', { property: column.dataId, direction: 'desc' })
     }
 }
@@ -500,7 +500,7 @@ onMounted(() => {
 
     if (sortedField !== null && sortedDirection !== null) {
         if (props.columns?.filter((it) => it.dataId === sortedField && it.sortable).length !== 0) {
-            sorters.value.set(sortedField, { property: sortedField, direction: sortedDirection })
+            sortersData.value.set(sortedField, { property: sortedField, direction: sortedDirection })
         }
     }
 })
