@@ -94,7 +94,7 @@ const editorContainer = ref<Element>()
 const editor = ref<EditorView>()
 let language = new Compartment()
 let tabSize = new Compartment()
-let readOnly = new Compartment()
+let readOnlyData = new Compartment()
 
 const languageSettings =
     props.schemaType.toString() === 'PROTOBUF'
@@ -110,7 +110,7 @@ let state = EditorState.create({
             tabSize.of(EditorState.tabSize.of(4)),
             indentUnit.of('    '),
             keymap.of([indentWithTab]),
-            readOnly.of(EditorState.readOnly.of(props.readOnly)),
+            readOnlyData.of(EditorState.readOnly.of(props.readOnly)),
             EditorView.updateListener.of((viewUpdate) => {
                 if (viewUpdate.docChanged) {
                     if (!props.readOnly) {
@@ -145,7 +145,7 @@ onUnmounted(() => {
 
 function changeMode(enable: boolean) {
     editor.value?.dispatch({
-        effects: readOnly.reconfigure(EditorState.readOnly.of(enable)),
+        effects: readOnlyData.reconfigure(EditorState.readOnly.of(enable)),
     })
 }
 

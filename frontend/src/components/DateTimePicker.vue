@@ -191,6 +191,7 @@ const props = defineProps({
 const emit = defineEmits<{
     (e: 'update:model-value', value: Date | null): void
     (e: 'clickedOutside', value: HTMLElement): void
+    (e: 'close'): void
 }>()
 
 const monthNames = ref<Array<string>>([
