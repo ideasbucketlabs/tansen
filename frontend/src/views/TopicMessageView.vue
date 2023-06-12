@@ -423,8 +423,8 @@ function processTopicMessage(topicMessage: TopicMessage) {
         tailingOffset.value = topicMessage.offset
         tailingTimestamp.value = topicMessage.timestamp
     }
-    // Only keep 600 message in memory. TODO make this limit dynamic based on message size.
-    if (dataLength.value === 600) {
+    // Only keep 1000 message in memory. TODO make this limit dynamic based on message size.
+    if (dataLength.value === 1000) {
         data.pop()
     } else {
         dataLength.value += 1
