@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.json.JsonMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.util.StdDateFormat
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinFeature
@@ -29,10 +30,13 @@ object JsonConverter {
             .awaitSingle()
     }
 
-    @JvmStatic
+    @kotlin.jvm.JvmStatic
     fun getMapper(): ObjectMapper {
         return objectMapper
     }
+
+    @kotlin.jvm.JvmStatic
+    fun createObjectNode(): ObjectNode = getMapper().createObjectNode()
 
     inline fun <reified T> parse(input: String): T? {
         return try {

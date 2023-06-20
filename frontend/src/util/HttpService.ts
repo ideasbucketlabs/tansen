@@ -21,6 +21,7 @@ function nonDataOptions(method: string) {
         headers: {
             Accept: 'application/json, text/plain, */*',
             'Content-Type': 'application/json;charset=UTF-8',
+            'X-Requested-With': 'XMLHttpRequest',
         },
     }
 }
@@ -48,16 +49,21 @@ async function execute<TBody, TResponse>(
         const response = await fetch(inferredUrl, options)
         const rawResponse = await response.json()
 
-        if (!response.ok) {
+        if (response.ok) {
+            successFn(rawResponse)
+        } else {
             const errors = rawResponse?.data?.errors ?? rawResponse.errors
+
+            if (response.status === 401 && (errors?.loginUrl ?? null) !== null) {
+                window.location.replace(errors.loginUrl)
+            }
+
             errorFn({
                 httpCode: response.status as StatusCode,
                 httpStatus: response.statusText,
                 response: 'Invalid response',
                 errors,
             })
-        } else {
-            successFn(rawResponse)
         }
     } catch (error) {
         errorFn({
