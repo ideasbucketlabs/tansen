@@ -7,6 +7,7 @@
 package com.ideasbucket.tansen.util
 
 import com.fasterxml.jackson.databind.node.ObjectNode
+import com.ideasbucket.tansen.configuration.auth.AuthenticationProperties
 import org.springframework.core.io.buffer.DataBuffer
 import org.springframework.core.io.buffer.DataBufferUtils
 import org.springframework.http.HttpHeaders
@@ -27,6 +28,15 @@ object RequestResponseUtil {
     @JvmStatic
     fun setJsonResponse(message: ObjectNode, swe: ServerWebExchange, httpStatus: HttpStatus): Mono<Void> {
         return setJsonResponse(JsonConverter.getMapper().writeValueAsString(message), swe, httpStatus)
+    }
+
+    @JvmStatic
+    fun getLoginPath(authenticationProperties: AuthenticationProperties): String {
+        if (authenticationProperties.oauth2.clients.size > 1) {
+            return "/login"
+        }
+
+        return "/oauth2/authorization/${authenticationProperties.oauth2.clients.keys.first()}"
     }
 
     private fun setJsonResponse(message: String, swe: ServerWebExchange, httpStatus: HttpStatus): Mono<Void> {

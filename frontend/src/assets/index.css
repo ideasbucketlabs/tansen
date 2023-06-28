@@ -1,5 +1,11 @@
 @tailwind base;
 
+@layer base {
+    :root {
+        --angle-shadow: #1D5349
+    }
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -87,6 +93,9 @@ input[type='number'] {
     .dark\:shadow-top-black {
         /*box-shadow: 0 0 16px -7px rgba(107, 114, 128, 0.7);*/
         box-shadow: -4px -1px 47px 9px rgba(0, 0, 0, 0.74) !important;
+    }
+    :root {
+        --angle-shadow: #0f172a
     }
 }
 

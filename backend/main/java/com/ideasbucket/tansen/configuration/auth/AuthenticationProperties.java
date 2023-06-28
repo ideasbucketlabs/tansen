@@ -29,7 +29,7 @@ public class AuthenticationProperties {
     private final OAuth2 oauth2;
 
     public AuthenticationProperties(String type, OAuth2 oauth2) {
-        this.type = type == null ? "DISABLED" : type.toLowerCase();
+        this.type = type == null ? "disabled" : type.toLowerCase();
         this.oauth2 = oauth2;
     }
 

@@ -7,8 +7,7 @@
 package com.ideasbucket.tansen.configuration.auth;
 
 import static com.ideasbucket.tansen.util.JsonConverter.createObjectNode;
-import static com.ideasbucket.tansen.util.RequestResponseUtil.isAjaxRequest;
-import static com.ideasbucket.tansen.util.RequestResponseUtil.setJsonResponse;
+import static com.ideasbucket.tansen.util.RequestResponseUtil.*;
 
 import java.net.URI;
 import java.util.Map;
@@ -32,12 +31,16 @@ import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
+import org.springframework.security.web.server.csrf.CsrfToken;
+import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestHandler;
+import org.springframework.security.web.server.csrf.XorServerCsrfTokenRequestAttributeHandler;
+import org.springframework.web.server.WebFilter;
 import reactor.core.publisher.Mono;
 
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
-@ConditionalOnProperty(value = "auth.type", havingValue = "OAUTH2")
+@ConditionalOnProperty(value = "auth.type", havingValue = "oauth2")
 public class OAuth2SecurityConfiguration {
 
     private final AuthenticationProperties authenticationProperties;
@@ -51,12 +54,18 @@ public class OAuth2SecurityConfiguration {
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+        CookieServerCsrfTokenRepository csrfTokenRepository = CookieServerCsrfTokenRepository.withHttpOnlyFalse();
+        XorServerCsrfTokenRequestAttributeHandler delegate = new XorServerCsrfTokenRequestAttributeHandler();
+        // Use only the handle() method of XorServerCsrfTokenRequestAttributeHandler and the
+        // default implementation of resolveCsrfTokenValue() from ServerCsrfTokenRequestHandler
+        ServerCsrfTokenRequestHandler csrfTokenRequestHandler = delegate::handle;
+
         return http
             .authorizeExchange(authorizeExchangeSpec -> {
                 authorizeExchangeSpec.pathMatchers(HttpMethod.OPTIONS).permitAll();
-                // authorizeExchangeSpec.pathMatchers(HttpMethod.GET,"/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html");
-                authorizeExchangeSpec.pathMatchers(HttpMethod.GET, "/").permitAll();
-                authorizeExchangeSpec.pathMatchers(HttpMethod.GET, "/logout").permitAll();
+                authorizeExchangeSpec.pathMatchers(HttpMethod.GET, "/insight/health/readiness").permitAll();
+                authorizeExchangeSpec.pathMatchers(HttpMethod.GET, "/insight/health/liveness").permitAll();
+                authorizeExchangeSpec.pathMatchers(HttpMethod.GET, "/authentication").permitAll();
                 authorizeExchangeSpec.pathMatchers(HttpMethod.GET, "/login**").permitAll();
                 authorizeExchangeSpec.pathMatchers(HttpMethod.GET, "/oauth2/**").permitAll();
                 authorizeExchangeSpec.pathMatchers(HttpMethod.GET, "/favicon.ico").permitAll();
@@ -65,10 +74,11 @@ public class OAuth2SecurityConfiguration {
             })
             .formLogin(formLoginSpec -> formLoginSpec.loginPage("/login"))
             .csrf(csrfSpec -> {
-                csrfSpec.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse());
+                csrfSpec.csrfTokenRepository(csrfTokenRepository);
+                csrfSpec.csrfTokenRequestHandler(csrfTokenRequestHandler);
             })
             .logout(logoutSpec -> {
-                logoutSpec.logoutUrl("/logout").logoutUrl("/login");
+                logoutSpec.logoutUrl("/logout");
                 logoutSpec.logoutSuccessHandler(oidcLogoutSuccessHandler(this.clientRegistrationRepository));
             })
             .oauth2Login(Customizer.withDefaults())
@@ -78,7 +88,7 @@ public class OAuth2SecurityConfiguration {
                         var rootNode = createObjectNode();
                         rootNode.put("success", false);
                         var errorsNode = createObjectNode();
-                        errorsNode.put("loginUrl", getLoginPath());
+                        errorsNode.put("loginUrl", getLoginPath(authenticationProperties));
                         errorsNode.put("message", "Login required.");
                         rootNode.replace("errors", errorsNode);
 
@@ -89,7 +99,7 @@ public class OAuth2SecurityConfiguration {
                         ServerHttpResponse response = serverWebExchange.getResponse();
                         response.setStatusCode(HttpStatus.TEMPORARY_REDIRECT);
                         response.getHeaders().set("Referer", serverWebExchange.getRequest().getPath().value());
-                        response.getHeaders().setLocation(URI.create(getLoginPath()));
+                        response.getHeaders().setLocation(URI.create(getLoginPath(authenticationProperties)));
                     });
                 });
 
@@ -111,15 +121,16 @@ public class OAuth2SecurityConfiguration {
         return this.clientRegistrationRepository;
     }
 
-    private String getLoginPath() {
-        if (authenticationProperties.getOauth2().getClients().size() > 1) {
-            return "/login";
-        }
-
-        return (
-            "/oauth2/authorization/" +
-            authenticationProperties.getOauth2().getClients().keySet().stream().findFirst().orElse("/login")
-        );
+    @Bean
+    WebFilter csrfCookieWebFilter() {
+        return (exchange, chain) -> {
+            Mono<CsrfToken> csrfToken = exchange.getAttributeOrDefault(CsrfToken.class.getName(), Mono.empty());
+            return csrfToken
+                .doOnSuccess(token -> {
+                    /* Ensures the token is subscribed to. */
+                })
+                .then(chain.filter(exchange));
+        };
     }
 
     private ServerLogoutSuccessHandler oidcLogoutSuccessHandler(final ReactiveClientRegistrationRepository repository) {
@@ -149,20 +160,5 @@ public class OAuth2SecurityConfiguration {
                 )
             )
             .build();
-        //        return ClientRegistration
-        //            .withRegistrationId("okta")
-        //            .clientId(authenticationProperties.getOauth2().getClient("okta").getClientId())
-        //            .clientSecret(authenticationProperties.getOauth2().getClient("okta").getClientSecret())
-        //            .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
-        //            .scope(authenticationProperties.getOauth2().getClient("okta").getScope())
-        //            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-        //            .authorizationUri(authenticationProperties.getOauth2().getClient("okta").getAuthorizationUri())
-        //            .tokenUri(authenticationProperties.getOauth2().getClient("okta").getTokenUri())
-        //            .userInfoUri(authenticationProperties.getOauth2().getClient("okta").getUserInfoUri())
-        //            .jwkSetUri(authenticationProperties.getOauth2().getClient("okta").getJwkSetUri())
-        //            .userNameAttributeName("sub")
-        //            .providerConfigurationMetadata(Map.of("end_session_endpoint", "https://dev-1900325.okta.com/oauth2/default/v1/logout"))
-        //            .clientName("Okta")
-        //            .build();
     }
 }

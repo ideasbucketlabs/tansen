@@ -83,11 +83,16 @@
                                     </li>
                                 </ul>
                             </div>
-                            <!--                            <div class="">-->
-                            <!--                                <ul class="text-sm">-->
-                            <!--                                    <li class="m-4 rounded bg-green py-2 text-center font-bold text-white">Logout</li>-->
-                            <!--                                </ul>-->
-                            <!--                            </div>-->
+                            <div class="" v-if="showLogout">
+                                <ul class="text-sm">
+                                    <li
+                                        class="m-4 rounded bg-green py-2 text-center font-bold text-white"
+                                        @click="emit('logout')"
+                                    >
+                                        Logout
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </transition>
@@ -111,9 +116,9 @@ import ClusterBlock from '@/components/ClusterBlock.vue'
 import Logo from '@/icons/Logo.vue'
 
 const store = clusterInformationStore()
-const props = withDefaults(defineProps<{ show: boolean }>(), { show: true })
-const { show } = toRefs(props)
-const emit = defineEmits<{ (e: 'update', value: boolean): void }>()
+const props = withDefaults(defineProps<{ show: boolean; showLogout: boolean }>(), { show: true, showLogout: false })
+const { show, showLogout } = toRefs(props)
+const emit = defineEmits<{ (e: 'update', value: boolean): void; (e: 'logout'): void }>()
 
 let displayOffCanvas = ref(false)
 let displayOffCanvasInner = ref(false)

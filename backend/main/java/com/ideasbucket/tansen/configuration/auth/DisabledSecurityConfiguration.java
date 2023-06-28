@@ -6,7 +6,6 @@
  */
 package com.ideasbucket.tansen.configuration.auth;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,8 +20,7 @@ import org.springframework.security.web.server.context.NoOpServerSecurityContext
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
-// @ConditionalOnProperty(value = "auth.type", havingValue = "DISABLED")
-@ConditionalOnExpression("${auth}==null or '${auth.type}'.equalsIgnoreCase('DISABLED')")
+@ConditionalOnProperty(value = "auth.type", havingValue = "disabled")
 public class DisabledSecurityConfiguration {
 
     @Bean

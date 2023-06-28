@@ -11,18 +11,43 @@ import type { StatusCode } from '@/entity/StatusCode'
 const baseUrl = import.meta.env.VITE_API_ENDPOINT ?? ''
 
 export function getProperUrl(url: string): string {
+    if (url === '/authentication' || url === '/logout') {
+        return `${baseUrl}${url}`
+    }
     return url.startsWith('/') ? `${baseUrl}/api${url}` : `${baseUrl}/api/${url}`
 }
 
+function getCsrfToken(): string | null {
+    const cookies = Object.fromEntries(
+        document.cookie.split('; ').map((v) => v.split(/=(.*)/s).map(decodeURIComponent))
+    )
+
+    if (Object.prototype.hasOwnProperty.call(cookies, 'XSRF-TOKEN')) {
+        return cookies['XSRF-TOKEN'] as string
+    }
+
+    return null
+}
+
 function nonDataOptions(method: string) {
+    const headers: Record<string, string> = {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json;charset=UTF-8',
+        'X-Requested-With': 'XMLHttpRequest',
+    }
+
+    if (method !== 'GET') {
+        const csrfToken = getCsrfToken()
+
+        if (csrfToken !== null) {
+            headers['X-XSRF-TOKEN'] = csrfToken
+        }
+    }
+
     return {
         method,
         credentials: 'include',
-        headers: {
-            Accept: 'application/json, text/plain, */*',
-            'Content-Type': 'application/json;charset=UTF-8',
-            'X-Requested-With': 'XMLHttpRequest',
-        },
+        headers: headers,
     }
 }
 
@@ -35,8 +60,6 @@ async function execute<TBody, TResponse>(
     successFn: (response: TResponse) => void,
     errorFn: (response: ErrorResponse) => void
 ) {
-    const inferredUrl = getProperUrl(url)
-
     const options =
         method === 'POST' || method === 'PUT' || method === 'PATCH'
             ? ({
@@ -46,7 +69,7 @@ async function execute<TBody, TResponse>(
             : (nonDataOptions(method) as RequestInit)
 
     try {
-        const response = await fetch(inferredUrl, options)
+        const response = await fetch(url, options)
         const rawResponse = await response.json()
 
         if (response.ok) {
@@ -69,7 +92,7 @@ async function execute<TBody, TResponse>(
         errorFn({
             httpCode: 0 as StatusCode,
             httpStatus: 'Communication error',
-            response: `Could not establish communication with ${inferredUrl}`,
+            response: `Could not establish communication with ${url}`,
         })
     }
 }
@@ -79,7 +102,7 @@ export async function getAction<TResponse>(
     successFn: (response: TResponse) => void,
     errorFn?: (response: ErrorResponse) => void
 ) {
-    await execute(url, 'GET', null, successFn, errorFn ?? EMPTY_FN)
+    await execute(getProperUrl(url), 'GET', null, successFn, errorFn ?? EMPTY_FN)
 }
 
 export async function postAction<TBody, TResponse>(
@@ -88,7 +111,27 @@ export async function postAction<TBody, TResponse>(
     successFn: (response: TResponse) => void,
     errorFn?: (response: ErrorResponse) => void
 ) {
-    await execute(url, 'POST', data, successFn, errorFn ?? EMPTY_FN)
+    await execute(getProperUrl(url), 'POST', data, successFn, errorFn ?? EMPTY_FN)
+}
+
+export function logoutAction() {
+    const form = document.createElement('form')
+    form.action = getProperUrl('/logout')
+    form.method = 'POST'
+
+    const csrfToken = getCsrfToken()
+
+    if (csrfToken !== null) {
+        const csrfElement = document.createElement('input')
+        csrfElement.value = csrfToken
+        csrfElement.name = '_csrf'
+        csrfElement.type = 'hidden'
+
+        form.appendChild(csrfElement)
+    }
+
+    document.body.appendChild(form)
+    form.submit()
 }
 
 export async function putAction<TBody, TResponse>(
@@ -97,7 +140,7 @@ export async function putAction<TBody, TResponse>(
     successFn: (response: TResponse) => void,
     errorFn?: (response: ErrorResponse) => void
 ) {
-    await execute(url, 'PUT', data, successFn, errorFn ?? EMPTY_FN)
+    await execute(getProperUrl(url), 'PUT', data, successFn, errorFn ?? EMPTY_FN)
 }
 
 export async function patchAction<TBody, TResponse>(
@@ -106,7 +149,7 @@ export async function patchAction<TBody, TResponse>(
     successFn: (response: TResponse) => void,
     errorFn?: (response: ErrorResponse) => void
 ) {
-    await execute(url, 'PATCH', data, successFn, errorFn ?? EMPTY_FN)
+    await execute(getProperUrl(url), 'PATCH', data, successFn, errorFn ?? EMPTY_FN)
 }
 
 export async function deleteAction<TResponse>(
@@ -114,5 +157,5 @@ export async function deleteAction<TResponse>(
     successFn: (response: TResponse) => void,
     errorFn?: (response: ErrorResponse) => void
 ) {
-    await execute(url, 'DELETE', null, successFn, errorFn ?? EMPTY_FN)
+    await execute(getProperUrl(url), 'DELETE', null, successFn, errorFn ?? EMPTY_FN)
 }

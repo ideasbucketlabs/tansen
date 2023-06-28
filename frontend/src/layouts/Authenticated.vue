@@ -13,6 +13,35 @@
                         </router-link>
                     </div>
                 </div>
+                <div class="relative hidden w-20 items-center justify-end lg:flex" v-if="loginRequired">
+                    <div class="action-main-menu relative w-14 outline-none" tabindex="0">
+                        <div class="flex justify-end outline-none">
+                            <div
+                                class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-green-300 bg-green-100 transition-all duration-200 ease-in-out hover:shadow dark:border-green-400 dark:bg-green-500"
+                                ref="profileIcon"
+                            >
+                                <div class="text-uppercase text-sm text-green-500 dark:text-white">{{ initials }}</div>
+                            </div>
+                        </div>
+                        <div class="leaf absolute right-0 z-50 pt-1 outline-none">
+                            <ul
+                                class="w-48 cursor-pointer rounded bg-white font-bold text-green-500 shadow outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+                            >
+                                <li class="rounded-b hover:bg-green-50 dark:hover:bg-gray-800">
+                                    <a
+                                        class="flex items-center rounded-b p-2 hover:bg-green-50 dark:hover:border-gray-700 dark:hover:bg-gray-800"
+                                        @click="logout"
+                                    >
+                                        <span class="block w-4">
+                                            <LogoutIcon class="fill-current"></LogoutIcon>
+                                        </span>
+                                        <span class="pl-2">Logout</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 <div
                     class="flex cursor-pointer content-center px-1 lg:hidden"
                     @click="displayOffCanvas = !displayOffCanvas"
@@ -29,7 +58,12 @@
                 </div>
             </div>
         </header>
-        <OffCanvas :show="displayOffCanvas" @update="displayOffCanvas = $event"></OffCanvas>
+        <OffCanvas
+            :show="displayOffCanvas"
+            :show-logout="loginRequired"
+            @update="displayOffCanvas = $event"
+            @logout="logout"
+        ></OffCanvas>
         <main class="relative flex h-12 flex-grow flex-row" role="main">
             <transition name="slide-right" mode="out-in">
                 <aside
@@ -110,7 +144,10 @@
             <div class="flex space-x-2 text-green-500 dark:text-gray-100">
                 <div>&#169;</div>
                 <div class="block w-12">
-                    <Logo class="h-full w-full fill-current stroke-current text-green-500 dark:text-white"></Logo>
+                    <Logo
+                        class="h-full w-full fill-current stroke-current text-green-500 dark:text-white"
+                        :animate="false"
+                    ></Logo>
                 </div>
                 <div>-</div>
                 <div>{{ currentYear }}</div>
@@ -137,9 +174,15 @@ import Logo from '@/icons/Logo.vue'
 import Loading from '@/components/Loading.vue'
 import type { ClusterInformation } from '@/entity/ClusterInformation'
 import ClusterBlock from '@/components/ClusterBlock.vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { getAction, logoutAction } from '@/util/HttpService'
+import type { ServerResponse } from '@/entity/ServerResponse'
+import type { AuthenticationStatus } from '@/entity/AuthenticationStatus'
+import LogoutIcon from '@/icons/LogoutIcon.vue'
 
+const router = useRouter()
 const route = useRoute()
+const authenticationOptions = ref<AuthenticationStatus>()
 const seed = (Math.random() + 1).toString(36).substring(7) + performance.now().toString(10)
 const clusterId = ref<string>((route.params?.clusterId ?? seed) as string)
 const store = clusterInformationStore()
@@ -148,6 +191,8 @@ const currentYear = ref(new Date().getFullYear())
 const sideBarCollapsed = ref<boolean>(false)
 const clusterInformationLoading = ref<boolean>(true)
 const clusterInformation = computed<ClusterInformation[]>(() => store.getClusters)
+const loginRequired = computed<boolean>(() => authenticationOptions.value?.loginRequired ?? false)
+const initials = computed<string>(() => authenticationOptions.value?.initials ?? 'NA')
 watch(
     () => route.params?.clusterId ?? seed,
     async (newClusterId) => {
@@ -173,6 +218,10 @@ function onDocumentVisibilityChange(event: Event) {
     }
 }
 
+function logout() {
+    logoutAction()
+}
+
 function afterDataLoad() {
     clusterInformationLoading.value = false
 }
@@ -185,6 +234,16 @@ onMounted(async () => {
     document.addEventListener('visibilitychange', onDocumentVisibilityChange)
     eventBus.on(ApplicationEventTypes.BEFORE_CLUSTER_INFORMATION_DATA_LOADED, beforeDataLoad)
     eventBus.on(ApplicationEventTypes.CLUSTER_INFORMATION_DATA_LOADED, afterDataLoad)
+
+    await getAction('/authentication', (options: ServerResponse<AuthenticationStatus>) => {
+        if (!(options.data?.loggedIn ?? false)) {
+            router.replace({ path: '/login' })
+        }
+
+        if (options.data?.loginRequired ?? false) {
+            authenticationOptions.value = options.data
+        }
+    })
     await store.loadDataIfNotInitialized()
     const givenClusterId = route.params?.clusterId ?? seed
     if (givenClusterId !== seed && !store.isValidCluster(givenClusterId as string)) {

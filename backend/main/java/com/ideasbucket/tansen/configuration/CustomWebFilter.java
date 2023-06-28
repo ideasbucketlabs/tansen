@@ -23,8 +23,8 @@ public class CustomWebFilter implements WebFilter {
         if (
             !path.startsWith("/api") &&
             !path.startsWith("/assets") &&
-            !path.startsWith("/login") &&
-            !path.startsWith("/logout")
+            !path.startsWith("/logout") &&
+            !path.startsWith("/authentication")
         ) {
             return chain.filter(
                 exchange
