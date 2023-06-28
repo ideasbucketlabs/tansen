@@ -27,7 +27,7 @@
 * View Consumer Groups — view per-partition parked offsets, combined and per-partition lag
 * Browse Messages — browse messages with JSON, plain text, Protobuf, and Avro encoding
 * Topic Configuration — create and configure new topics and edit existing one
-* Support for Okta Authentication
+* Support for Okta OAuth Authentication
 
 ---
 
