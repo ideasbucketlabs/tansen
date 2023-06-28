@@ -20,7 +20,12 @@ public class CustomWebFilter implements WebFilter {
         final String basePath = exchange.getRequest().getPath().contextPath().value();
         final String path = exchange.getRequest().getPath().pathWithinApplication().value();
 
-        if (!path.startsWith("/api") && !path.startsWith("/assets")) {
+        if (
+            !path.startsWith("/api") &&
+            !path.startsWith("/assets") &&
+            !path.startsWith("/logout") &&
+            !path.startsWith("/authentication")
+        ) {
             return chain.filter(
                 exchange
                     .mutate()

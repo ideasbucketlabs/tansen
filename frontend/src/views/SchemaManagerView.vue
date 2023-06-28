@@ -221,7 +221,6 @@ import { computed, defineAsyncComponent, onMounted, onUnmounted, type PropType, 
 import { useRoute } from 'vue-router'
 import { schemaStore } from '@/stores/SchemaStore'
 import type { SchemaReference as SchemaReferenceEntity } from '@/entity/SchemaReference'
-import Loading from '@/components/Loading.vue'
 import CodeMirror from '@/components/CodeMirror.vue'
 import BaseSelectField from '@/components/BaseSelectField.vue'
 import AppComponentLoader from '@/components/AppComponentLoader.vue'

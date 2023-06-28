@@ -92,6 +92,14 @@ const routes: Array<RouteRecordRaw> = [
             title: 'Error',
         },
     },
+    {
+        path: '/login',
+        name: 'login',
+        component: () => import('../views/Login.vue'),
+        meta: {
+            title: 'Please login',
+        },
+    },
     // {
     //     path: '/about',
     //     name: 'about',

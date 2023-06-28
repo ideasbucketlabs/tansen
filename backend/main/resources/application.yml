@@ -46,3 +46,6 @@ spring:
             auto:
                 register:
                     schemas: 'false'
+
+auth:
+    type: DISABLED

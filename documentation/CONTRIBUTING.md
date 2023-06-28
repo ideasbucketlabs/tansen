@@ -74,7 +74,7 @@ You can do test with lots of different types of configurations for more informat
 You can access application at `http://localhost:8080`
 
 ### Step 4 - (Only applicable if you want to access UI)
-When you start the application you should be able to access all the APIs. You can access list of APIs at `/api-documentation.html` But if you want to access the UI then you will need to compile frontend. Here are the steps.
+When you start the application you should be able to access all the APIs. If you want to access the UI then you will need to compile frontend. Here are the steps.
 ```bash
 cd frontend
 npm install 

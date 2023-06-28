@@ -7,7 +7,7 @@
             <h1 class="text-xl md:text-3xl">Dashboard</h1>
         </div>
         <div class="space-y-2 overflow-y-auto md:flex md:flex-1 md:flex-col">
-            <div class="text-2xl">Cluster(s)</div>
+            <div class="text-2xl" v-if="clusters.length !== 0">Cluster(s)</div>
             <ClusterInformation v-for="cluster in clusters" :key="cluster.id" :cluster="cluster"></ClusterInformation>
         </div>
     </div>
